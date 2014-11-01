@@ -5,9 +5,9 @@ package view {
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
 
 	public class ChatMediator extends FeathersMediator {
+
 		override public function initializeComplete():void
 		{
-
 		}
 	}
 }

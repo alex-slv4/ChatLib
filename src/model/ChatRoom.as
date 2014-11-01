@@ -1,7 +1,7 @@
 package model
 {
 
-	import controller.ChatController;
+	import controller.BaseChatController;
 
 	import flash.events.EventDispatcher;
 
@@ -16,7 +16,7 @@ package model
 
 	public class ChatRoom extends EventDispatcher
 	{
-		private var _chatManager:ChatController;
+		private var _chatManager:BaseChatController;
 		private var _room:Room;
 		private var _users:ArrayCollection;
 		private var _owners:ArrayCollection;
@@ -36,8 +36,8 @@ package model
 			_outcasts = new ArrayCollection();
 		}
 		
-		public function get chatManager():ChatController { return _chatManager; }
-		public function set chatManager( value:ChatController):void
+		public function get chatManager():BaseChatController { return _chatManager; }
+		public function set chatManager( value:BaseChatController):void
 		{
 			if( _chatManager ) _chatManager.removeEventListener( PresenceEvent.PRESENCE, onPresence );
 			_chatManager = value;

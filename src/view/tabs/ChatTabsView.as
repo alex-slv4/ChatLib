@@ -3,10 +3,12 @@
  */
 package view.tabs {
 	import feathers.controls.TabBar;
+	import feathers.data.ListCollection;
 
 	public class ChatTabsView extends TabBar {
 		public function ChatTabsView() {
 			super();
 		}
+
 	}
 }

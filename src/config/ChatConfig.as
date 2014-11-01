@@ -2,6 +2,10 @@
  * Created by kvint on 01.11.14.
  */
 package config {
+	import controller.ChatController;
+
+	import model.ChatModel;
+
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
@@ -9,6 +13,10 @@ package config {
 
 	import view.ChatView;
 	import view.ChatMediator;
+	import view.tabs.ChatTabView;
+	import view.tabs.ChatTabViewMediator;
+	import view.tabs.ChatTabsMediator;
+	import view.tabs.ChatTabsView;
 
 	public class ChatConfig implements IConfig {
 
@@ -28,11 +36,15 @@ package config {
 
 		private function mapMembership():void {
 			injector.map(IChatService).toSingleton(ChatService);
+			injector.map(ChatModel).toSingleton(ChatModel);
+			injector.map(ChatController).toSingleton(ChatController);
 		}
 
 		private function mapView():void
 		{
 			mediatorMap.map(ChatView).toMediator(ChatMediator);
+			mediatorMap.map(ChatTabsView).toMediator(ChatTabsMediator);
+			mediatorMap.map(ChatTabView).toMediator(ChatTabViewMediator);
 		}
 	}
 }

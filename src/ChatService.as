@@ -4,24 +4,31 @@ package {
 
 	import feathers.controls.LayoutGroup;
 
+	import model.ChatModel;
+
 	import view.ChatView;
 
 	public class ChatService implements IChatService{
 
- 		private var _view:ChatView;
-		private var _controller:ChatController;
+		[Inject]
+		public var thisController		:ChatController;
+
+		[Inject]
+		public var model				:ChatModel;
+
+ 		private var _view:ChatView
 
 		public function ChatService() {
 			_view = new ChatView();
-			_controller = new ChatController();
 		}
 
 		public function get view():LayoutGroup {
 			return _view;
 		}
 
+
 		public function get controller():ChatController {
-			return _controller;
+			return thisController;
 		}
 	}
 }

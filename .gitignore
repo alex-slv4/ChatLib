@@ -1,4 +1,6 @@
 # Build and Release Folders
+.DS_Store
+
 bin/
 
 # Other files and folders
