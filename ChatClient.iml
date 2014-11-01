@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="ChatClient">
+    <configurations>
+      <configuration name="ChatClient" pure-as="true" output-type="Library" output-file="ChatClient.swc" output-folder="$MODULE_DIR$/bin">
+        <dependencies target-player="15.0">
+          <entries>
+            <entry library-id="608b0e56-bf32-45fa-bbf3-058fdf078feb">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="27aa5a61-b048-4149-856d-7f1c2119a56a">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="b4adbb23-bf17-466c-9afd-55b5725b9a1e">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="AIR SDK 15.0.0" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/xiff" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libs" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="AIR SDK 15.0.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="608b0e56-bf32-45fa-bbf3-058fdf078feb" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../libs/as3commons" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../libs/as3commons" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="27aa5a61-b048-4149-856d-7f1c2119a56a" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../libs" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="b4adbb23-bf17-466c-9afd-55b5725b9a1e" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+
