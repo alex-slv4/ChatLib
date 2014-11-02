@@ -58,8 +58,7 @@ package view.tabs {
 		}
 
 		private function onNewConversation(event:ChatEvent):void {
-			var message:Message = event.data as Message;
-			view.dataProvider.addItem(new DirectCommunicator(message.from.unescaped));
+			view.dataProvider.addItem(event.data);
 		}
 
 		private function onNewMessage(event:MessageEvent):void {

@@ -2,12 +2,12 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	import model.*;
-	import view.communicator.DefaultCommunicatorView;
+	import flash.events.EventDispatcher;
 
-	public class DefaultCommunicator implements ICommunicator {
+	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
+		private var _history:Array = [];
 
 		public function DefaultCommunicator() {
 		}
@@ -19,7 +19,15 @@ package model.communicators {
 			return _label ? _label : toString();
 		}
 
-		public function toString():String {
+		public function add(data:Object):void {
+			_history.push(data);
+		}
+
+		public function get history():Array {
+			return _history;
+		}
+
+		override public function toString():String {
 			return "[DefaultCommunicator]";
 		}
 	}

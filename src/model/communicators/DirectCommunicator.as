@@ -2,8 +2,6 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	import model.CommunicatorTypes;
-
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	public class DirectCommunicator extends DefaultCommunicator {
@@ -12,7 +10,7 @@ package model.communicators {
 
 		public function DirectCommunicator(user:UnescapedJID) {
 			_user = user;
-			_label = user.bareJID;
+			_label = user.node;
 		}
 		override public function get type():int {
 			return CommunicatorTypes.DIRECT;

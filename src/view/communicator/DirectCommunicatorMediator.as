@@ -21,6 +21,7 @@ package view.communicator {
 			message.body = writableView.input.text;
 			chatModel.dispatchEvent(new ChatEvent(ChatEvent.SEND_MESSAGE, message));
 			writableView.input.text = "";
+			addToHistory(message);
 		}
 	}
 }

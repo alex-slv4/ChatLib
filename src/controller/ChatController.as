@@ -8,6 +8,8 @@ package controller {
 
 	import model.ChatModel;
 	import model.ChatUser;
+	import model.communicators.DirectCommunicator;
+	import model.communicators.ICommunicator;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.LoginEvent;
@@ -25,6 +27,10 @@ package controller {
 		}
 
 		private function onMessageSend(event:ChatEvent):void {
+			var message:Message = event.data as Message;
+			var node:String = message.to.node;
+			var communicator:ICommunicator = chatModel.conversations[node];
+			communicator.add(message);
 			connection.send(event.data as Message);
 		}
 
@@ -37,13 +43,15 @@ package controller {
 			var message:Message = event.data as Message;
 			switch (message.type){
 				case Message.TYPE_CHAT:
-					if(chatModel.conversations[message.from.bareJID]){
-						//TODO: update communicator
-					}else{
-						chatModel.conversations[message.from.bareJID] = {};
-						chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, message));
+					var node:String = message.from.node;
+					var communicator:ICommunicator = chatModel.conversations[node];
+					if(communicator == null){
+						communicator = new DirectCommunicator(message.from.unescaped);
+						chatModel.conversations[node] = communicator;
+						chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
 					}
-					chatModel.dispatchEvent(event);
+					communicator.add(message);
+					communicator.dispatchEvent(event);
 					break;
 					chatModel.dispatchEvent(event);
 				case Message.TYPE_GROUPCHAT:

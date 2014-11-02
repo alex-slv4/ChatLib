@@ -7,7 +7,7 @@ package view {
 	import flash.utils.Dictionary;
 
 	import model.ChatModel;
-	import model.CommunicatorTypes;
+	import model.communicators.CommunicatorTypes;
 	import model.communicators.ICommunicator;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
@@ -15,7 +15,7 @@ package view {
 	import view.communicator.DefaultCommunicatorView;
 	import view.communicator.DirectCommunicatorView;
 	import view.communicator.ICommunicatorView;
-	import view.communicator.LogCommunicatorView;
+	import view.communicator.HistoryCommunicatorView;
 
 	public class ChatMediator extends FeathersMediator {
 
@@ -28,7 +28,7 @@ package view {
 			super.initializeComplete();
 
 			_communicatorViewMap[CommunicatorTypes.DIRECT] = DirectCommunicatorView;
-			_communicatorViewMap[CommunicatorTypes.LOG] = LogCommunicatorView;
+			_communicatorViewMap[CommunicatorTypes.LOG] = HistoryCommunicatorView;
 			_communicatorViewMap[CommunicatorTypes.TEAM] = DefaultCommunicatorView;
 			_communicatorViewMap[CommunicatorTypes.GLOBAL] = DefaultCommunicatorView;
 

@@ -2,8 +2,6 @@ package {
 
 	import controller.ChatController;
 
-	import feathers.controls.LayoutGroup;
-
 	import model.ChatModel;
 
 	import view.ChatView;

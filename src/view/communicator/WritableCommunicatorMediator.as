@@ -6,10 +6,7 @@ package view.communicator {
 
 	import starling.events.KeyboardEvent;
 
-	public class WritableCommunicatorMediator extends DefaultCommunicatorMediator {
-		public function WritableCommunicatorMediator() {
-			super();
-		}
+	public class WritableCommunicatorMediator extends HistoryCommunicatorMediator {
 		override public function initializeComplete():void {
 			super.initializeComplete();
 			writableView.input.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);

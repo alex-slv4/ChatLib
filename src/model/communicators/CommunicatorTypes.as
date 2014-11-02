@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package model {
+package model.communicators {
 	public class CommunicatorTypes {
 
 		public static const LOG:int = 1;
