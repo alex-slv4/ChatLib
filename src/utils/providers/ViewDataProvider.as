@@ -3,10 +3,9 @@
  */
 package utils.providers {
 
-import com.scifi.model.protocol.generated.constants.MiscConstants;
-import flash.utils.Dictionary;
+	import flash.utils.Dictionary;
 
-public class ViewDataProvider implements IViewDataProvider{
+	public class ViewDataProvider implements IViewDataProvider{
 
 	private var _data			:Object 			= null;
 

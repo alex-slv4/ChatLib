@@ -4,17 +4,21 @@
 package view {
 
 	import feathers.controls.LayoutGroup;
+	import feathers.core.FeathersControl;
+
 	import view.communicator.CommunicatorView;
 	import view.tabs.ChatTabsView;
 
 	public class ChatView extends LayoutGroup {
 
+		private var _communicatorContainer	:LayoutGroup 		= new LayoutGroup();
 		private var _communicatorView		:CommunicatorView;
 		private var _tabsView				:ChatTabsView 		= new ChatTabsView();
 
 		override protected function initialize():void {
 			super.initialize();
 
+			addChild(communicatorContainer);
 			addChild(tabsView);
 		}
 
@@ -28,10 +32,14 @@ package view {
 
 		public function set communicatorView(value:CommunicatorView):void {
 			if(_communicatorView){
-				removeChild(_communicatorView);
+				_communicatorView.removeFromParent();
 			}
 			_communicatorView = value;
-			addChild(_communicatorView);
+			communicatorContainer.addChild(_communicatorView);
+		}
+
+		public function get communicatorContainer():LayoutGroup {
+			return _communicatorContainer;
 		}
 	}
 }
