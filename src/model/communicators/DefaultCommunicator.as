@@ -1,8 +1,9 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package model {
-	import view.communicator.CommunicatorView;
+package model.communicators {
+	import model.*;
+	import view.communicator.DefaultCommunicatorView;
 
 	public class DefaultCommunicator implements ICommunicator {
 

@@ -1,18 +1,25 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.tabs {
+package model.communicators {
 	import model.CommunicatorTypes;
-	import model.DefaultCommunicator;
 
-	import org.igniterealtime.xiff.core.AbstractJID;
+	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	public class DirectCommunicator extends DefaultCommunicator {
-		public function DirectCommunicator(user:AbstractJID) {
+
+		private var _user:UnescapedJID;
+
+		public function DirectCommunicator(user:UnescapedJID) {
+			_user = user;
 			_label = user.bareJID;
 		}
 		override public function get type():int {
 			return CommunicatorTypes.DIRECT;
+		}
+
+		public function get user():UnescapedJID {
+			return _user;
 		}
 	}
 }

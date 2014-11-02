@@ -5,6 +5,7 @@ package events {
 	public class ChatEvent extends DataEvent {
 
 		public static const NEW_CONVERSATION:String = "onNewConversation";
+		public static const SEND_MESSAGE:String = "onSendMessage";
 
 		public function ChatEvent(type:String, data:Object = null) {
 			super(type, data);

@@ -8,11 +8,14 @@ package view {
 
 	import model.ChatModel;
 	import model.CommunicatorTypes;
-	import model.ICommunicator;
+	import model.communicators.ICommunicator;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
 
-	import view.communicator.CommunicatorView;
+	import view.communicator.DefaultCommunicatorView;
+	import view.communicator.DirectCommunicatorView;
+	import view.communicator.ICommunicatorView;
+	import view.communicator.LogCommunicatorView;
 
 	public class ChatMediator extends FeathersMediator {
 
@@ -24,13 +27,14 @@ package view {
 		override public function initializeComplete():void {
 			super.initializeComplete();
 
-			_communicatorViewMap[CommunicatorTypes.DIRECT] = CommunicatorView;
-			_communicatorViewMap[CommunicatorTypes.LOG] = CommunicatorView;
-			_communicatorViewMap[CommunicatorTypes.TEAM] = CommunicatorView;
-			_communicatorViewMap[CommunicatorTypes.GLOBAL] = CommunicatorView;
+			_communicatorViewMap[CommunicatorTypes.DIRECT] = DirectCommunicatorView;
+			_communicatorViewMap[CommunicatorTypes.LOG] = LogCommunicatorView;
+			_communicatorViewMap[CommunicatorTypes.TEAM] = DefaultCommunicatorView;
+			_communicatorViewMap[CommunicatorTypes.GLOBAL] = DefaultCommunicatorView;
 
 			_view = viewComponent as ChatView;
 			chatModel.addEventListener(CommunicatorEvent.CHANGE, onCommunicationChange);
+			_view.communicatorView = constructCommunicator(_view.tabsView.selectedItem as ICommunicator);
 		}
 		private function onCommunicationChange(event:CommunicatorEvent):void {
 			switch (event.type){
@@ -41,8 +45,10 @@ package view {
 			}
 		}
 
-		private function constructCommunicator(data:ICommunicator):CommunicatorView {
-			return new _communicatorViewMap[data.type];
+		private function constructCommunicator(data:ICommunicator):ICommunicatorView {
+			var communicatorView:ICommunicatorView = new _communicatorViewMap[data.type];
+			communicatorView.provider.data = data;
+			return  communicatorView;
 		}
 
 		override public function destroy():void {

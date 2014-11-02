@@ -13,8 +13,6 @@ package controller {
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
-	import view.tabs.TeamCommunicator;
-
 	public class ChatController extends BaseChatController {
 
 		[Inject]
@@ -23,6 +21,11 @@ package controller {
 		[PostConstruct]
 		override public function init():void {
 			super.init();
+			chatModel.addEventListener(ChatEvent.SEND_MESSAGE, onMessageSend)
+		}
+
+		private function onMessageSend(event:ChatEvent):void {
+			connection.send(event.data as Message);
 		}
 
 		override protected function setupCurrentUser():void {
@@ -35,6 +38,7 @@ package controller {
 			switch (message.type){
 				case Message.TYPE_CHAT:
 					if(chatModel.conversations[message.from.bareJID]){
+						//TODO: update communicator
 					}else{
 						chatModel.conversations[message.from.bareJID] = {};
 						chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, message));

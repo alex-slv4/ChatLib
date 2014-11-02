@@ -2,15 +2,15 @@
  * Created by kvint on 02.11.14.
  */
 package view.tabs {
-	import model.ICommunicator;
+	import model.communicators.ICommunicator;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
 
-	public class ChatTabViewMediator extends FeathersMediator {
+	public class ChatTabMediator extends FeathersMediator {
 
 		private var view:ChatTabView;
 
-		public function ChatTabViewMediator() {
+		public function ChatTabMediator() {
 		}
 
 		override public function initializeComplete():void {

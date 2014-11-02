@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.tabs {
+package model.communicators {
+	import model.*;
 	import model.CommunicatorTypes;
 	import model.DefaultCommunicator;
 

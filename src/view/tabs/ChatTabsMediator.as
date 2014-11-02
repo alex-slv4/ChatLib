@@ -7,10 +7,12 @@ package view.tabs {
 
 	import feathers.data.ListCollection;
 
-	import model.DefaultCommunicator;
-
 	import model.ChatModel;
-	import model.ICommunicator;
+	import model.communicators.DirectCommunicator;
+	import model.communicators.GlobalCommunicator;
+	import model.communicators.ICommunicator;
+	import model.communicators.LogCommunicator;
+	import model.communicators.TeamCommunicator;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -57,7 +59,7 @@ package view.tabs {
 
 		private function onNewConversation(event:ChatEvent):void {
 			var message:Message = event.data as Message;
-			view.dataProvider.addItem(new DirectCommunicator(message.from));
+			view.dataProvider.addItem(new DirectCommunicator(message.from.unescaped));
 		}
 
 		private function onNewMessage(event:MessageEvent):void {
