@@ -9,13 +9,12 @@ package view {
 
 	public class ChatView extends LayoutGroup {
 
-		private var _communicatorView		:CommunicatorView 	= new CommunicatorView();
+		private var _communicatorView		:CommunicatorView;
 		private var _tabsView				:ChatTabsView 		= new ChatTabsView();
 
 		override protected function initialize():void {
 			super.initialize();
 
-			addChild(communicatorView);
 			addChild(tabsView);
 		}
 
@@ -23,8 +22,16 @@ package view {
 			return _tabsView;
 		}
 
-		public function get communicatorView():LayoutGroup {
+		public function get communicatorView():CommunicatorView {
 			return _communicatorView;
+		}
+
+		public function set communicatorView(value:CommunicatorView):void {
+			if(_communicatorView){
+				removeChild(_communicatorView);
+			}
+			_communicatorView = value;
+			addChild(_communicatorView);
 		}
 	}
 }

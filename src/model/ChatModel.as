@@ -5,7 +5,7 @@ package model {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
-	public class ChatModel extends EventDispatcher{
+	public class ChatModel extends EventDispatcher {
 
 		private var _currentUser:ChatUser;
 		public var conversations:Dictionary = new Dictionary();

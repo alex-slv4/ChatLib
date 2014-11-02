@@ -13,6 +13,8 @@ package controller {
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
+	import view.tabs.TeamCommunicator;
+
 	public class ChatController extends BaseChatController {
 
 		[Inject]

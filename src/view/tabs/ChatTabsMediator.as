@@ -3,10 +3,11 @@
  */
 package view.tabs {
 	import events.ChatEvent;
+	import events.CommunicatorEvent;
 
 	import feathers.data.ListCollection;
 
-	import model.BaseCommunicator;
+	import model.DefaultCommunicator;
 
 	import model.ChatModel;
 	import model.ICommunicator;
@@ -15,6 +16,8 @@ package view.tabs {
 	import org.igniterealtime.xiff.events.MessageEvent;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
+
+	import starling.events.Event;
 
 	public class ChatTabsMediator extends FeathersMediator {
 
@@ -41,13 +44,20 @@ package view.tabs {
 				new GlobalCommunicator(),
 				new TeamCommunicator(),
 			]);
+			mapStarlingEvent(view, Event.CHANGE, onTabSelected);
 			chatModel.addEventListener(MessageEvent.MESSAGE, onNewMessage);
 			chatModel.addEventListener(ChatEvent.NEW_CONVERSATION, onNewConversation);
+			onTabSelected();
+		}
+
+		private function onTabSelected():void {
+			var communicator:ICommunicator = view.selectedItem as ICommunicator;
+			chatModel.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.CHANGE, communicator));
 		}
 
 		private function onNewConversation(event:ChatEvent):void {
 			var message:Message = event.data as Message;
-			view.dataProvider.addItem(message.from.bareJID);
+			view.dataProvider.addItem(new DirectCommunicator(message.from));
 		}
 
 		private function onNewMessage(event:MessageEvent):void {

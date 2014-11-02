@@ -4,9 +4,8 @@
 package view.communicator {
 	import feathers.controls.LayoutGroup;
 
-	public class CommunicatorView extends LayoutGroup {
+	public class CommunicatorView extends LayoutGroup implements ICommunicatorView{
 		public function CommunicatorView() {
-			super();
 		}
 	}
 }

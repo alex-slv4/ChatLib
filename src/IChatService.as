@@ -6,9 +6,11 @@ package {
 
 	import feathers.controls.LayoutGroup;
 
+	import view.ChatView;
+
 	public interface IChatService {
 
-		function get view():LayoutGroup;
+		function get view():ChatView;
 		function get controller():ChatController;
 
 	}

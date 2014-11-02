@@ -11,8 +11,10 @@ package config {
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IInjector;
 
-	import view.ChatView;
 	import view.ChatMediator;
+	import view.ChatView;
+	import view.communicator.CommunicatorMediator;
+	import view.communicator.ICommunicatorView;
 	import view.tabs.ChatTabView;
 	import view.tabs.ChatTabViewMediator;
 	import view.tabs.ChatTabsMediator;
@@ -45,6 +47,7 @@ package config {
 			mediatorMap.map(ChatView).toMediator(ChatMediator);
 			mediatorMap.map(ChatTabsView).toMediator(ChatTabsMediator);
 			mediatorMap.map(ChatTabView).toMediator(ChatTabViewMediator);
+			mediatorMap.map(ICommunicatorView).toMediator(CommunicatorMediator);
 		}
 	}
 }
