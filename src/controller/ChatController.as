@@ -11,9 +11,15 @@ package controller {
 	import model.communicators.DirectCommunicator;
 	import model.communicators.ICommunicator;
 
+	import org.igniterealtime.xiff.core.AbstractJID;
+
+	import org.igniterealtime.xiff.core.EscapedJID;
+	import org.igniterealtime.xiff.core.UnescapedJID;
+
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.im.Roster;
 
 	public class ChatController extends BaseChatController {
 
@@ -26,8 +32,14 @@ package controller {
 			chatModel.addEventListener(ChatEvent.SEND_MESSAGE, onMessageSend)
 		}
 
+		override protected function setupRoster():void {
+			super.setupRoster();
+			chatModel.roster = _roster;
+		}
+
 		private function onMessageSend(event:ChatEvent):void {
 			var message:Message = event.data as Message;
+			message.receipt = Message.RECEIPT_REQUEST;
 			var node:String = message.to.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			communicator.add(message);
@@ -43,13 +55,7 @@ package controller {
 			var message:Message = event.data as Message;
 			switch (message.type){
 				case Message.TYPE_CHAT:
-					var node:String = message.from.node;
-					var communicator:ICommunicator = chatModel.conversations[node];
-					if(communicator == null){
-						communicator = new DirectCommunicator(message.from.unescaped);
-						chatModel.conversations[node] = communicator;
-						chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
-					}
+					var communicator:ICommunicator = startChatWithJID(message.from.unescaped);
 					communicator.add(message);
 					communicator.dispatchEvent(event);
 					break;
@@ -63,12 +69,24 @@ package controller {
 			}
 		}
 
+		public function startChatWithJID(buddy:UnescapedJID):ICommunicator {
+			var node:String = buddy.node;
+			var communicator:ICommunicator = chatModel.conversations[node];
+			if(communicator == null) {
+				communicator = new DirectCommunicator(buddy);
+				chatModel.conversations[node] = communicator;
+				chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
+			}
+			return communicator;
+		}
+
 		override public function dispatchEvent(event:Event):Boolean {
 			return chatModel.dispatchEvent(event);
 		}
 
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
+			roster.fetchRoster();
 			//chatModel.tabsProvider.addItem("test");
 		}
 	}

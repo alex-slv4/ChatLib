@@ -20,6 +20,8 @@ package config {
 	import view.communicator.HistoryCommunicatorMediator;
 	import view.communicator.HistoryCommunicatorView;
 	import view.communicator.WritableCommunicatorMediator;
+	import view.roster.RosterMediator;
+	import view.roster.RosterView;
 	import view.tabs.ChatTabView;
 	import view.tabs.ChatTabMediator;
 	import view.tabs.ChatTabsMediator;
@@ -53,6 +55,7 @@ package config {
 			mediatorMap.map(ChatTabsView).toMediator(ChatTabsMediator);
 			mediatorMap.map(ChatTabView).toMediator(ChatTabMediator);
 			mediatorMap.map(DirectCommunicatorView).toMediator(DirectCommunicatorMediator);
+			mediatorMap.map(RosterView).toMediator(RosterMediator);
 			//mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);
 			//mediatorMap.map(TeamCommunicatorView).toMediator(TeamCommunicatorMediator);
 			//mediatorMap.map(GlobalCommunicatorView).toMediator(GlobalCommunicatorMediator);

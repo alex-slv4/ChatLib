@@ -116,13 +116,13 @@ package controller {
 
 		public function connect(username:String, password:String):void {
 			var domainIndex:int = username.lastIndexOf("@");
-			var username:String = domainIndex > -1 ? username.substring(0, domainIndex) : username;
+			var _username:String = domainIndex > -1 ? username.substring(0, domainIndex) : username;
 			var domain:String = domainIndex > -1 ? username.substring(domainIndex + 1) : null;
-
+			BaseChatController.serverName = domain;
 			Security.loadPolicyFile("xmlsocket://" + BaseChatController.serverName + ":" + BaseChatController.serverPort);
 			registerUser = false;
 			connection.tls = BaseChatController.useTls;
-			connection.username = username;
+			connection.username = _username;
 			connection.password = password;
 			connection.domain = domain;
 			connection.server = BaseChatController.serverName;
@@ -294,10 +294,12 @@ package controller {
 		}
 
 		protected function onOutgoingData(event:OutgoingDataEvent):void {
+			trace("sent\n", event.data)
 			dispatchEvent(event);
 		}
 
 		protected function onIncomingData(event:IncomingDataEvent):void {
+			trace("come\n", event.data)
 			dispatchEvent(event);
 		}
 

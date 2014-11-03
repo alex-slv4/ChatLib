@@ -12,7 +12,7 @@ package {
 		public var thisController		:ChatController;
 
 		[Inject]
-		public var model				:ChatModel;
+		public var _model				:ChatModel;
 
  		private var _view:ChatView
 		private static var _instance	:ChatService;
@@ -30,6 +30,10 @@ package {
 			return _view;
 		}
 
+
+		public function get model():ChatModel {
+			return _model;
+		}
 
 		public function get controller():ChatController {
 			return thisController;
