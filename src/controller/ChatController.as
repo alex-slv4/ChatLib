@@ -11,15 +11,10 @@ package controller {
 	import model.communicators.DirectCommunicator;
 	import model.communicators.ICommunicator;
 
-	import org.igniterealtime.xiff.core.AbstractJID;
-
-	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.core.UnescapedJID;
-
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
-	import org.igniterealtime.xiff.im.Roster;
 
 	public class ChatController extends BaseChatController {
 
@@ -39,7 +34,7 @@ package controller {
 
 		private function onMessageSend(event:ChatEvent):void {
 			var message:Message = event.data as Message;
-			message.receipt = Message.RECEIPT_REQUEST;
+			//message.receipt = Message.RECEIPT_REQUEST;
 			var node:String = message.to.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			communicator.add(message);
