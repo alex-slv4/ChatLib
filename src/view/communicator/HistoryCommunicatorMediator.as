@@ -14,6 +14,8 @@ package view.communicator {
 
 	import starling.events.Event;
 
+	import utils.MessageUtils;
+
 	public class HistoryCommunicatorMediator extends DefaultCommunicatorMediator {
 
 		[Inject]
@@ -22,11 +24,25 @@ package view.communicator {
 		override public function initializeComplete():void {
 			super.initializeComplete();
 			historyView.list.itemRendererProperties.labelFunction = function(item:Message):String {
-				return (item.receipt == null ? "" : item.from.node + ": ") + item.body;
+				var str:String = "";
+				if(MessageUtils.isMessageRead(item)){
+				}else{
+					str += "! "
+				}
+				str += item.from.node + ": " + item.body;
+				return str;
 			};
 			communicatorData.addEventListener(MessageEvent.MESSAGE, onNewMessage);
 			chatModel.addEventListener(ChatEvent.ON_MESSAGE_READ, onMessageRead);
 			initHistory();
+		}
+		protected function initHistory():void {
+			var history:Array = communicatorData.history.concat();
+			for (var i:int = 0; i < history.length; i++) {
+				var message:Message = history[i];
+				markMessageAsReceived(message);
+			}
+			historyView.list.dataProvider = new ListCollection(history);
 		}
 
 		private function onMessageRead(event:ChatEvent):void {
@@ -37,25 +53,16 @@ package view.communicator {
 		protected function onNewMessage(event:MessageEvent):void {
 			var message:Message = event.data as Message;
 			markMessageAsReceived(message);
-			historyView.list.dataProvider.dispatchEventWith(Event.CHANGE);
-			//addToHistory(message);
+			addToHistory(message);
 		}
 
 		protected function markMessageAsReceived(message:Message):void {
-			communicatorData.markAsRead(message);
 			chatController.markMessageAsReceived(message);
+			communicatorData.markAsRead(message);
 		}
 
 		protected function addToHistory(message:Message):void {
-			var index:int = historyView.list.dataProvider.getItemIndex(message);
-			historyView.list.dataProvider.updateItemAt(index);
-		}
-		protected function initHistory():void {
-			var history:Array = communicatorData.history;
-			historyView.list.dataProvider = new ListCollection(history);
-			for each (var message:Message in history) {
-				markMessageAsReceived(message);
-			}
+			historyView.list.dataProvider.addItem(message);
 		}
 		protected function get historyView():HistoryCommunicatorView{
 			return view as HistoryCommunicatorView;

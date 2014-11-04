@@ -38,11 +38,19 @@ package controller {
 
 		private function onMessageSend(event:ChatEvent):void {
 			var message:Message = event.data as Message;
+
+			//Append receipt data
 			requestReceipt(message);
+
+			//Send the message
+			connection.send(message);
+
+			message.receipt = null;
+			//Add message to communicator
 			var node:String = message.to.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			communicator.add(message);
-			connection.send(event.data as Message);
+			//Remove receipt
 		}
 
 
@@ -74,8 +82,9 @@ package controller {
 			if(message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
 				var receiptMessage:Message = chatModel.receiptRequests[message.receiptId];
 				if(receiptMessage) {
-					receiptMessage.receipt = null;
 					delete chatModel.receiptRequests[message.receiptId];
+
+					receiptMessage.receipt = null;
 					chatModel.dispatchEvent(new ChatEvent(ChatEvent.ON_MESSAGE_READ, receiptMessage));
 				}
 				//TODO: implement communicator fetch
@@ -89,7 +98,7 @@ package controller {
 
 			if(message.receipt == Message.RECEIPT_REQUEST) {
 				message.receipt = null;
-				var ackMessage:Message = new Message()
+				var ackMessage:Message = new Message();
 				ackMessage.from = message.to;
 				ackMessage.to = message.from;
 				ackMessage.receipt = Message.RECEIPT_RECEIVED;

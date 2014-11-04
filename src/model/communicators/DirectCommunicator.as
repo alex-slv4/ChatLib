@@ -25,14 +25,14 @@ package model.communicators {
 
 		override public function markAsRead(ackMessage:Message):Boolean {
 			var markedMessage:Message;
-			for each (var message:Message in history) {
+			for (var i:int = 0; i < history.length; i++) {
+				var message:Message = history[i];
 				if(message.id == ackMessage.receiptId){
 					markedMessage = message;
 					_count--;
 					break;
 				}
 			}
-			if(markedMessage) markedMessage.receipt = null;
 			return markedMessage != null;
 		}
 
