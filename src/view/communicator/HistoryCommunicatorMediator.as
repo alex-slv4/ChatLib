@@ -2,6 +2,8 @@
  * Created by kvint on 02.11.14.
  */
 package view.communicator {
+	import events.ChatEvent;
+
 	import feathers.data.ListCollection;
 
 	import org.igniterealtime.xiff.data.Message;
@@ -11,12 +13,17 @@ package view.communicator {
 
 		override public function initializeComplete():void {
 			super.initializeComplete();
-			historyView.list.itemRendererProperties.labelField = "body";
-			historyView.list.itemRendererProperties.labelFunction = function(item:Object):String {
-				return item.from.node + ": "+ item.body;
+			historyView.list.itemRendererProperties.labelFunction = function(item:Message):String {
+				return (item.receipt == null ? "" : item.from.node + ": ") + item.body;
 			};
 			communicatorData.addEventListener(MessageEvent.MESSAGE, onNewMessage);
+			chatModel.addEventListener(ChatEvent.ON_MESSAGE_READ, onMessageRead);
 			initHistory();
+		}
+
+		private function onMessageRead(event:ChatEvent):void {
+			var itemIndex:int = historyView.list.dataProvider.getItemIndex(event.data);
+			historyView.list.dataProvider.updateItemAt(itemIndex);
 		}
 
 		protected function onNewMessage(event:MessageEvent):void {
@@ -35,6 +42,7 @@ package view.communicator {
 
 		override public function destroy():void {
 			communicatorData.removeEventListener(MessageEvent.MESSAGE, onNewMessage);
+			chatModel.removeEventListener(ChatEvent.ON_MESSAGE_READ, onMessageRead);
 			super.destroy();
 		}
 	}

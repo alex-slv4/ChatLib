@@ -4,6 +4,8 @@
 package model.communicators {
 	import flash.events.EventDispatcher;
 
+	import org.igniterealtime.xiff.data.Message;
+
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
@@ -21,6 +23,10 @@ package model.communicators {
 
 		public function add(data:Object):void {
 			_history.push(data);
+		}
+
+		public function markAsRead(message:Message):Boolean {
+			return false;
 		}
 
 		public function get history():Array {

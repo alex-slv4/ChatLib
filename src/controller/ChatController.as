@@ -12,7 +12,11 @@ package controller {
 	import model.communicators.ICommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
+
+	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.im.RosterItemVO;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
@@ -34,12 +38,13 @@ package controller {
 
 		private function onMessageSend(event:ChatEvent):void {
 			var message:Message = event.data as Message;
-			//message.receipt = Message.RECEIPT_REQUEST;
+			requestReceipt(message);
 			var node:String = message.to.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			communicator.add(message);
 			connection.send(event.data as Message);
 		}
+
 
 		override protected function setupCurrentUser():void {
 			_currentUser = new ChatUser(_connection.jid);
@@ -48,27 +53,61 @@ package controller {
 
 		override protected function onMessage(event:MessageEvent):void {
 			var message:Message = event.data as Message;
+			markMessageAsReceived(message);
 			switch (message.type){
 				case Message.TYPE_CHAT:
-					var communicator:ICommunicator = startChatWithJID(message.from.unescaped);
+				case Message.TYPE_GROUPCHAT:
+					var communicator:ICommunicator = getCommunicatorForMessage(message);
 					communicator.add(message);
 					communicator.dispatchEvent(event);
 					break;
-					chatModel.dispatchEvent(event);
-				case Message.TYPE_GROUPCHAT:
-					//TODO: create chat tab
-					var a =1;
-					break;
 				default :
+					receiveReceipt(message);
 					super.onMessage(event);
 			}
 		}
 
-		public function startChatWithJID(buddy:UnescapedJID):ICommunicator {
-			var node:String = buddy.node;
+		private function requestReceipt(message:Message):void {
+			message.receipt = Message.RECEIPT_REQUEST;
+			chatModel.receiptRequests[message.id] = message;
+		}
+		private function receiveReceipt(message:Message):void {
+			if(message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
+				var receiptMessage:Message = chatModel.receiptRequests[message.receiptId];
+				if(receiptMessage) {
+					receiptMessage.receipt = null;
+					delete chatModel.receiptRequests[message.receiptId];
+					chatModel.dispatchEvent(new ChatEvent(ChatEvent.ON_MESSAGE_READ, receiptMessage));
+				}
+				//TODO: implement communicator fetch
+				//var communicator:ICommunicator = getCommunicatorForMessage(receiptMessage);
+				//communicator.markAsRead(receiptMessage);
+			}
+		}
+
+		private function markMessageAsReceived(message:Message):void {
+			if(message.receipt == Message.RECEIPT_REQUEST) {
+				var ackMessage:Message = new Message()
+				ackMessage.from = message.to;
+				ackMessage.to = message.from;
+				ackMessage.receipt = Message.RECEIPT_RECEIVED;
+				ackMessage.receiptId = message.id;
+				connection.send(ackMessage);
+			}
+		}
+
+		public function getCommunicatorForMessage(message:Message):ICommunicator {
+			var buddy:UnescapedJID = message.from.unescaped;
+			return getCommunicatorForJID(buddy);
+		}
+		public function getCommunicatorForRosterItem(ri:RosterItemVO):ICommunicator {
+			return getCommunicatorForJID(ri.jid);
+		}
+		private function getCommunicatorForJID(jid:UnescapedJID):ICommunicator {
+			var node:String = jid.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			if(communicator == null) {
-				communicator = new DirectCommunicator(buddy);
+				communicator = new DirectCommunicator(jid);
 				chatModel.conversations[node] = communicator;
 				chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
 			}
@@ -84,5 +123,6 @@ package controller {
 			roster.fetchRoster();
 			//chatModel.tabsProvider.addItem("test");
 		}
+
 	}
 }

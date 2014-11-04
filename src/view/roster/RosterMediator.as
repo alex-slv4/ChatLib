@@ -36,7 +36,7 @@ package view.roster {
 
 		private function listChangeHandler(event:Event):void {
 			var ri:RosterItemVO = (event.currentTarget as List).selectedItem as RosterItemVO;
-			chatController.startChatWithJID(ri.jid);
+			chatController.getCommunicatorForRosterItem(ri);
 		}
 
 		private function onRosterLoaded(event:RosterEvent):void {

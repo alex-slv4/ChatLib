@@ -9,12 +9,13 @@ package model {
 
 	public class ChatModel extends EventDispatcher {
 
-		private var _currentUser:ChatUser;
 		public var conversations:Dictionary = new Dictionary();
+		private var _currentUser:ChatUser;
 		private var _roster:Roster;
+		public var receiptRequests:Dictionary = new Dictionary();
 
 		public function ChatModel() {
-
+			receiptRequests;
 		}
 
 		public function get currentUser():ChatUser {

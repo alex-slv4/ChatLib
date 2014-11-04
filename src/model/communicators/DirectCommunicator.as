@@ -3,6 +3,7 @@
  */
 package model.communicators {
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends DefaultCommunicator {
 
@@ -14,6 +15,18 @@ package model.communicators {
 		}
 		override public function get type():int {
 			return CommunicatorTypes.DIRECT;
+		}
+
+		override public function markAsRead(ackMessage:Message):Boolean {
+			var markedMessage:Message;
+			for each (var message:Message in history) {
+				if(message.id == ackMessage.receiptId){
+					markedMessage = message;
+					break;
+				}
+			}
+			if(markedMessage) markedMessage.receipt = null;
+			return markedMessage != null;
 		}
 
 		public function get user():UnescapedJID {

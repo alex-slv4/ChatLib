@@ -8,13 +8,11 @@ package view.tabs {
 	import feathers.data.ListCollection;
 
 	import model.ChatModel;
-	import model.communicators.DirectCommunicator;
 	import model.communicators.GlobalCommunicator;
 	import model.communicators.ICommunicator;
 	import model.communicators.LogCommunicator;
 	import model.communicators.TeamCommunicator;
 
-	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
@@ -63,6 +61,12 @@ package view.tabs {
 
 		private function onNewMessage(event:MessageEvent):void {
 
+		}
+
+		override public function destroy():void {
+			chatModel.removeEventListener(MessageEvent.MESSAGE, onNewMessage);
+			chatModel.removeEventListener(ChatEvent.NEW_CONVERSATION, onNewConversation);//TODO: remove events
+			super.destroy();
 		}
 	}
 }
