@@ -2,16 +2,22 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
+	import model.ChatModel;
+	import model.ChatUser;
+
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends DefaultCommunicator {
 
-		private var _user:UnescapedJID;
+		private var _chatUser:ChatUser;
+		private var _participant:UnescapedJID;
+		private var _count:int = 0;
 
-		public function DirectCommunicator(user:UnescapedJID) {
-			_user = user;
-			_label = user.node;
+		public function DirectCommunicator(participant:UnescapedJID, currentUser:ChatUser) {
+			_participant = participant;
+			_chatUser = currentUser;
+			_label = participant.node;
 		}
 		override public function get type():int {
 			return CommunicatorTypes.DIRECT;
@@ -22,6 +28,7 @@ package model.communicators {
 			for each (var message:Message in history) {
 				if(message.id == ackMessage.receiptId){
 					markedMessage = message;
+					_count--;
 					break;
 				}
 			}
@@ -29,8 +36,16 @@ package model.communicators {
 			return markedMessage != null;
 		}
 
-		public function get user():UnescapedJID {
-			return _user;
+		override public function add(data:Object):void {
+			var message:Message = data as Message;
+			if(message.to.equals(_chatUser.jid.escaped, true)){
+				_count++;
+			}
+			super.add(data);
+		}
+
+		public function get participant():UnescapedJID {
+			return _participant;
 		}
 	}
 }

@@ -29,6 +29,10 @@ package model.communicators {
 			return false;
 		}
 
+		public function get unreadCount():int {
+			return 0;
+		}
+
 		public function get history():Array {
 			return _history;
 		}

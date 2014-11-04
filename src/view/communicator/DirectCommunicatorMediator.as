@@ -16,7 +16,7 @@ package view.communicator {
 			return communicatorData as DirectCommunicator;
 		}
 		override protected function onSend():void {
-			var message:Message = new Message(directCommunicatorData.user.escaped);
+			var message:Message = new Message(directCommunicatorData.participant.escaped);
 			message.type = Message.TYPE_CHAT;
 			message.from = chatModel.currentUser.jid.escaped;
 			message.body = writableView.input.text;

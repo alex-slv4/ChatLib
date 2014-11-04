@@ -11,6 +11,7 @@ package model.communicators {
 		function get type():int;
 		function get label():String;
 		function get history():Array;
+		function get unreadCount():int;
 		function markAsRead(message:Message):Boolean;
 		function add(data:Object):void;
 

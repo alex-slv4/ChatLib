@@ -61,7 +61,7 @@ package controller {
 					communicator.dispatchEvent(event);
 					break;
 				default :
-					receiveReceipt(message);
+					onReceiptReceived(message);
 					super.onMessage(event);
 			}
 		}
@@ -70,7 +70,7 @@ package controller {
 			message.receipt = Message.RECEIPT_REQUEST;
 			chatModel.receiptRequests[message.id] = message;
 		}
-		private function receiveReceipt(message:Message):void {
+		private function onReceiptReceived(message:Message):void {
 			if(message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
 				var receiptMessage:Message = chatModel.receiptRequests[message.receiptId];
 				if(receiptMessage) {
@@ -88,6 +88,7 @@ package controller {
 			if(message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
 
 			if(message.receipt == Message.RECEIPT_REQUEST) {
+				message.receipt = null;
 				var ackMessage:Message = new Message()
 				ackMessage.from = message.to;
 				ackMessage.to = message.from;
@@ -108,7 +109,7 @@ package controller {
 			var node:String = jid.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
 			if(communicator == null) {
-				communicator = new DirectCommunicator(jid);
+				communicator = new DirectCommunicator(jid, chatModel.currentUser);
 				chatModel.conversations[node] = communicator;
 				chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
 			}

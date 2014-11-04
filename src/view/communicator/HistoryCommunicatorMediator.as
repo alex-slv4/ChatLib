@@ -7,9 +7,12 @@ package view.communicator {
 	import events.ChatEvent;
 
 	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
+
+	import starling.events.Event;
 
 	public class HistoryCommunicatorMediator extends DefaultCommunicatorMediator {
 
@@ -34,19 +37,21 @@ package view.communicator {
 		protected function onNewMessage(event:MessageEvent):void {
 			var message:Message = event.data as Message;
 			markMessageAsReceived(message);
-			addToHistory(message);
+			historyView.list.dataProvider.dispatchEventWith(Event.CHANGE);
+			//addToHistory(message);
 		}
 
 		protected function markMessageAsReceived(message:Message):void {
+			communicatorData.markAsRead(message);
 			chatController.markMessageAsReceived(message);
 		}
 
 		protected function addToHistory(message:Message):void {
-			historyView.list.dataProvider.addItem(message);
-			markMessageAsReceived(message);
+			var index:int = historyView.list.dataProvider.getItemIndex(message);
+			historyView.list.dataProvider.updateItemAt(index);
 		}
 		protected function initHistory():void {
-			var history:Array = communicatorData.history.concat();
+			var history:Array = communicatorData.history;
 			historyView.list.dataProvider = new ListCollection(history);
 			for each (var message:Message in history) {
 				markMessageAsReceived(message);
