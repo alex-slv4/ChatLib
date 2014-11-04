@@ -53,7 +53,6 @@ package controller {
 
 		override protected function onMessage(event:MessageEvent):void {
 			var message:Message = event.data as Message;
-			markMessageAsReceived(message);
 			switch (message.type){
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
@@ -85,7 +84,9 @@ package controller {
 			}
 		}
 
-		private function markMessageAsReceived(message:Message):void {
+		public function markMessageAsReceived(message:Message):void {
+			if(message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
+
 			if(message.receipt == Message.RECEIPT_REQUEST) {
 				var ackMessage:Message = new Message()
 				ackMessage.from = message.to;
