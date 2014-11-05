@@ -12,13 +12,21 @@ package controller {
 	import model.communicators.ICommunicator;
 	import model.data.ChatMessage;
 
+	import org.igniterealtime.xiff.core.Browser;
+
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.IExtension;
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Message;
-	import org.igniterealtime.xiff.data.archive.ArchiveExtension;
+	import org.igniterealtime.xiff.data.archive.ChatStanza;
+	import org.igniterealtime.xiff.data.archive.ListStanza;
+	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
+	import org.igniterealtime.xiff.data.disco.DiscoExtension;
+	import org.igniterealtime.xiff.data.disco.DiscoFeature;
+	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -28,9 +36,12 @@ package controller {
 		[Inject]
 		public var chatModel:ChatModel;
 
+		private var _browser:Browser;
+
 		[PostConstruct]
 		override public function init():void {
 			super.init();
+			_browser = new Browser(connection);
 			chatModel.addEventListener(ChatEvent.SEND_MESSAGE, onMessageSend)
 		}
 
@@ -134,13 +145,42 @@ package controller {
 
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
-			roster.fetchRoster();
+			_browser.getServiceInfo(null, onServerInfo)
 			//chatModel.tabsProvider.addItem("test");
 		}
 
+		private function onServerInfo(iq:IQ):void {
+			var extension1:InfoDiscoExtension = iq.getExtension(DiscoExtension.ELEMENT_NAME) as InfoDiscoExtension;
+			for (var i:int = 0; i < extension1.features.length; i++) {
+				var feature:DiscoFeature = extension1.features[i];
+				if(feature.varName == "urn:xmpp:archive:auto"){
+					return;
+				}
+			}
+			//TODO: add normal reaction
+			throw new Error("Server not configured");
+		}
+
 		public function test():void {
-			var test:IQ = new IQ(chatModel.currentUser.jid.escaped, IQ.TYPE_GET);
-			test.addExtension(new ArchiveExtension())
+			var test:IQ = new IQ(null, IQ.TYPE_GET);
+			test.callback = function(iq:IQ):void {
+				var extension1:ListStanza = iq.getExtension(ListStanza.ELEMENT_NAME) as ListStanza;
+				for (var i:int = 0; i < extension1.chats.length; i++) {
+					var chat:ChatStanza = extension1.chats[i];
+					trace(chat.withJID);
+
+				}
+			}
+			/*var xml:XML = <iq type='get' id='page1'>
+							<retrieve xmlns='urn:xmpp:archive'>
+								<set xmlns='http://jabber.org/protocol/rsm'>
+									<max>1</max>
+								</set>
+							</retrieve>
+						</iq>;*/
+			var retrieveStanza:RetrieveStanza = new RetrieveStanza();
+
+			test.addExtension(retrieveStanza);
 			connection.send(test);
 		}
 	}

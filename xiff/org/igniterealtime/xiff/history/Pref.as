@@ -6,6 +6,7 @@ package org.igniterealtime.xiff.history {
 	import org.igniterealtime.xiff.data.IPref;
 	import org.igniterealtime.xiff.data.XMPPStanza;
 
+	//TODO: not supported by Open Archive needed?
 	public class Pref extends XMPPStanza implements IPref {
 		public function Pref(sender:EscapedJID, theType:String, theID:String, nodeName:String) {
 			super(null, sender, theType, theID, nodeName);
