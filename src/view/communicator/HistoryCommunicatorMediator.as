@@ -9,6 +9,10 @@ package view.communicator {
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 
+	import flash.utils.setTimeout;
+
+	import model.data.ChatMessage;
+
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
@@ -23,10 +27,9 @@ package view.communicator {
 
 		override public function initializeComplete():void {
 			super.initializeComplete();
-			historyView.list.itemRendererProperties.labelFunction = function(item:Message):String {
+			historyView.list.itemRendererProperties.labelFunction = function(item:ChatMessage):String {
 				var str:String = "";
-				if(MessageUtils.isMessageRead(item)){
-				}else{
+				if(!item.read){
 					str += "! "
 				}
 				str += item.from.node + ": " + item.body;
@@ -39,7 +42,7 @@ package view.communicator {
 		protected function initHistory():void {
 			var history:Array = communicatorData.history.concat();
 			for (var i:int = 0; i < history.length; i++) {
-				var message:Message = history[i];
+				var message:ChatMessage = history[i];
 				markMessageAsReceived(message);
 			}
 			historyView.list.dataProvider = new ListCollection(history);
@@ -51,12 +54,12 @@ package view.communicator {
 		}
 
 		protected function onNewMessage(event:MessageEvent):void {
-			var message:Message = event.data as Message;
+			var message:ChatMessage = event.data as ChatMessage;
 			markMessageAsReceived(message);
 			addToHistory(message);
 		}
 
-		protected function markMessageAsReceived(message:Message):void {
+		protected function markMessageAsReceived(message:ChatMessage):void {
 			chatController.markMessageAsReceived(message);
 			communicatorData.markAsRead(message);
 		}

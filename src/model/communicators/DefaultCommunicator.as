@@ -4,6 +4,8 @@
 package model.communicators {
 	import flash.events.EventDispatcher;
 
+	import model.data.ChatMessage;
+
 	import org.igniterealtime.xiff.data.Message;
 
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
@@ -25,7 +27,7 @@ package model.communicators {
 			_history.push(data);
 		}
 
-		public function markAsRead(message:Message):Boolean {
+		public function markAsRead(message:ChatMessage):Boolean {
 			return false;
 		}
 

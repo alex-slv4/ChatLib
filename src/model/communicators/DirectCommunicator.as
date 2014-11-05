@@ -4,6 +4,7 @@
 package model.communicators {
 	import model.ChatModel;
 	import model.ChatUser;
+	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.Message;
@@ -23,7 +24,7 @@ package model.communicators {
 			return CommunicatorTypes.DIRECT;
 		}
 
-		override public function markAsRead(ackMessage:Message):Boolean {
+		override public function markAsRead(ackMessage:ChatMessage):Boolean {
 			var markedMessage:Message;
 			for (var i:int = 0; i < history.length; i++) {
 				var message:Message = history[i];
@@ -37,7 +38,7 @@ package model.communicators {
 		}
 
 		override public function add(data:Object):void {
-			var message:Message = data as Message;
+			var message:ChatMessage = data as ChatMessage;
 			if(message.to.equals(_chatUser.jid.escaped, true)){
 				_count++;
 			}

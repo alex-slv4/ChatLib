@@ -10,6 +10,7 @@ package controller {
 	import model.ChatUser;
 	import model.communicators.DirectCommunicator;
 	import model.communicators.ICommunicator;
+	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
@@ -37,7 +38,7 @@ package controller {
 		}
 
 		private function onMessageSend(event:ChatEvent):void {
-			var message:Message = event.data as Message;
+			var message:ChatMessage = event.data as ChatMessage;
 
 			//Append receipt data
 			requestReceipt(message);
@@ -45,7 +46,6 @@ package controller {
 			//Send the message
 			connection.send(message);
 
-			message.receipt = null;
 			//Add message to communicator
 			var node:String = message.to.node;
 			var communicator:ICommunicator = chatModel.conversations[node];
@@ -60,7 +60,8 @@ package controller {
 		}
 
 		override protected function onMessage(event:MessageEvent):void {
-			var message:Message = event.data as Message;
+			var message:ChatMessage = ChatMessage.createFromBase(event.data);
+			event.data = message;
 			switch (message.type){
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
@@ -74,17 +75,17 @@ package controller {
 			}
 		}
 
-		private function requestReceipt(message:Message):void {
+		private function requestReceipt(message:ChatMessage):void {
 			message.receipt = Message.RECEIPT_REQUEST;
 			chatModel.receiptRequests[message.id] = message;
 		}
-		private function onReceiptReceived(message:Message):void {
+		private function onReceiptReceived(message:ChatMessage):void {
 			if(message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
-				var receiptMessage:Message = chatModel.receiptRequests[message.receiptId];
+				var receiptMessage:ChatMessage = chatModel.receiptRequests[message.receiptId];
 				if(receiptMessage) {
 					delete chatModel.receiptRequests[message.receiptId];
 
-					receiptMessage.receipt = null;
+					receiptMessage.read = true;
 					chatModel.dispatchEvent(new ChatEvent(ChatEvent.ON_MESSAGE_READ, receiptMessage));
 				}
 				//TODO: implement communicator fetch
@@ -93,11 +94,11 @@ package controller {
 			}
 		}
 
-		public function markMessageAsReceived(message:Message):void {
+		public function markMessageAsReceived(message:ChatMessage):void {
+			if(message.read) return;
 			if(message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
-
 			if(message.receipt == Message.RECEIPT_REQUEST) {
-				message.receipt = null;
+				message.read = true;
 				var ackMessage:Message = new Message();
 				ackMessage.from = message.to;
 				ackMessage.to = message.from;
@@ -107,7 +108,7 @@ package controller {
 			}
 		}
 
-		public function getCommunicatorForMessage(message:Message):ICommunicator {
+		public function getCommunicatorForMessage(message:ChatMessage):ICommunicator {
 			var buddy:UnescapedJID = message.from.unescaped;
 			return getCommunicatorForJID(buddy);
 		}

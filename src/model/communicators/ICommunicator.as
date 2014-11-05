@@ -4,7 +4,7 @@
 package model.communicators {
 	import flash.events.IEventDispatcher;
 
-	import org.igniterealtime.xiff.data.Message;
+	import model.data.ChatMessage;
 
 	public interface ICommunicator extends IEventDispatcher{
 
@@ -12,7 +12,7 @@ package model.communicators {
 		function get label():String;
 		function get history():Array;
 		function get unreadCount():int;
-		function markAsRead(message:Message):Boolean;
+		function markAsRead(message:ChatMessage):Boolean;
 		function add(data:Object):void;
 
 	}
