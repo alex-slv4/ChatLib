@@ -31,6 +31,7 @@ package org.igniterealtime.xiff.core
 
 	import org.igniterealtime.xiff.auth.*;
 	import org.igniterealtime.xiff.data.*;
+	import org.igniterealtime.xiff.data.archive.ArchiveExtension;
 	import org.igniterealtime.xiff.data.auth.AuthExtension;
 	import org.igniterealtime.xiff.data.bind.BindExtension;
 	import org.igniterealtime.xiff.data.ping.PingExtension;
@@ -346,7 +347,8 @@ package org.igniterealtime.xiff.core
 				BindExtension,
 				SessionExtension,
 				PingExtension,
-				InfoDiscoExtension
+				InfoDiscoExtension,
+				ArchiveExtension
 			);
 
 			createConnection();

@@ -15,8 +15,10 @@ package controller {
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.archive.ArchiveExtension;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -136,5 +138,10 @@ package controller {
 			//chatModel.tabsProvider.addItem("test");
 		}
 
+		public function test():void {
+			var test:IQ = new IQ(chatModel.currentUser.jid.escaped, IQ.TYPE_GET);
+			test.addExtension(new ArchiveExtension())
+			connection.send(test);
+		}
 	}
 }
