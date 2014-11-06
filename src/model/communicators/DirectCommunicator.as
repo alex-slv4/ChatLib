@@ -15,10 +15,10 @@ package model.communicators {
 		private var _participant:UnescapedJID;
 		private var _count:int = 0;
 
-		public function DirectCommunicator(participant:UnescapedJID, currentUser:ChatUser) {
-			_participant = participant;
+		public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
+			_participant = to;
 			_chatUser = currentUser;
-			_label = participant.node;
+			_label = to.bareJID;
 		}
 		override public function get type():int {
 			return CommunicatorTypes.DIRECT;

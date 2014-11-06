@@ -13,6 +13,7 @@ package controller {
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.Browser;
+	import org.igniterealtime.xiff.core.EscapedJID;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
@@ -23,6 +24,7 @@ package controller {
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.ListStanza;
+	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
 	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
@@ -59,9 +61,7 @@ package controller {
 			//Send the message
 			connection.send(message);
 
-			//Add message to communicator
-			var node:String = message.to.node;
-			var communicator:ICommunicator = chatModel.conversations[node];
+			var communicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(message);
 			communicator.add(message);
 			//Remove receipt
 		}
@@ -78,7 +78,7 @@ package controller {
 			switch (message.type){
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
-					var communicator:ICommunicator = getCommunicatorForMessage(message);
+					var communicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(message);
 					communicator.add(message);
 					communicator.dispatchEvent(event);
 					break;
@@ -121,24 +121,6 @@ package controller {
 			}
 		}
 
-		public function getCommunicatorForMessage(message:ChatMessage):ICommunicator {
-			var buddy:UnescapedJID = message.from.unescaped;
-			return getCommunicatorForJID(buddy);
-		}
-		public function getCommunicatorForRosterItem(ri:RosterItemVO):ICommunicator {
-			return getCommunicatorForJID(ri.jid);
-		}
-		private function getCommunicatorForJID(jid:UnescapedJID):ICommunicator {
-			var node:String = jid.node;
-			var communicator:ICommunicator = chatModel.conversations[node];
-			if(communicator == null) {
-				communicator = new DirectCommunicator(jid, chatModel.currentUser);
-				chatModel.conversations[node] = communicator;
-				chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, communicator));
-			}
-			return communicator;
-		}
-
 		override public function dispatchEvent(event:Event):Boolean {
 			return chatModel.dispatchEvent(event);
 		}
@@ -162,25 +144,19 @@ package controller {
 		}
 
 		public function test():void {
+			_connection.enableExtensions( RetrieveStanza );
 			var test:IQ = new IQ(null, IQ.TYPE_GET);
 			test.callback = function(iq:IQ):void {
-				var extension1:ListStanza = iq.getExtension(ListStanza.ELEMENT_NAME) as ListStanza;
+				var extension1:ListStanza = iq.getAllExtensionsByNS(ListStanza.NS)[0];
 				for (var i:int = 0; i < extension1.chats.length; i++) {
 					var chat:ChatStanza = extension1.chats[i];
 					trace(chat.withJID);
 
 				}
 			}
-			/*var xml:XML = <iq type='get' id='page1'>
-							<retrieve xmlns='urn:xmpp:archive'>
-								<set xmlns='http://jabber.org/protocol/rsm'>
-									<max>1</max>
-								</set>
-							</retrieve>
-						</iq>;*/
-			var retrieveStanza:RetrieveStanza = new RetrieveStanza();
-
-			test.addExtension(retrieveStanza);
+			var listStanza:RetrieveStanza = new RetrieveStanza();
+			//listStanza.withJID = new EscapedJID("joe@localhost");
+			test.addExtension(listStanza);
 			connection.send(test);
 		}
 	}

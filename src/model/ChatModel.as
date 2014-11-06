@@ -5,17 +5,19 @@ package model {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
+	import model.communicators.CommunicatorProvider;
+
 	import org.igniterealtime.xiff.im.Roster;
 
 	public class ChatModel extends EventDispatcher {
 
-		public var conversations:Dictionary = new Dictionary();
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
+		private var _communicatorProvider:CommunicatorProvider;
 
 		public function ChatModel() {
-			receiptRequests;
+			_communicatorProvider = new CommunicatorProvider(this);
 		}
 
 		public function get currentUser():ChatUser {
@@ -32,6 +34,10 @@ package model {
 
 		public function set roster(value:Roster):void {
 			_roster = value;
+		}
+
+		public function get communicatorProvider():CommunicatorProvider {
+			return _communicatorProvider;
 		}
 	}
 }

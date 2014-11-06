@@ -8,6 +8,10 @@ package view.roster {
 	import feathers.data.ListCollection;
 
 	import model.ChatModel;
+	import model.communicators.ICommunicator;
+
+	import org.igniterealtime.xiff.core.UnescapedJID;
+
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 
 	import org.igniterealtime.xiff.events.RosterEvent;
@@ -36,7 +40,9 @@ package view.roster {
 
 		private function listChangeHandler(event:Event):void {
 			var ri:RosterItemVO = (event.currentTarget as List).selectedItem as RosterItemVO;
-			chatController.getCommunicatorForRosterItem(ri);
+			ri.jid = new UnescapedJID(ri.jid + "@" + chatController.connection.domain);
+			var iCommunicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(ri);
+			//iCommunicator.activate();
 		}
 
 		private function onRosterLoaded(event:RosterEvent):void {
