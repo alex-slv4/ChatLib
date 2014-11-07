@@ -8,7 +8,7 @@ package {
 
 	import model.ChatModel;
 
-	import view.ChatView;
+	import view.chat.ChatView;
 
 	public interface IChatService {
 

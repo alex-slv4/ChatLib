@@ -1,13 +1,14 @@
 /**
  * Created by kvint on 01.11.14.
  */
-package view {
+package view.chat {
+import view.*;
 
 import feathers.controls.LayoutGroup;
 
-import view.CommunicatorContainerView;
+import view.chat.communicator.CommunicatorContainerView;
 
-import view.tabs.CommunicatorsTabsView;
+import view.chat.tabs.CommunicatorsTabsView;
 
 public class ChatView extends LayoutGroup {
 

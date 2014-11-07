@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.communicator {
+package view.chat.communicator.types {
+import view.chat.communicator.*;
 	import events.ChatEvent;
 
 	import model.communicators.DirectCommunicator;

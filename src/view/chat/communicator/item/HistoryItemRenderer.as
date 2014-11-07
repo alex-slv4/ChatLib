@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.communicator.item {
+package view.chat.communicator.item {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 
 	public class HistoryItemRenderer extends DefaultListItemRenderer {

@@ -1,7 +1,7 @@
 /**
  * Created by AlexanderSla on 03.11.2014.
  */
-package view.roster {
+package view.chat.roster {
 	import controller.ChatController;
 
 	import events.ChatModelEvent;

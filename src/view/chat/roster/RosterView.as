@@ -1,7 +1,7 @@
 /**
  * Created by AlexanderSla on 03.11.2014.
  */
-package view.roster {
+package view.chat.roster {
 	import feathers.controls.List;
 	import feathers.core.FeathersControl;
 

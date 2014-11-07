@@ -13,21 +13,21 @@ package config {
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IInjector;
 
-	import view.ChatMediator;
-	import view.ChatView;
-	import view.communicator.DefaultCommunicatorMediator;
-	import view.communicator.DirectCommunicatorMediator;
-	import view.communicator.DirectCommunicatorView;
-	import view.communicator.ICommunicatorView;
-	import view.communicator.HistoryCommunicatorMediator;
-	import view.communicator.HistoryCommunicatorView;
-	import view.communicator.WritableCommunicatorMediator;
-	import view.roster.RosterMediator;
-	import view.roster.RosterView;
-	import view.tabs.ChatTabView;
-	import view.tabs.ChatTabMediator;
-	import view.tabs.CommunicatorsTabsMediator;
-	import view.tabs.CommunicatorsTabsView;
+	import view.chat.ChatMediator;
+	import view.chat.ChatView;
+	import view.chat.communicator.types.DefaultCommunicatorMediator;
+	import view.chat.communicator.types.DirectCommunicatorMediator;
+	import view.chat.communicator.types.DirectCommunicatorView;
+	import view.chat.communicator.ICommunicatorView;
+	import view.chat.communicator.types.HistoryCommunicatorMediator;
+	import view.chat.communicator.types.HistoryCommunicatorView;
+	import view.chat.communicator.types.WritableCommunicatorMediator;
+	import view.chat.roster.RosterMediator;
+	import view.chat.roster.RosterView;
+	import view.chat.tabs.CommunicatorTabView;
+	import view.chat.tabs.CommunicatorTabMediator;
+	import view.chat.tabs.CommunicatorsTabsMediator;
+	import view.chat.tabs.CommunicatorsTabsView;
 
 	public class ChatConfig implements IConfig {
 
@@ -56,7 +56,7 @@ package config {
 		{
 			mediatorMap.map(ChatView).toMediator(ChatMediator);
 			mediatorMap.map(CommunicatorsTabsView).toMediator(CommunicatorsTabsMediator);
-			mediatorMap.map(ChatTabView).toMediator(ChatTabMediator);
+			mediatorMap.map(CommunicatorTabView).toMediator(CommunicatorTabMediator);
 			mediatorMap.map(DirectCommunicatorView).toMediator(DirectCommunicatorMediator);
 			mediatorMap.map(RosterView).toMediator(RosterMediator);
 			//mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);

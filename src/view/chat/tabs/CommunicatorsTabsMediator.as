@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 01.11.14.
  */
-package view.tabs
+package view.chat.tabs
 {
 import events.ChatModelEvent;
 
@@ -33,26 +33,23 @@ public class CommunicatorsTabsMediator extends FeathersMediator
 
 		mapStarlingEvent(view, Event.CHANGE, view_onChange);
 
-		view.tabFactory = function():ChatTabView{
-			return new ChatTabView();
+		view.tabFactory = function ():CommunicatorTabView
+		{
+			return new CommunicatorTabView();
 		};
 
-		view.tabInitializer = function(tab:ChatTabView, data:ICommunicator):ChatTabView{
-			tab.provider.data = data;
-			tab.label = data.label; //FIXME: feathers bug?
-		};
+		view.tabInitializer = tabInitializer;
+	}
 
-		/*
-		 ;
+	override public function destroy():void
+	{
+		chat.model.removeEventListener(ChatModelEvent.COMMUNICATOR_ADDED, model_handleEvent);
+		chat.model.removeEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, model_handleEvent);
+	}
 
-		 view.dataProvider = new ListCollection([
-		 new LogCommunicator(),
-		 new GlobalCommunicator(),
-		 new TeamCommunicator(),
-		 ]);
-		 mapStarlingEvent(view, Event.CHANGE, onTabSelected);
-		 chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);
-		 onTabSelected();*/
+	protected function tabInitializer(tab:CommunicatorTabView, communicator:ICommunicator):void
+	{
+		tab.provider.data = communicator;
 	}
 
 	private function setTabs():void
@@ -72,15 +69,18 @@ public class CommunicatorsTabsMediator extends FeathersMediator
 		communicator.activate();
 	}
 
-	private function model_handleEvent(event:ChatModelEvent):void {
-		switch (event.type){
+	private function model_handleEvent(event:ChatModelEvent):void
+	{
+		switch (event.type)
+		{
 			case ChatModelEvent.COMMUNICATOR_ADDED:
 				addTab(event.data as ICommunicator);
 				break;
 			case ChatModelEvent.COMMUNICATOR_ACTIVATED:
 				for (var idx:int = 0; idx < view.dataProvider.length; idx++)
 				{
-					var provider:ICommunicator = view.dataProvider.getItemAt(idx) as ICommunicator;;
+					var provider:ICommunicator = view.dataProvider.getItemAt(idx) as ICommunicator;
+					;
 
 					if (event.data == provider)
 						view.selectedIndex = idx;
@@ -89,9 +89,5 @@ public class CommunicatorsTabsMediator extends FeathersMediator
 		}
 	}
 
-	override public function destroy():void
-	{
-		super.destroy();
-	}
 }
 }

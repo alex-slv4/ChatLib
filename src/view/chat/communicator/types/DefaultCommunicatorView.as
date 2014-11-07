@@ -1,19 +1,16 @@
 /**
- * Created by kvint on 02.11.14.
+ * Created by kvint on 01.11.14.
  */
-package view.tabs {
-	import feathers.controls.Button;
+package view.chat.communicator.types {
+import view.chat.communicator.*;
+	import feathers.controls.LayoutGroup;
 
 	import utils.providers.IViewDataProvider;
 	import utils.providers.ViewDataProvider;
 
-	public class ChatTabView extends Button {
+	public class DefaultCommunicatorView extends LayoutGroup implements ICommunicatorView {
 
 		private var _provider:IViewDataProvider = new ViewDataProvider();
-
-		public function ChatTabView() {
-			super();
-		}
 
 		public function get provider():IViewDataProvider {
 			return _provider;

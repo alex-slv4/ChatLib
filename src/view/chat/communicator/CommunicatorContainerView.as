@@ -1,7 +1,7 @@
 /**
  * Created by kuts on 11/7/14.
  */
-package view.container
+package view.chat.communicator
 {
 import feathers.controls.LayoutGroup;
 import feathers.core.IFeathersControl;
@@ -11,13 +11,14 @@ import model.communicators.ICommunicator;
 
 import starling.display.DisplayObject;
 
+import view.chat.communicator.ICommunicatorView;
 import view.utils.SimpleViewFactory;
 
 public class CommunicatorContainerView extends LayoutGroup
 {
 	private var _communicatorFactory	:SimpleViewFactory		 = new SimpleViewFactory();
 
-	private var _communicatorView		:DisplayObject;
+	private var _communicatorView		:ICommunicatorView;
 	private var _communicatorProvider	:ICommunicator;
 
 	override protected function draw():void
@@ -73,10 +74,13 @@ public class CommunicatorContainerView extends LayoutGroup
 		if (communicatorView)
 			communicatorView.removeFromParent();
 
-		_communicatorView = communicatorFactory.createView(communicatorProvider.type);
+		_communicatorView = communicatorFactory.createView(communicatorProvider.type) as ICommunicatorView;
 
 		if (communicatorView)
-			addChild(communicatorView);
+		{
+			addChild(communicatorView as DisplayObject);
+			communicatorView
+		}
 	}
 
 	protected function layoutContent():void
@@ -89,16 +93,9 @@ public class CommunicatorContainerView extends LayoutGroup
 		}
 	}
 
-	public function get communicatorView():DisplayObject
+	public function get communicatorView():ICommunicatorView
 	{
 		return _communicatorView;
-	}
-
-	public static var globalStyleProvider:IStyleProvider;
-
-	override protected function get defaultStyleProvider():IStyleProvider
-	{
-		return globalStyleProvider;
 	}
 
 	public function get communicatorFactory():SimpleViewFactory
@@ -119,6 +116,13 @@ public class CommunicatorContainerView extends LayoutGroup
 		_communicatorProvider = value;
 
 		invalidate(INVALIDATION_FLAG_DATA);
+	}
+
+	public static var globalStyleProvider:IStyleProvider;
+
+	override protected function get defaultStyleProvider():IStyleProvider
+	{
+	    return globalStyleProvider;
 	}
 }
 }

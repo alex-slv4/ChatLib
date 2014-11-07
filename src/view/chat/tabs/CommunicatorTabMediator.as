@@ -1,21 +1,21 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.tabs {
+package view.chat.tabs {
 	import model.communicators.ICommunicator;
 
 	import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
 
-	public class ChatTabMediator extends FeathersMediator {
+	public class CommunicatorTabMediator extends FeathersMediator {
 
-		private var view:ChatTabView;
+		private var view:CommunicatorTabView;
 
-		public function ChatTabMediator() {
+		public function CommunicatorTabMediator() {
 		}
 
 		override public function initializeComplete():void {
 			super.initializeComplete();
-			view = viewComponent as ChatTabView;
+			view = viewComponent as CommunicatorTabView;
 			view.provider.subscribe(tabDataChanged);
 		}
 

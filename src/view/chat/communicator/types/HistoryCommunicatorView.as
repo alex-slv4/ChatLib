@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 02.11.14.
  */
-package view.communicator {
+package view.chat.communicator.types {
 	import feathers.controls.List;
 
 	public class HistoryCommunicatorView extends DefaultCommunicatorView {
