@@ -4,6 +4,8 @@
 package view.roster {
 	import controller.ChatController;
 
+	import events.ChatModelEvent;
+
 	import feathers.controls.List;
 	import feathers.data.ListCollection;
 
@@ -41,8 +43,8 @@ package view.roster {
 		private function listChangeHandler(event:Event):void {
 			var ri:RosterItemVO = (event.currentTarget as List).selectedItem as RosterItemVO;
 			ri.jid = new UnescapedJID(ri.jid + "@" + chatController.connection.domain);
-			var iCommunicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(ri);
-			//iCommunicator.activate();
+			var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(ri);
+			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 		}
 
 		private function onRosterLoaded(event:RosterEvent):void {

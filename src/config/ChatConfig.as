@@ -5,6 +5,8 @@ package config {
 	import controller.ChatController;
 
 	import model.ChatModel;
+	import model.communicators.CommunicatorProvider;
+	import model.communicators.ICommunicatorProvider;
 
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.framework.api.IConfig;
@@ -47,6 +49,7 @@ package config {
 			injector.map(IChatService).toSingleton(ChatService);
 			injector.map(ChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
+			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
 		}
 
 		private function mapView():void

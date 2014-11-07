@@ -61,7 +61,7 @@ package controller {
 			//Send the message
 			connection.send(message);
 
-			var communicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(message);
+			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 			communicator.add(message);
 			//Remove receipt
 		}
@@ -78,7 +78,7 @@ package controller {
 			switch (message.type){
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
-					var communicator:ICommunicator = chatModel.communicatorProvider.getCommunicator(message);
+					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 					communicator.add(message);
 					communicator.dispatchEvent(event);
 					break;

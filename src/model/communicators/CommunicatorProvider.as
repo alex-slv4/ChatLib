@@ -2,12 +2,9 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package model.communicators {
-	import events.ChatEvent;
 	import events.ChatModelEvent;
 
 	import flash.utils.Dictionary;
-
-	import model.ChatModel;
 
 	import model.ChatModel;
 	import model.data.ChatMessage;
@@ -18,13 +15,13 @@ package model.communicators {
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 
-	public class CommunicatorProvider {
+	public class CommunicatorProvider implements ICommunicatorProvider {
 
 		private var _chatModel:ChatModel;
 		private var _privateCommunications:Dictionary = new Dictionary();
 
-		public function CommunicatorProvider(chatModel:ChatModel) {
-			_chatModel = chatModel;
+		public function CommunicatorProvider() {
+
 		}
 
 		public function getCommunicator(data:Object):ICommunicator {
@@ -67,6 +64,10 @@ package model.communicators {
 				addCommunicator(key, iCommunicator);
 			}
 			return iCommunicator;
+		}
+
+		public function set chatModel(value:ChatModel):void {
+			_chatModel = value;
 		}
 	}
 }
