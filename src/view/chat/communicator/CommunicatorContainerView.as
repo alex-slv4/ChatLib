@@ -11,7 +11,6 @@ import model.communicators.ICommunicator;
 
 import starling.display.DisplayObject;
 
-import view.chat.communicator.ICommunicatorView;
 import view.utils.SimpleViewFactory;
 
 public class CommunicatorContainerView extends LayoutGroup
