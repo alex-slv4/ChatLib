@@ -60,7 +60,6 @@ package view.communicator {
 		}
 
 		protected function markMessageAsReceived(message:ChatMessage):void {
-			chatController.markMessageAsReceived(message);
 			communicatorData.markAsRead(message);
 		}
 

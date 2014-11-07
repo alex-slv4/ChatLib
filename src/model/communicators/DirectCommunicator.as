@@ -2,18 +2,15 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	import model.ChatModel;
 	import model.ChatUser;
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
-	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends DefaultCommunicator {
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;
-		private var _count:int = 0;
 
 		public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
 			_participant = to;
@@ -25,16 +22,11 @@ package model.communicators {
 		}
 
 		override public function markAsRead(ackMessage:ChatMessage):Boolean {
-			var markedMessage:Message;
-			for (var i:int = 0; i < history.length; i++) {
-				var message:Message = history[i];
-				if(message.id == ackMessage.receiptId){
-					markedMessage = message;
-					_count--;
-					break;
-				}
+			var messageMarked:Boolean = super.markAsRead(ackMessage);
+			if(messageMarked){
+				_count--;
 			}
-			return markedMessage != null;
+			return messageMarked;
 		}
 
 		override public function add(data:Object):void {

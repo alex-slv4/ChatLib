@@ -2,22 +2,26 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
+	import controller.ChatController;
+
 	import flash.events.EventDispatcher;
 
 	import model.data.ChatMessage;
 
-	import org.igniterealtime.xiff.data.Message;
-
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
+		[Inject]
+		public var chatController:ChatController;
+
 		protected var _label:String;
+		protected var _count:int = 0;
 		private var _history:Array = [];
 
 		public function DefaultCommunicator() {
 		}
 
 		public function get type():int {
-			return 0;
+			return -1;
 		}
 		public function get label():String {
 			return _label ? _label : toString();
@@ -27,12 +31,29 @@ package model.communicators {
 			_history.push(data);
 		}
 
-		public function markAsRead(message:ChatMessage):Boolean {
-			return false;
+		public function markAsRead(ackMessage:ChatMessage):Boolean {
+			var markedMessage:ChatMessage;
+			for (var i:int = 0; i < history.length; i++) {
+				var message:ChatMessage = history[i];
+				if(message.id == ackMessage.receiptId){
+					markedMessage = message;
+					break;
+				}
+			}
+			if(markedMessage){
+				chatController.markMessageAsReceived(markedMessage);
+				return false;
+			}
+			return true;
+		}
+
+		public function set unreadCount(value:int):void {
+			_count = value;
+			dispatchEvent()
 		}
 
 		public function get unreadCount():int {
-			return 0;
+			return _count;
 		}
 
 		public function get history():Array {
