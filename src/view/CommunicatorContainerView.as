@@ -98,13 +98,6 @@ public class CommunicatorContainerView extends LayoutGroup
 		return _communicatorView;
 	}
 
-	public static var globalStyleProvider:IStyleProvider;
-
-	override protected function get defaultStyleProvider():IStyleProvider
-	{
-		return globalStyleProvider;
-	}
-
 	public function get communicatorFactory():SimpleViewFactory
 	{
 		return _communicatorFactory;
@@ -123,6 +116,13 @@ public class CommunicatorContainerView extends LayoutGroup
 		_communicatorProvider = value;
 
 		invalidate(INVALIDATION_FLAG_DATA);
+	}
+
+	public static var globalStyleProvider:IStyleProvider;
+
+	override protected function get defaultStyleProvider():IStyleProvider
+	{
+	    return globalStyleProvider;
 	}
 }
 }

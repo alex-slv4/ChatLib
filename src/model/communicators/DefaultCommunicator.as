@@ -68,5 +68,9 @@ package model.communicators {
 		override public function toString():String {
 			return "[DefaultCommunicator]";
 		}
+
+		public function activate():void
+		{
+		}
 	}
 }

@@ -5,10 +5,7 @@ package view.tabs {
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
 
-	public class communicatorsTabsView extends TabBar {
-		public function communicatorsTabsView() {
-			super();
-		}
+	public class CommunicatorsTabsView extends TabBar {
 
 	}
 }

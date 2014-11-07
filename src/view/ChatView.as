@@ -7,12 +7,12 @@ import feathers.controls.LayoutGroup;
 
 import view.CommunicatorContainerView;
 
-import view.tabs.communicatorsTabsView;
+import view.tabs.CommunicatorsTabsView;
 
 public class ChatView extends LayoutGroup {
 
 		private var _containerView	:CommunicatorContainerView 	= new CommunicatorContainerView();
-		private var _tabsView		:communicatorsTabsView 		= new communicatorsTabsView();
+		private var _tabsView		:CommunicatorsTabsView 		= new CommunicatorsTabsView();
 
 		override protected function initialize():void
 		{
@@ -25,7 +25,7 @@ public class ChatView extends LayoutGroup {
 			return _containerView;
 		}
 
-		public function get tabsView():communicatorsTabsView
+		public function get tabsView():CommunicatorsTabsView
 		{
 			return _tabsView;
 		}

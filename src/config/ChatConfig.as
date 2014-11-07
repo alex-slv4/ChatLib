@@ -26,8 +26,8 @@ package config {
 	import view.roster.RosterView;
 	import view.tabs.ChatTabView;
 	import view.tabs.ChatTabMediator;
-	import view.tabs.ChatTabsMediator;
-	import view.tabs.communicatorsTabsView;
+	import view.tabs.CommunicatorsTabsMediator;
+	import view.tabs.CommunicatorsTabsView;
 
 	public class ChatConfig implements IConfig {
 
@@ -46,7 +46,7 @@ package config {
 		}
 
 		private function mapMembership():void {
-			injector.map(IChatService).toSingleton(ChatService);
+			injector.map(IChatService).toSingleton(ChatClient);
 			injector.map(ChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
@@ -55,7 +55,7 @@ package config {
 		private function mapView():void
 		{
 			mediatorMap.map(ChatView).toMediator(ChatMediator);
-			mediatorMap.map(communicatorsTabsView).toMediator(ChatTabsMediator);
+			mediatorMap.map(CommunicatorsTabsView).toMediator(CommunicatorsTabsMediator);
 			mediatorMap.map(ChatTabView).toMediator(ChatTabMediator);
 			mediatorMap.map(DirectCommunicatorView).toMediator(DirectCommunicatorMediator);
 			mediatorMap.map(RosterView).toMediator(RosterMediator);

@@ -30,5 +30,6 @@ package model.communicators {
 
 		function add(data:Object):void;
 
+		function activate():void;
 	}
 }

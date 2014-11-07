@@ -7,9 +7,11 @@ package model.communicators {
 	import model.ChatModel;
 
 	public interface ICommunicatorProvider {
-		function set chatModel(value:ChatModel):void;
-		function set chatController(value:ChatController):void;
-		function getCommunicator(data:Object):ICommunicator;
-		function getAll():Vector.<ICommunicatorProvider>;
+		function set chatModel(value:ChatModel)				:void;
+		function set chatController(value:ChatController)	:void;
+
+		function getCommunicator(data:Object)				:ICommunicator;
+
+		function getAll()									:Vector.<ICommunicator>;
 	}
 }
