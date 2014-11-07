@@ -3,7 +3,7 @@
  */
 package view.tabs {
 	import events.ChatEvent;
-	import events.CommunicatorEvent;
+	import events.ChatModelEvent;
 
 	import feathers.data.ListCollection;
 
@@ -45,27 +45,21 @@ package view.tabs {
 				new TeamCommunicator(),
 			]);
 			mapStarlingEvent(view, Event.CHANGE, onTabSelected);
-			chatModel.addEventListener(MessageEvent.MESSAGE, onNewMessage);
-			chatModel.addEventListener(ChatEvent.NEW_CONVERSATION, onNewConversation);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);
 			onTabSelected();
 		}
 
 		private function onTabSelected():void {
 			var communicator:ICommunicator = view.selectedItem as ICommunicator;
-			chatModel.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.CHANGE, communicator));
+			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicator));
 		}
 
-		private function onNewConversation(event:ChatEvent):void {
+		private function onCommunicatorAdded(event:ChatModelEvent):void {
 			view.dataProvider.addItem(event.data);
 		}
 
-		private function onNewMessage(event:MessageEvent):void {
-
-		}
-
 		override public function destroy():void {
-			chatModel.removeEventListener(MessageEvent.MESSAGE, onNewMessage);
-			chatModel.removeEventListener(ChatEvent.NEW_CONVERSATION, onNewConversation);//TODO: remove events
+			chatModel.removeEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);//TODO: remove events
 			super.destroy();
 		}
 	}

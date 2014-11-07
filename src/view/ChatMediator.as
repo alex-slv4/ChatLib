@@ -2,7 +2,7 @@
  * Created by kvint on 01.11.14.
  */
 package view {
-	import events.CommunicatorEvent;
+	import events.ChatModelEvent;
 
 	import flash.utils.Dictionary;
 
@@ -33,26 +33,30 @@ package view {
 			_communicatorViewMap[CommunicatorTypes.GLOBAL] = DefaultCommunicatorView;
 
 			_view = viewComponent as ChatView;
-			chatModel.addEventListener(CommunicatorEvent.CHANGE, onCommunicationChange);
-			_view.communicatorView = constructCommunicator(_view.tabsView.selectedItem as ICommunicator);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
+			_view.communicatorView = constructCommunicatorView(_view.tabsView.selectedItem as ICommunicator);
 		}
-		private function onCommunicationChange(event:CommunicatorEvent):void {
+		private function communicatorEventHandler(event:ChatModelEvent):void {
 			switch (event.type){
-				case CommunicatorEvent.CHANGE:
+				case ChatModelEvent.COMMUNICATOR_ADDED:
+
+					break;
+				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
 					var data:ICommunicator = event.data as ICommunicator;
-					_view.communicatorView = constructCommunicator(data);
+					_view.communicatorView = constructCommunicatorView(data);
 					break;
 			}
 		}
 
-		private function constructCommunicator(data:ICommunicator):ICommunicatorView {
+		private function constructCommunicatorView(data:ICommunicator):ICommunicatorView {
 			var communicatorView:ICommunicatorView = new _communicatorViewMap[data.type];
 			communicatorView.provider.data = data;
 			return  communicatorView;
 		}
 
 		override public function destroy():void {
-			chatModel.removeEventListener(CommunicatorEvent.CHANGE, onCommunicationChange);
+			chatModel.removeEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
 			super.destroy();
 		}
 	}

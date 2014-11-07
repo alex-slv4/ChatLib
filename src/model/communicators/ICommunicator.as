@@ -6,6 +6,8 @@ package model.communicators {
 
 	import model.data.ChatMessage;
 
+	[Event(name="userRemoved", type="org.igniterealtime.xiff.events.RosterEvent")]
+
 	public interface ICommunicator extends IEventDispatcher{
 
 		function get type():int;

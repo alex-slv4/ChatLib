@@ -3,8 +3,11 @@
  */
 package model.communicators {
 	import events.ChatEvent;
+	import events.ChatModelEvent;
 
 	import flash.utils.Dictionary;
+
+	import model.ChatModel;
 
 	import model.ChatModel;
 	import model.data.ChatMessage;
@@ -53,7 +56,7 @@ package model.communicators {
 
 		private function addCommunicator(key:String, iCommunicator:ICommunicator):void {
 			_privateCommunications[key] = iCommunicator;
-			_chatModel.dispatchEvent(new ChatEvent(ChatEvent.NEW_CONVERSATION, iCommunicator));
+			_chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 		}
 		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {
 			var keyJID:UnescapedJID = item.jid;
