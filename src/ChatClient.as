@@ -6,7 +6,7 @@ package {
 
 	import view.chat.ChatView;
 
-	public class ChatClient implements IChatService{
+	public class ChatClient implements Chat{
 
 		[Inject]
 		public var thisController		:ChatController;
@@ -17,7 +17,7 @@ package {
  		private var _view:ChatView
 		private static var _instance	:ChatClient;
 
-		static public function get instance():IChatService
+		static public function get instance():Chat
 		{
 			return _instance ||= new ChatClient();
 		}

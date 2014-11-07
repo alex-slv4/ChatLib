@@ -10,7 +10,7 @@ package {
 
 	import view.chat.ChatView;
 
-	public interface IChatService {
+	public interface Chat {
 
 		function get model():ChatModel;
 		function get view():ChatView;

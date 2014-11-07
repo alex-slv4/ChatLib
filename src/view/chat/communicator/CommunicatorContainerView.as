@@ -58,12 +58,12 @@ public class CommunicatorContainerView extends LayoutGroup
 		var newWidth:Number = explicitWidth;
 
 		if(needsWidth)
-			newWidth = control ? control.width : newWidth;
+			newWidth = control ? control.width : 0;
 
 		var newHeight:Number = explicitHeight;
 
 		if(needsHeight)
-			newHeight = control ? control.height : newHeight;
+			newHeight = control ? control.height : 0;
 
 		return setSizeInternal(newWidth, newHeight, false);
 	}
@@ -73,7 +73,8 @@ public class CommunicatorContainerView extends LayoutGroup
 		if (communicatorView)
 			communicatorView.removeFromParent();
 
-		_communicatorView = communicatorFactory.createView(communicatorProvider.type) as ICommunicatorView;
+		if (communicatorProvider)
+			_communicatorView = communicatorFactory.createView(communicatorProvider.type) as ICommunicatorView;
 
 		if (communicatorView)
 		{

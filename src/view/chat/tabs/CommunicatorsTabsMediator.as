@@ -20,7 +20,7 @@ public class CommunicatorsTabsMediator extends FeathersMediator
 	public var view:CommunicatorsTabsView;
 
 	[Inject]
-	public var chat:ChatClient;
+	public var chat:Chat;
 
 	override public function initializeComplete():void
 	{
