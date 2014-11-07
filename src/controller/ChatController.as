@@ -2,6 +2,7 @@
  * Created by kvint on 01.11.14.
  */
 package controller {
+	import events.ChatModelEvent;
 	import events.CommunicatorEvent;
 
 	import flash.events.Event;
@@ -158,6 +159,10 @@ package controller {
 
 		private function formatDate(startDate:Date):String {
 			return startDate.toString();
+		}
+
+		public function activateCommunicator(communicator:ICommunicator):void {
+			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicator));
 		}
 	}
 }

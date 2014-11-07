@@ -70,6 +70,7 @@ package model.communicators {
 		}
 
 		public function activate():void {
+			_controller.activateCommunicator(this);
 		}
 	}
 }
