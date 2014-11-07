@@ -13,8 +13,6 @@ import robotlegs.extensions.starlingFeathers.impl.FeathersMediator;
 
 import starling.events.Event;
 
-import view.tabs.CommunicatorsTabsView;
-
 public class CommunicatorsTabsMediator extends FeathersMediator
 {
 

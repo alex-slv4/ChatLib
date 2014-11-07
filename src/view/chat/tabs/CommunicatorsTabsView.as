@@ -5,7 +5,7 @@ package view.chat.tabs
 {
 import feathers.controls.TabBar;
 
-public class CommunicatorsTabsVIew extends TabBar
+public class CommunicatorsTabsView extends TabBar
 {
 }
 }
