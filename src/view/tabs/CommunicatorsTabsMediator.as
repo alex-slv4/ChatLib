@@ -19,16 +19,16 @@ package view.tabs {
 
 	import starling.events.Event;
 
-	public class ChatTabsMediator extends FeathersMediator {
+	public class CommunicatorsTabsMediator extends FeathersMediator {
 
-		private var view:communicatorsTabsView;
+		private var view:CommunicatorsTabsView;
 
 		[Inject]
 		public var chatModel:ChatModel;
 
 		override public function initializeComplete():void {
 			super.initializeComplete();
-			view = viewComponent as communicatorsTabsView;
+			view = viewComponent as CommunicatorsTabsView;
 
 			view.tabFactory = function():ChatTabView{
 				return new ChatTabView();
