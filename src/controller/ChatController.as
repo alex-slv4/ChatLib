@@ -2,34 +2,24 @@
  * Created by kvint on 01.11.14.
  */
 package controller {
-	import events.ChatEvent;
+	import events.CommunicatorEvent;
 
 	import flash.events.Event;
 
 	import model.ChatModel;
 	import model.ChatUser;
-	import model.communicators.DirectCommunicator;
 	import model.communicators.ICommunicator;
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.Browser;
-	import org.igniterealtime.xiff.core.EscapedJID;
-
-	import org.igniterealtime.xiff.core.UnescapedJID;
-
-	import org.igniterealtime.xiff.core.UnescapedJID;
-	import org.igniterealtime.xiff.data.IExtension;
 	import org.igniterealtime.xiff.data.IQ;
-	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.ListStanza;
 	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
-	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
-	import org.igniterealtime.xiff.data.im.RosterItemVO;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 
@@ -44,7 +34,6 @@ package controller {
 		override public function init():void {
 			super.init();
 			_browser = new Browser(connection);
-			chatModel.addEventListener(ChatEvent.SEND_MESSAGE, onMessageSend)
 		}
 
 		override protected function setupRoster():void {
@@ -52,8 +41,7 @@ package controller {
 			chatModel.roster = _roster;
 		}
 
-		private function onMessageSend(event:ChatEvent):void {
-			var message:ChatMessage = event.data as ChatMessage;
+		public function sendMessage(message:ChatMessage):void {
 
 			//Append receipt data
 			requestReceipt(message);
@@ -75,7 +63,7 @@ package controller {
 		override protected function onMessage(event:MessageEvent):void {
 			var message:ChatMessage = ChatMessage.createFromBase(event.data);
 			event.data = message;
-			switch (message.type){
+			switch (message.type) {
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
 					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
@@ -92,14 +80,16 @@ package controller {
 			message.receipt = Message.RECEIPT_REQUEST;
 			chatModel.receiptRequests[message.id] = message;
 		}
+
 		private function onReceiptReceived(message:ChatMessage):void {
-			if(message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
+			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
 				var receiptMessage:ChatMessage = chatModel.receiptRequests[message.receiptId];
-				if(receiptMessage) {
+				if (receiptMessage) {
 					delete chatModel.receiptRequests[message.receiptId];
 
 					receiptMessage.read = true;
-					chatModel.dispatchEvent(new ChatEvent(ChatEvent.ON_MESSAGE_READ, receiptMessage));
+					var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(receiptMessage);
+					iCommunicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessage));
 				}
 				//TODO: implement communicator fetch
 				//var communicator:ICommunicator = getCommunicatorForMessage(receiptMessage);
@@ -108,9 +98,9 @@ package controller {
 		}
 
 		public function markMessageAsReceived(message:ChatMessage):void {
-			if(message.read) return;
-			if(message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
-			if(message.receipt == Message.RECEIPT_REQUEST) {
+			if (message.read) return;
+			if (message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
+			if (message.receipt == Message.RECEIPT_REQUEST) {
 				message.read = true;
 				var ackMessage:Message = new Message();
 				ackMessage.from = message.to;
@@ -135,7 +125,7 @@ package controller {
 			var extension1:InfoDiscoExtension = iq.getExtension(DiscoExtension.ELEMENT_NAME) as InfoDiscoExtension;
 			for (var i:int = 0; i < extension1.features.length; i++) {
 				var feature:DiscoFeature = extension1.features[i];
-				if(feature.varName == "urn:xmpp:archive:auto"){
+				if (feature.varName == "urn:xmpp:archive:auto") {
 					return;
 				}
 			}
@@ -144,9 +134,9 @@ package controller {
 		}
 
 		public function test():void {
-			_connection.enableExtensions( RetrieveStanza );
+			_connection.enableExtensions(RetrieveStanza);
 			var test:IQ = new IQ(null, IQ.TYPE_GET);
-			test.callback = function(iq:IQ):void {
+			test.callback = function (iq:IQ):void {
 				var extension1:ListStanza = iq.getAllExtensionsByNS(ListStanza.NS)[0];
 				for (var i:int = 0; i < extension1.chats.length; i++) {
 					var chat:ChatStanza = extension1.chats[i];

@@ -2,10 +2,13 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
+	import controller.ChatController;
+
 	import model.ChatUser;
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends DefaultCommunicator {
 
@@ -21,6 +24,9 @@ package model.communicators {
 			return CommunicatorTypes.DIRECT;
 		}
 
+		public function sendMessage(message:Message):void {
+			controller.ChatController
+		}
 		override public function markAsRead(ackMessage:ChatMessage):Boolean {
 			var messageMarked:Boolean = super.markAsRead(ackMessage);
 			if(messageMarked){

@@ -5,6 +5,7 @@ package view.communicator {
 	import events.ChatEvent;
 
 	import model.communicators.DirectCommunicator;
+	import model.communicators.ICommunicator;
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.data.Message;
@@ -21,9 +22,9 @@ package view.communicator {
 			message.type = Message.TYPE_CHAT;
 			message.from = chatModel.currentUser.jid.escaped;
 			message.body = writableView.input.text;
-			chatModel.dispatchEvent(new ChatEvent(ChatEvent.SEND_MESSAGE, message));
+			var iCommunicator:DirectCommunicator = chatModel.provider.getCommunicator(message) as DirectCommunicator;
+			iCommunicator.sendMessage(message);
 			writableView.input.text = "";
-			addToHistory(message);
 		}
 	}
 }

@@ -5,6 +5,7 @@ package view.communicator {
 	import controller.ChatController;
 
 	import events.ChatEvent;
+	import events.CommunicatorEvent;
 
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -35,8 +36,8 @@ package view.communicator {
 				str += item.from.node + ": " + item.body;
 				return str;
 			};
-			communicatorData.addEventListener(MessageEvent.MESSAGE, onNewMessage);
-			chatModel.addEventListener(ChatEvent.ON_MESSAGE_READ, onMessageRead);
+			communicatorData.addEventListener(CommunicatorEvent.ITEM_ADDED, onMessageAdded);
+			communicatorData.addEventListener(CommunicatorEvent.ITEM_UPDATED, onMessageUpdated);
 			initHistory();
 		}
 		protected function initHistory():void {
@@ -48,12 +49,12 @@ package view.communicator {
 			historyView.list.dataProvider = new ListCollection(history);
 		}
 
-		private function onMessageRead(event:ChatEvent):void {
+		private function onMessageUpdated(event:CommunicatorEvent):void {
 			var itemIndex:int = historyView.list.dataProvider.getItemIndex(event.data);
 			historyView.list.dataProvider.updateItemAt(itemIndex);
 		}
 
-		protected function onNewMessage(event:MessageEvent):void {
+		protected function onMessageAdded(event:CommunicatorEvent):void {
 			var message:ChatMessage = event.data as ChatMessage;
 			markMessageAsReceived(message);
 			addToHistory(message);
@@ -71,8 +72,8 @@ package view.communicator {
 		}
 
 		override public function destroy():void {
-			communicatorData.removeEventListener(MessageEvent.MESSAGE, onNewMessage);
-			chatModel.removeEventListener(ChatEvent.ON_MESSAGE_READ, onMessageRead);
+			communicatorData.removeEventListener(CommunicatorEvent.ITEM_ADDED, onMessageAdded);
+			communicatorData.removeEventListener(CommunicatorEvent.ITEM_UPDATED, onMessageUpdated);
 			super.destroy();
 		}
 	}

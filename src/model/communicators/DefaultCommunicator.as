@@ -4,18 +4,18 @@
 package model.communicators {
 	import controller.ChatController;
 
+	import events.CommunicatorEvent;
+
 	import flash.events.EventDispatcher;
 
 	import model.data.ChatMessage;
 
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
-		[Inject]
-		public var chatController:ChatController;
-
 		protected var _label:String;
 		protected var _count:int = 0;
 		private var _history:Array = [];
+		private var _controller:ChatController;
 
 		public function DefaultCommunicator() {
 		}
@@ -29,6 +29,7 @@ package model.communicators {
 
 		public function add(data:Object):void {
 			_history.push(data);
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
 		public function markAsRead(ackMessage:ChatMessage):Boolean {
@@ -41,7 +42,7 @@ package model.communicators {
 				}
 			}
 			if(markedMessage){
-				chatController.markMessageAsReceived(markedMessage);
+				_controller.markMessageAsReceived(markedMessage);
 				return false;
 			}
 			return true;
@@ -49,7 +50,7 @@ package model.communicators {
 
 		public function set unreadCount(value:int):void {
 			_count = value;
-			dispatchEvent()
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.UNREAD_UPDATED, _count));
 		}
 
 		public function get unreadCount():int {
@@ -58,6 +59,10 @@ package model.communicators {
 
 		public function get history():Array {
 			return _history;
+		}
+
+		public function set chatController(value:ChatController):void {
+			_controller = value;
 		}
 
 		override public function toString():String {

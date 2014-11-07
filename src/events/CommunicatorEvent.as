@@ -4,6 +4,7 @@
 package events {
 	public class CommunicatorEvent extends DataEvent {
 
+		public static const UNREAD_UPDATED:String = "onUnreadUpdated";
 		public static const ITEM_ADDED:String = "onItemAdded";
 		public static const ITEM_UPDATED:String = "onItemUpdated";
 

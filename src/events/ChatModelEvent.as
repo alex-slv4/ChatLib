@@ -4,8 +4,8 @@
 package events {
 	public class ChatModelEvent extends DataEvent {
 
-		public static const COMMUNICATOR_ADDED:String = "onAdded";
-		public static const COMMUNICATOR_ACTIVATED:String = "onActivate";
+		public static const COMMUNICATOR_ADDED:String = "onCommunicatorAdded";
+		public static const COMMUNICATOR_ACTIVATED:String = "onCommunicatorActivated";
 
 		public function ChatModelEvent(type:String, data:Object) {
 			super(type, data);
