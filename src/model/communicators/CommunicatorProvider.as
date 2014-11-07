@@ -66,6 +66,12 @@ package model.communicators {
 			return iCommunicator;
 		}
 
+		public function getAll():Array {
+			var result:Array = [];
+			result.concat(_privateCommunications);
+			return result;
+		}
+
 		public function set chatModel(value:ChatModel):void {
 			_model = value;
 		}

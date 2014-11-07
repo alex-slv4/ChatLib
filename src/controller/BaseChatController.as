@@ -118,7 +118,6 @@ package controller {
 			var domainIndex:int = username.lastIndexOf( "@" );
 			var _username:String = domainIndex > -1 ? username.substring( 0, domainIndex ) : username;
 			var domain:String = domainIndex > -1 ? username.substring( domainIndex + 1 ) : null;
-			BaseChatController.serverName = domain;
 			Security.loadPolicyFile("xmlsocket://" + BaseChatController.serverName + ":" + BaseChatController.serverPort);
 			registerUser = false;
 			connection.tls = BaseChatController.useTls;
