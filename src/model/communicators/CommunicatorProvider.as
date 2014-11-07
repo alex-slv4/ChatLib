@@ -68,7 +68,7 @@ package model.communicators {
 
 		public function getAll():Vector.<ICommunicator> {
 			var result:Vector.<ICommunicator> = new <ICommunicator>[];
-			result.concat(_privateCommunications);
+//			result.concat(_privateCommunications);
 			return result;
 		}
 
