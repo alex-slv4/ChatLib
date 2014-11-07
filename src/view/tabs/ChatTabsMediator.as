@@ -21,14 +21,14 @@ package view.tabs {
 
 	public class ChatTabsMediator extends FeathersMediator {
 
-		private var view:ChatTabsView;
+		private var view:communicatorsTabsView;
 
 		[Inject]
 		public var chatModel:ChatModel;
 
 		override public function initializeComplete():void {
 			super.initializeComplete();
-			view = viewComponent as ChatTabsView;
+			view = viewComponent as communicatorsTabsView;
 
 			view.tabFactory = function():ChatTabView{
 				return new ChatTabView();

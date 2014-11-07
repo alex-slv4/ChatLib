@@ -7,7 +7,7 @@ package model.communicators {
 			_label = "Log";
 		}
 		override public function get type():int {
-			return CommunicatorTypes.LOG;
+			return CommunicatorType.LOG;
 		}
 	}
 }

@@ -21,7 +21,7 @@ package model.communicators {
 			_label = to.bareJID;
 		}
 		override public function get type():int {
-			return CommunicatorTypes.DIRECT;
+			return CommunicatorType.DIRECT;
 		}
 
 		public function sendMessage(message:Message):void {

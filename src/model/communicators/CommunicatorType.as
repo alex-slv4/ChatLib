@@ -2,7 +2,7 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	public class CommunicatorTypes {
+	public class CommunicatorType {
 
 		public static const LOG:int = 1;
 		public static const GLOBAL:int = 2;

@@ -9,8 +9,9 @@ package view.roster {
 
 		private var _list:List = new List();
 
-		public function RosterView() {
-			addChild(_list);
+		override protected function initialize():void
+		{
+			addChild(list);
 		}
 
 		public function get list():List {

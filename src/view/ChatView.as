@@ -3,44 +3,31 @@
  */
 package view {
 
-	import feathers.controls.LayoutGroup;
+import feathers.controls.LayoutGroup;
 
-	import view.communicator.DefaultCommunicatorView;
+import view.CommunicatorContainerView;
 
-	import view.communicator.ICommunicatorView;
-	import view.tabs.ChatTabsView;
+import view.tabs.communicatorsTabsView;
 
-	public class ChatView extends LayoutGroup {
+public class ChatView extends LayoutGroup {
 
-		private var _communicatorContainer	:LayoutGroup 		= new LayoutGroup();
-		private var _communicatorView		:DefaultCommunicatorView;
-		private var _tabsView				:ChatTabsView 		= new ChatTabsView();
+		private var _containerView	:CommunicatorContainerView 	= new CommunicatorContainerView();
+		private var _tabsView		:communicatorsTabsView 		= new communicatorsTabsView();
 
-		override protected function initialize():void {
-			super.initialize();
-
-			addChild(communicatorContainer);
+		override protected function initialize():void
+		{
+			addChild(containerView);
 			addChild(tabsView);
 		}
 
-		public function get tabsView():ChatTabsView {
+		public function get containerView():CommunicatorContainerView
+		{
+			return _containerView;
+		}
+
+		public function get tabsView():communicatorsTabsView
+		{
 			return _tabsView;
-		}
-
-		public function get communicatorView():ICommunicatorView {
-			return _communicatorView;
-		}
-
-		public function set communicatorView(value:ICommunicatorView):void {
-			if(_communicatorView){
-				_communicatorView.removeFromParent();
-			}
-			_communicatorView = value as DefaultCommunicatorView;
-			communicatorContainer.addChild(_communicatorView);
-		}
-
-		public function get communicatorContainer():LayoutGroup {
-			return _communicatorContainer;
 		}
 	}
 }

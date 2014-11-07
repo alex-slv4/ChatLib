@@ -8,7 +8,7 @@ package model.communicators {
 		}
 
 		override public function get type():int {
-			return CommunicatorTypes.GLOBAL;
+			return CommunicatorType.GLOBAL;
 		}
 	}
 }

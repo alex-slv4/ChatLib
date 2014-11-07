@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="ChatClient">
     <configurations>
-      <configuration name="ChatClient" pure-as="true" output-type="Library" output-file="ChatClient.swc" output-folder="$MODULE_DIR$/../out/production/ChatClient">
+      <configuration name="ChatClient" pure-as="true" output-type="Library" output-file="ChatClient.swc" output-folder="$MODULE_DIR$/bin">
         <dependencies target-player="15.0">
           <entries>
             <entry library-id="5be888e3-2854-475a-9011-01a92eb493f7">
@@ -15,7 +15,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="AIR SDK 15.0.0" />
+          <sdk name="AIRSDK_Compiler" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
@@ -31,7 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/xiff" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="AIR SDK 15.0.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIRSDK_Compiler" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">

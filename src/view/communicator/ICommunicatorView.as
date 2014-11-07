@@ -2,9 +2,11 @@
  * Created by kvint on 02.11.14.
  */
 package view.communicator {
-	import utils.providers.IViewDataProvider;
+import feathers.core.IFeathersControl;
 
-	public interface ICommunicatorView {
+import utils.providers.IViewDataProvider;
+
+	public interface ICommunicatorView extends IFeathersControl{
 
 		function get provider():IViewDataProvider;
 

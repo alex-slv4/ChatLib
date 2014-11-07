@@ -10,6 +10,6 @@ package model.communicators {
 		function set chatModel(value:ChatModel):void;
 		function set chatController(value:ChatController):void;
 		function getCommunicator(data:Object):ICommunicator;
-		function getAll():Array;
+		function getAll():Vector.<ICommunicatorProvider>;
 	}
 }

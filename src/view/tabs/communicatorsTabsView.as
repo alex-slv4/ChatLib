@@ -5,8 +5,8 @@ package view.tabs {
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
 
-	public class ChatTabsView extends TabBar {
-		public function ChatTabsView() {
+	public class communicatorsTabsView extends TabBar {
+		public function communicatorsTabsView() {
 			super();
 		}
 

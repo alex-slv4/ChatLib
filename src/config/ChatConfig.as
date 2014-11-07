@@ -27,7 +27,7 @@ package config {
 	import view.tabs.ChatTabView;
 	import view.tabs.ChatTabMediator;
 	import view.tabs.ChatTabsMediator;
-	import view.tabs.ChatTabsView;
+	import view.tabs.communicatorsTabsView;
 
 	public class ChatConfig implements IConfig {
 
@@ -55,7 +55,7 @@ package config {
 		private function mapView():void
 		{
 			mediatorMap.map(ChatView).toMediator(ChatMediator);
-			mediatorMap.map(ChatTabsView).toMediator(ChatTabsMediator);
+			mediatorMap.map(communicatorsTabsView).toMediator(ChatTabsMediator);
 			mediatorMap.map(ChatTabView).toMediator(ChatTabMediator);
 			mediatorMap.map(DirectCommunicatorView).toMediator(DirectCommunicatorMediator);
 			mediatorMap.map(RosterView).toMediator(RosterMediator);
