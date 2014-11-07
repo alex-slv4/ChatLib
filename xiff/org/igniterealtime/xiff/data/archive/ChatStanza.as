@@ -29,15 +29,14 @@ package org.igniterealtime.xiff.data.archive {
 	public class ChatStanza extends Extension implements IArchveExtention {
 
 		public static const ELEMENT_NAME:String = "chat";
-		public static const NS:String = "urn:xmpp:archive";
 
 		public static const START:String = "start";
 		public static const SUBJECT:String = "subject";
 		public static const THREAD:String = "thread";
 		public static const WITH:String = "with";
 
-		public function ChatStanza() {
-			super();
+		public function ChatStanza(parent:XML = null) {
+			super(parent);
 		}
 		public function get start():String {
 			return getAttribute(START);
@@ -73,7 +72,7 @@ package org.igniterealtime.xiff.data.archive {
 		}
 
 		public function getNS():String {
-			return NS;
+			return archive_internal;
 		}
 	}
 }

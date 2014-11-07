@@ -30,7 +30,6 @@ package model.communicators {
 					constructFunc = getCommunicatorForRoster;
 					break;
 				case Message:
-					ArrayCollection
 				case ChatMessage:
 					constructFunc = getCommunicatorForMessage;
 			}
@@ -68,7 +67,9 @@ package model.communicators {
 
 		public function getAll():Vector.<ICommunicator> {
 			var result:Vector.<ICommunicator> = new <ICommunicator>[];
-//			result.concat(_privateCommunications);
+			for each (var communicator:ICommunicator in _privateCommunications) {
+				result.push(communicator);
+			}
 			return result;
 		}
 

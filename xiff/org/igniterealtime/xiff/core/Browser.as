@@ -25,10 +25,12 @@
  */
 package org.igniterealtime.xiff.core
 {
+
 	import org.igniterealtime.xiff.data.*;
 	import org.igniterealtime.xiff.data.browse.BrowseExtension;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.data.disco.ItemDiscoExtension;
+	import org.igniterealtime.xiff.data.rsm.Set;
 
 	/**
 	 * XEP-0030: Service Discovery
@@ -124,7 +126,11 @@ package org.igniterealtime.xiff.core
 			var iq:IQ = new IQ( server, IQ.TYPE_GET );
 			iq.callback = callback;
 			iq.errorCallback = errorCallback;
-			iq.addExtension( new InfoDiscoExtension( iq.xml ) );
+			var infoDiscoExtension:InfoDiscoExtension = new InfoDiscoExtension(iq.xml);
+			var _set:Set = new Set();
+			_set.max = 3;
+			infoDiscoExtension.addExtension(_set);
+			iq.addExtension(infoDiscoExtension );
 			_connection.send( iq );
 			return iq;
 		}

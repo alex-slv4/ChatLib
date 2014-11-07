@@ -14,8 +14,8 @@ package model.communicators {
 
 		protected var _label:String;
 		protected var _count:int = 0;
+		protected var _controller:ChatController;
 		private var _history:Array = [];
-		private var _controller:ChatController;
 
 		public function DefaultCommunicator() {
 		}
@@ -69,8 +69,7 @@ package model.communicators {
 			return "[DefaultCommunicator]";
 		}
 
-		public function activate():void
-		{
+		public function activate():void {
 		}
 	}
 }

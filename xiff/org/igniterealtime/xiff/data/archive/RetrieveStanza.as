@@ -22,7 +22,6 @@ package org.igniterealtime.xiff.data.archive {
 	 */
 	public class RetrieveStanza extends Extension implements IArchveExtention {
 
-		public static const NS:String = "urn:xmpp:archive";
 		public static const ELEMENT_NAME:String = "retrieve";
 
 		public static const START:String = "start";
@@ -55,7 +54,7 @@ package org.igniterealtime.xiff.data.archive {
 		}
 
 		public function getNS():String {
-			return NS;
+			return archive_internal;
 		}
 	}
 }

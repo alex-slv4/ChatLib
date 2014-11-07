@@ -12,16 +12,19 @@ package controller {
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.Browser;
+	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
-	import org.igniterealtime.xiff.data.archive.ChatStanza;
-	import org.igniterealtime.xiff.data.archive.ListStanza;
 	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
+	import org.igniterealtime.xiff.data.archive.archive_internal;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.util.DateTimeParser;
+
+	use namespace archive_internal;
 
 	public class ChatController extends BaseChatController {
 
@@ -51,9 +54,7 @@ package controller {
 
 			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 			communicator.add(message);
-			//Remove receipt
 		}
-
 
 		override protected function setupCurrentUser():void {
 			_currentUser = new ChatUser(_connection.jid);
@@ -91,9 +92,6 @@ package controller {
 					var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(receiptMessage);
 					iCommunicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessage));
 				}
-				//TODO: implement communicator fetch
-				//var communicator:ICommunicator = getCommunicatorForMessage(receiptMessage);
-				//communicator.markAsRead(receiptMessage);
 			}
 		}
 
@@ -117,7 +115,7 @@ package controller {
 
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
-			_browser.getServiceInfo(null, onServerInfo)
+			_browser.getServiceInfo(null, onServerInfo);
 			//chatModel.tabsProvider.addItem("test");
 		}
 
@@ -137,17 +135,29 @@ package controller {
 			_connection.enableExtensions(RetrieveStanza);
 			var test:IQ = new IQ(null, IQ.TYPE_GET);
 			test.callback = function (iq:IQ):void {
-				var extension1:ListStanza = iq.getAllExtensionsByNS(ListStanza.NS)[0];
-				for (var i:int = 0; i < extension1.chats.length; i++) {
-					var chat:ChatStanza = extension1.chats[i];
-					trace(chat.withJID);
-
+				var chatNS:Namespace = new Namespace(null, archive_internal);
+				var chat:XML = iq.xml.chatNS::chat[0];
+				var chats:XMLList = chat.children();
+				var str:String = "";
+				var startDate:Date = DateTimeParser.string2dateTime(chat.attribute("start"));
+				for each (var tag:XML in chats) {
+					if(tag.localName() == "from"){
+						str += formatDate(startDate) + " " + chat.attribute("with") + ": " + tag.body;
+					}else{
+						str += formatDate(startDate) + " " + chatModel.currentUser.jid + ": " + tag.body;
+					}
+					str += "\n";
 				}
+				trace(str);
 			}
-			var listStanza:RetrieveStanza = new RetrieveStanza();
-			//listStanza.withJID = new EscapedJID("joe@localhost");
-			test.addExtension(listStanza);
+			var stanza:RetrieveStanza = new RetrieveStanza();
+			stanza.withJID = new EscapedJID("joe@localhost");
+			test.addExtension(stanza);
 			connection.send(test);
+		}
+
+		private function formatDate(startDate:Date):String {
+			return startDate.toString();
 		}
 	}
 }

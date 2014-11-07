@@ -24,8 +24,8 @@ package model.communicators {
 			return CommunicatorType.DIRECT;
 		}
 
-		public function sendMessage(message:Message):void {
-			controller.ChatController
+		public function sendMessage(message:ChatMessage):void {
+			_controller.sendMessage(message);
 		}
 		override public function markAsRead(ackMessage:ChatMessage):Boolean {
 			var messageMarked:Boolean = super.markAsRead(ackMessage);
