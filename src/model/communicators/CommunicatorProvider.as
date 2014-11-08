@@ -11,6 +11,8 @@ package model.communicators {
 	import model.ChatModel;
 	import model.data.ChatMessage;
 
+	import org.as3commons.lang.DictionaryUtils;
+
 	import org.igniterealtime.xiff.collections.ArrayCollection;
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -52,6 +54,9 @@ package model.communicators {
 		private function addCommunicator(key:String, iCommunicator:ICommunicator):void {
 			_privateCommunications[key] = iCommunicator;
 			_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
+			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
+				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+			}
 		}
 		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {
 			var keyJID:UnescapedJID = item.jid;
