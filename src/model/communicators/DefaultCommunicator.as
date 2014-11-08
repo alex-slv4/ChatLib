@@ -13,7 +13,7 @@ import model.data.ChatMessage;
 public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
-		protected var _count:int = 0;
+		private var _count:int = 0;
 		private var _history:Array = [];
 
 		public function DefaultCommunicator() {

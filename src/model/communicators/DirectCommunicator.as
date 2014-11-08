@@ -17,7 +17,7 @@ package model.communicators {
 	public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
 		_participant = to;
 		_chatUser = currentUser;
-		_label = to.bareJID;
+		_label = _participant.node;
 	}
 	override public function get type():int {
 		return CommunicatorType.DIRECT;
@@ -29,7 +29,7 @@ package model.communicators {
 	override public function markAsRead(ackMessage:ChatMessage):Boolean {
 		super.markAsRead(ackMessage);
 		if(!ackMessage.to.equals(_chatUser.jid.escaped, true)){
-			_count--;
+			unreadCount--;
 		}
 		return false;
 	}
@@ -37,7 +37,7 @@ package model.communicators {
 	override public function add(data:Object):void {
 		var message:ChatMessage = data as ChatMessage;
 		if(message.to.equals(_chatUser.jid.escaped, true)){
-			_count++;
+			unreadCount++;
 		}
 		super.add(data);
 	}
@@ -45,5 +45,5 @@ package model.communicators {
 	public function get participant():UnescapedJID {
 		return _participant;
 	}
-}
+	}
 }
