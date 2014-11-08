@@ -6,6 +6,7 @@ package events {
 
 		public static const UNREAD_UPDATED:String = "onUnreadUpdated";
 		public static const ITEM_ADDED:String = "onItemAdded";
+		public static const ITEM_RECEIPT_REPLIED:String = "onItemReceiptReplied";
 		public static const ITEM_SENT:String = "onItemSent";
 		public static const ITEM_UPDATED:String = "onItemUpdated";
 

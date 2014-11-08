@@ -48,11 +48,13 @@ package controller {
 
 		private function onCommunicatorRemoved(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
+			communicator.removeEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, onReceiptRequested);
 			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
 		}
 
 		private function onCommunicatorAdded(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
+			communicator.addEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, onReceiptRequested);
 			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
 		}
 		private function onCommunicatorActivated(event:ChatModelEvent):void {
@@ -80,6 +82,10 @@ package controller {
 			_currentUser = new ChatUser(_connection.jid);
 			chatModel.currentUser = _currentUser;
 		}
+		private function requestReceipt(message:ChatMessage):void {
+			message.receipt = Message.RECEIPT_REQUEST;
+			chatModel.receiptRequests[message.id] = message;
+		}
 
 		override protected function onMessage(event:MessageEvent):void {
 			var message:ChatMessage = ChatMessage.createFromBase(event.data);
@@ -97,17 +103,13 @@ package controller {
 					communicator.dispatchEvent(event);
 					break;
 				default :
-					onReceiptReceived(message);
+					onReceiptReplied(message);
 					super.onMessage(event);
 			}
 		}
 
-		private function requestReceipt(message:ChatMessage):void {
-			message.receipt = Message.RECEIPT_REQUEST;
-			chatModel.receiptRequests[message.id] = message;
-		}
 
-		private function onReceiptReceived(message:ChatMessage):void {
+		private function onReceiptReplied(message:ChatMessage):void {
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
 				var receiptMessage:ChatMessage = chatModel.receiptRequests[message.receiptId];
 				if (receiptMessage) {
@@ -120,7 +122,8 @@ package controller {
 			}
 		}
 
-		public function markMessageAsReceived(message:ChatMessage):void {
+		public function onReceiptRequested(event:CommunicatorEvent):void {
+			var message:ChatMessage = event.data as ChatMessage;
 			if (message.read) return;
 			if (message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
 			if (message.receipt == Message.RECEIPT_REQUEST) {

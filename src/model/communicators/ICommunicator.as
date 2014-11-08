@@ -12,6 +12,7 @@ package model.communicators {
 	[Event(name="onItemAdded", type="events.CommunicatorEvent")]
 	[Event(name="onItemUpdated", type="events.CommunicatorEvent")]
 	[Event(name="onItemSent", type="events.CommunicatorEvent")]
+	[Event(name="onItemRequested", type="events.CommunicatorEvent")]
 
 	public interface ICommunicator extends IEventDispatcher {
 
@@ -25,12 +26,8 @@ package model.communicators {
 
 		function get unreadCount():int;
 
-		function get chatController():ChatController;
-
 		function markAsRead(ackMessage:ChatMessage):Boolean;
 
 		function add(data:Object):void;
-
-		function activate():void;
 	}
 }

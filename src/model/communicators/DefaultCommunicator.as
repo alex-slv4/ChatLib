@@ -32,19 +32,8 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 		}
 
 		public function markAsRead(ackMessage:ChatMessage):Boolean {
-			var markedMessage:ChatMessage;
-			for (var i:int = 0; i < history.length; i++) {
-				var message:ChatMessage = history[i];
-				if(message.id == ackMessage.receiptId){
-					markedMessage = message;
-					break;
-				}
-			}
-			if(markedMessage){
-				chatController.markMessageAsReceived(markedMessage);
-				return false;
-			}
-			return true;
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_RECEIPT_REPLIED, ackMessage));
+			return false;
 		}
 
 		public function set unreadCount(value:int):void {
@@ -62,15 +51,6 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 
 		override public function toString():String {
 			return "[DefaultCommunicator]";
-		}
-
-		public function activate():void {
-			chatController.activateCommunicator(this);
-		}
-
-		public function get chatController():ChatController
-		{
-			return ChatClient.instance.controller;
 		}
 	}
 }
