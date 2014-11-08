@@ -51,7 +51,6 @@ package model.communicators {
 
 		private function addCommunicator(key:String, iCommunicator:ICommunicator):void {
 			_privateCommunications[key] = iCommunicator;
-			iCommunicator.chatController = _controller;
 			_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 		}
 		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {

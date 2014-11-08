@@ -38,7 +38,7 @@ public class ChatConfig implements IConfig {
 
 		private function mapView():void
 		{
-			//mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);
+//			mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);
 			//mediatorMap.map(TeamCommunicatorView).toMediator(TeamCommunicatorMediator);
 			//mediatorMap.map(GlobalCommunicatorView).toMediator(GlobalCommunicatorMediator);
 

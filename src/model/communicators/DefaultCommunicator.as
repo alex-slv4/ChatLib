@@ -2,19 +2,18 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	import controller.ChatController;
+import controller.ChatController;
 
-	import events.CommunicatorEvent;
+import events.CommunicatorEvent;
 
-	import flash.events.EventDispatcher;
+import flash.events.EventDispatcher;
 
-	import model.data.ChatMessage;
+import model.data.ChatMessage;
 
-	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
+public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
 		protected var _count:int = 0;
-		protected var _controller:ChatController;
 		private var _history:Array = [];
 
 		public function DefaultCommunicator() {
@@ -42,7 +41,7 @@ package model.communicators {
 				}
 			}
 			if(markedMessage){
-				_controller.markMessageAsReceived(markedMessage);
+				chatController.markMessageAsReceived(markedMessage);
 				return false;
 			}
 			return true;
@@ -61,16 +60,17 @@ package model.communicators {
 			return _history;
 		}
 
-		public function set chatController(value:ChatController):void {
-			_controller = value;
-		}
-
 		override public function toString():String {
 			return "[DefaultCommunicator]";
 		}
 
 		public function activate():void {
-			_controller.activateCommunicator(this);
+			chatController.activateCommunicator(this);
+		}
+
+		public function get chatController():ChatController
+		{
+			return ChatClient.instance.controller;
 		}
 	}
 }

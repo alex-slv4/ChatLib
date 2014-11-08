@@ -25,7 +25,7 @@ package model.communicators {
 
 		function get unreadCount():int;
 
-		function set chatController(value:ChatController):void;
+		function get chatController():ChatController;
 
 		function markAsRead(ackMessage:ChatMessage):Boolean;
 

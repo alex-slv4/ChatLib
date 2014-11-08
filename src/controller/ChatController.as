@@ -46,12 +46,13 @@ package controller {
 
 		private function onCommunicatorRemoved(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
-			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+
 		}
 
 		private function onCommunicatorAdded(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
-			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
 		}
 
 		override protected function setupRoster():void {

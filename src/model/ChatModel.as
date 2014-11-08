@@ -17,6 +17,7 @@ package model {
 
 		[Inject]
 		public var provider:ICommunicatorProvider;
+
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
