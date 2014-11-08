@@ -38,21 +38,25 @@ package controller {
 		override public function init():void {
 			super.init();
 
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, onCommunicatorActivated);
 			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);
 			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, onCommunicatorRemoved);
 
 			_browser = new Browser(connection);
 		}
 
+
 		private function onCommunicatorRemoved(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
 			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
-
 		}
 
 		private function onCommunicatorAdded(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
 			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+		}
+		private function onCommunicatorActivated(event:ChatModelEvent):void {
+			chatModel.activeCommunicator = event.data as ICommunicator;
 		}
 
 		override protected function setupRoster():void {
@@ -84,6 +88,7 @@ package controller {
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
 					if(message.body == null){
+						//TODO: fix it
 						trace("message skip", message.id);
 						return;
 					}

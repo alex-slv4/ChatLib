@@ -5,6 +5,8 @@ package model {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
+	import model.communicators.ICommunicator;
+
 	import model.communicators.ICommunicatorProvider;
 
 	import org.igniterealtime.xiff.im.Roster;
@@ -21,6 +23,7 @@ package model {
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
+		private var _activeCommunicator:ICommunicator;
 
 		[PostConstruct]
 		public function init():void {
@@ -41,6 +44,14 @@ package model {
 
 		public function set roster(value:Roster):void {
 			_roster = value;
+		}
+
+		public function get activeCommunicator():ICommunicator {
+			return _activeCommunicator;
+		}
+
+		public function set activeCommunicator(value:ICommunicator):void {
+			_activeCommunicator = value;
 		}
 	}
 }
