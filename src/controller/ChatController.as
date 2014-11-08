@@ -83,6 +83,10 @@ package controller {
 			switch (message.type) {
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
+					if(message.body == null){
+						trace("message skip", message.id);
+						return;
+					}
 					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 					communicator.add(message);
 					communicator.dispatchEvent(event);
@@ -132,7 +136,6 @@ package controller {
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
 			_browser.getServiceInfo(null, onServerInfo);
-			//chatModel.tabsProvider.addItem("test");
 		}
 
 		private function onServerInfo(iq:IQ):void {
