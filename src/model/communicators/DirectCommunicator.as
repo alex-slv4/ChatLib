@@ -4,6 +4,8 @@
 package model.communicators {
 	import controller.ChatController;
 
+	import events.CommunicatorEvent;
+
 	import model.ChatUser;
 	import model.data.ChatMessage;
 
@@ -25,7 +27,7 @@ package model.communicators {
 		}
 
 		public function sendMessage(message:ChatMessage):void {
-			_controller.sendMessage(message);
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_SENT, message));
 		}
 		override public function markAsRead(ackMessage:ChatMessage):Boolean {
 			var messageMarked:Boolean = super.markAsRead(ackMessage);

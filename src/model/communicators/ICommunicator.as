@@ -11,6 +11,7 @@ package model.communicators {
 	[Event(name="onUnreadUpdated", type="events.CommunicatorEvent")]
 	[Event(name="onItemAdded", type="events.CommunicatorEvent")]
 	[Event(name="onItemUpdated", type="events.CommunicatorEvent")]
+	[Event(name="onItemSent", type="events.CommunicatorEvent")]
 
 	public interface ICommunicator extends IEventDispatcher {
 

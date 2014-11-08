@@ -37,7 +37,21 @@ package controller {
 		[PostConstruct]
 		override public function init():void {
 			super.init();
+
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, onCommunicatorRemoved);
+
 			_browser = new Browser(connection);
+		}
+
+		private function onCommunicatorRemoved(event:ChatModelEvent):void {
+			var communicator:ICommunicator = event.data as ICommunicator;
+			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+		}
+
+		private function onCommunicatorAdded(event:ChatModelEvent):void {
+			var communicator:ICommunicator = event.data as ICommunicator;
+			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
 		}
 
 		override protected function setupRoster():void {
@@ -45,8 +59,8 @@ package controller {
 			chatModel.roster = _roster;
 		}
 
-		public function sendMessage(message:ChatMessage):void {
-
+		public function sendMessage(event:CommunicatorEvent):void {
+			var message:ChatMessage = event.data as ChatMessage;
 			//Append receipt data
 			requestReceipt(message);
 
@@ -163,6 +177,9 @@ package controller {
 
 		public function activateCommunicator(communicator:ICommunicator):void {
 			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicator));
+		}
+		public function destroy():void {
+			//TODO: destroy
 		}
 	}
 }

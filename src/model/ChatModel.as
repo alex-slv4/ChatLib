@@ -10,6 +10,7 @@ package model {
 	import org.igniterealtime.xiff.im.Roster;
 
 	[Event(name="onCommunicatorAdded", type="events.ChatModelEvent")]
+	[Event(name="onCommunicatorRemoved", type="events.ChatModelEvent")]
 	[Event(name="onCommunicatorActivated", type="events.ChatModelEvent")]
 
 	public class ChatModel extends EventDispatcher {
