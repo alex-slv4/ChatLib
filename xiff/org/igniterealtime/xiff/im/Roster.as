@@ -117,7 +117,7 @@ package org.igniterealtime.xiff.im
 		 */
 		private var _groups:Object = {};
 
-		/**
+		/**x
 		 * Store presences of the people in users roster.
 		 */
 		private var _presenceMap:Object = {};

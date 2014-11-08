@@ -38,27 +38,32 @@ package controller {
 		override public function init():void {
 			super.init();
 
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, onCommunicatorActivated);
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, onCommunicatorAdded);
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, onCommunicatorRemoved);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, communicatorEventHandler);
 
 			_browser = new Browser(connection);
 		}
-
-
-		private function onCommunicatorRemoved(event:ChatModelEvent):void {
-			var communicator:ICommunicator = event.data as ICommunicator;
-			communicator.removeEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, onReceiptRequested);
-			communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
+		override protected function setupCurrentUser():void {
+			_currentUser = new ChatUser(_connection.jid);
+			chatModel.currentUser = _currentUser;
 		}
 
-		private function onCommunicatorAdded(event:ChatModelEvent):void {
+		private function communicatorEventHandler(event:ChatModelEvent):void {
 			var communicator:ICommunicator = event.data as ICommunicator;
-			communicator.addEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, onReceiptRequested);
-			communicator.addEventListener(CommunicatorEvent.ITEM_SENT, sendMessage);
-		}
-		private function onCommunicatorActivated(event:ChatModelEvent):void {
-			chatModel.activeCommunicator = event.data as ICommunicator;
+			switch (event.type){
+				case ChatModelEvent.COMMUNICATOR_ADDED:
+					communicator.addEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
+					communicator.addEventListener(CommunicatorEvent.ITEM_SENT, onMessageSent);
+					break;
+				case ChatModelEvent.COMMUNICATOR_REMOVED:
+					communicator.removeEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
+					communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, onMessageSent);
+					break;
+				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
+					chatModel.activeCommunicator = communicator;
+					break;
+			}
 		}
 
 		override protected function setupRoster():void {
@@ -66,7 +71,7 @@ package controller {
 			chatModel.roster = _roster;
 		}
 
-		public function sendMessage(event:CommunicatorEvent):void {
+		private function onMessageSent(event:CommunicatorEvent):void {
 			var message:ChatMessage = event.data as ChatMessage;
 			//Append receipt data
 			requestReceipt(message);
@@ -74,22 +79,16 @@ package controller {
 			//Send the message
 			connection.send(message);
 
+			message.receipt = null;
+
 			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 			communicator.add(message);
 		}
 
-		override protected function setupCurrentUser():void {
-			_currentUser = new ChatUser(_connection.jid);
-			chatModel.currentUser = _currentUser;
-		}
-		private function requestReceipt(message:ChatMessage):void {
-			message.receipt = Message.RECEIPT_REQUEST;
-			chatModel.receiptRequests[message.id] = message;
-		}
-
-		override protected function onMessage(event:MessageEvent):void {
+		override protected function onMessageCome(event:MessageEvent):void {
 			var message:ChatMessage = ChatMessage.createFromBase(event.data);
 			event.data = message;
+			handleReceiptReceived(message);
 			switch (message.type) {
 				case Message.TYPE_CHAT:
 				case Message.TYPE_GROUPCHAT:
@@ -100,21 +99,23 @@ package controller {
 					}
 					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 					communicator.add(message);
-					communicator.dispatchEvent(event);
 					break;
 				default :
-					onReceiptReplied(message);
-					super.onMessage(event);
+					super.onMessageCome(event);
 			}
 		}
 
+		private function requestReceipt(message:ChatMessage):void {
+			message.receipt = Message.RECEIPT_REQUEST;
+			chatModel.receiptRequests[message.id] = message;
+		}
 
-		private function onReceiptReplied(message:ChatMessage):void {
-			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack message
-				var receiptMessage:ChatMessage = chatModel.receiptRequests[message.receiptId];
+		private function handleReceiptReceived(ackMessage:ChatMessage):void {
+			if (ackMessage.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
+				var receiptMessage:ChatMessage = chatModel.receiptRequests[ackMessage.receiptId];
 				if (receiptMessage) {
-					delete chatModel.receiptRequests[message.receiptId];
-
+					delete chatModel.receiptRequests[ackMessage.receiptId];
+					receiptMessage.receipt = null;
 					receiptMessage.read = true;
 					var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(receiptMessage);
 					iCommunicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessage));
@@ -122,11 +123,10 @@ package controller {
 			}
 		}
 
-		public function onReceiptRequested(event:CommunicatorEvent):void {
+		public function handleReceiptRequested(event:CommunicatorEvent):void {
 			var message:ChatMessage = event.data as ChatMessage;
-			if (message.read) return;
-			if (message.from.equals(chatModel.currentUser.jid.escaped, true)) return;
 			if (message.receipt == Message.RECEIPT_REQUEST) {
+				message.receipt = null;
 				message.read = true;
 				var ackMessage:Message = new Message();
 				ackMessage.from = message.to;

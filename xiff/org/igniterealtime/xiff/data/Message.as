@@ -451,6 +451,9 @@ package org.igniterealtime.xiff.data
 
 			if ( value == null )
 			{
+				var ns:Namespace = new Namespace(null, Message.NS_RECEIPT);
+				delete xml.ns::[Message.RECEIPT_REQUEST];
+				delete xml.ns::[Message.RECEIPT_RECEIVED];
 				delete xml[Message.RECEIPT_REQUEST];
 				delete xml[Message.RECEIPT_RECEIVED];
 			}

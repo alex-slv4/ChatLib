@@ -8,6 +8,7 @@ package model.communicators {
 	import model.data.ChatMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends DefaultCommunicator {
 
@@ -27,16 +28,15 @@ package model.communicators {
 		dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_SENT, message));
 	}
 	override public function markAsRead(ackMessage:ChatMessage):Boolean {
-		super.markAsRead(ackMessage);
-		if(ackMessage.to.equals(_chatUser.jid.escaped, true) && !ackMessage.read){
+		var messageMarked:Boolean = super.markAsRead(ackMessage);
+		if(messageMarked){
 			unreadCount--;
 		}
-		return false;
+		return messageMarked;
 	}
 
 	override public function add(data:Object):void {
-		var message:ChatMessage = data as ChatMessage;
-		if(message.to.equals(_chatUser.jid.escaped, true)){
+		if((data as Message).receipt){
 			unreadCount++;
 		}
 		super.add(data);

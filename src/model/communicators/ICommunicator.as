@@ -2,8 +2,6 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-	import controller.ChatController;
-
 	import flash.events.IEventDispatcher;
 
 	import model.data.ChatMessage;

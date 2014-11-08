@@ -182,7 +182,7 @@ package controller {
 			_connection.addEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
 			_connection.addEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
 			_connection.addEventListener(PresenceEvent.PRESENCE, onPresence);
-			_connection.addEventListener(MessageEvent.MESSAGE, onMessage);
+			_connection.addEventListener(MessageEvent.MESSAGE, onMessageCome);
 		}
 
 		protected function removeConnectionListeners():void {
@@ -193,7 +193,7 @@ package controller {
 			_connection.removeEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
 			_connection.removeEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
 			_connection.removeEventListener(PresenceEvent.PRESENCE, onPresence);
-			_connection.removeEventListener(MessageEvent.MESSAGE, onMessage);
+			_connection.removeEventListener(MessageEvent.MESSAGE, onMessageCome);
 		}
 
 		protected function setupInviteListener():void {
@@ -327,7 +327,7 @@ package controller {
 			}
 		}
 
-		protected function onMessage(event:MessageEvent):void {
+		protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data as Message;
 
 			if (message.type == Message.TYPE_ERROR) {

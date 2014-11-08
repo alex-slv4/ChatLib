@@ -2,15 +2,13 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-import controller.ChatController;
+	import events.CommunicatorEvent;
 
-import events.CommunicatorEvent;
+	import flash.events.EventDispatcher;
 
-import flash.events.EventDispatcher;
+	import model.data.ChatMessage;
 
-import model.data.ChatMessage;
-
-public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
+	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
 		private var _count:int = 0;
@@ -32,7 +30,10 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 		}
 
 		public function markAsRead(ackMessage:ChatMessage):Boolean {
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_RECEIPT_REPLIED, ackMessage));
+			if(ackMessage.receipt){
+				dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_RECEIPT_REPLIED, ackMessage));
+				return true;
+			}
 			return false;
 		}
 
