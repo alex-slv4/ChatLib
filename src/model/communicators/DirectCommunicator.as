@@ -2,17 +2,14 @@
  * Created by kvint on 02.11.14.
  */
 package model.communicators {
-import controller.ChatController;
+	import events.CommunicatorEvent;
 
-import events.CommunicatorEvent;
+	import model.ChatUser;
+	import model.data.ChatMessage;
 
-import model.ChatUser;
-import model.data.ChatMessage;
+	import org.igniterealtime.xiff.core.UnescapedJID;
 
-import org.igniterealtime.xiff.core.UnescapedJID;
-import org.igniterealtime.xiff.data.Message;
-
-public class DirectCommunicator extends DefaultCommunicator {
+	public class DirectCommunicator extends DefaultCommunicator {
 
 	private var _chatUser:ChatUser;
 	private var _participant:UnescapedJID;
@@ -30,11 +27,11 @@ public class DirectCommunicator extends DefaultCommunicator {
 		dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_SENT, message));
 	}
 	override public function markAsRead(ackMessage:ChatMessage):Boolean {
-		var messageMarked:Boolean = super.markAsRead(ackMessage);
-		if(messageMarked){
+		super.markAsRead(ackMessage);
+		if(!ackMessage.to.equals(_chatUser.jid.escaped, true)){
 			_count--;
 		}
-		return messageMarked;
+		return false;
 	}
 
 	override public function add(data:Object):void {

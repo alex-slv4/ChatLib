@@ -89,12 +89,17 @@ package org.igniterealtime.xiff.core
 			{
 				_resource = inJID.substring(slashIndex + 1);
 			}
-
-			_domain = inJID.substring(separatorIndex + 1, slashIndex >= 0 ? slashIndex : inJID.length);
+			if(separatorIndex >= 0) {
+				_domain = inJID.substring(separatorIndex + 1, slashIndex >= 0 ? slashIndex : inJID.length);
+			}
 
 			if (separatorIndex >= 1)
 			{
 				_node = inJID.substring(0, separatorIndex);
+			}
+			else
+			{
+				_node = inJID;
 			}
 		}
 
@@ -178,12 +183,11 @@ package org.igniterealtime.xiff.core
 		 */
 		public function toString():String
 		{
-			var j:String = "";
-			if (node)
+			var j:String = node;
+			if(domain)
 			{
-				j += node + "@";
+				j += "@" + domain;
 			}
-			j += domain;
 			if (resource)
 			{
 				j += "/" + resource;

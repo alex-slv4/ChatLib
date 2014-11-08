@@ -246,6 +246,7 @@ package org.igniterealtime.xiff.im
 					for each ( var item:RosterItem in ext.items )
 					{
 						var askType:String = item.askType != null ? item.askType.toLowerCase() : RosterExtension.ASK_TYPE_NONE;
+						fixJIDDomainIfNeeded(item);
 						addRosterItem( item.jid.unescaped, item.name, RosterExtension.SHOW_UNAVAILABLE,
 									   "Offline", item.groupNames, item.subscription.toLowerCase(), askType );
 					}
@@ -259,6 +260,12 @@ package org.igniterealtime.xiff.im
 			catch ( error:Error )
 			{
 				trace( error.getStackTrace() );
+			}
+		}
+
+		private function fixJIDDomainIfNeeded(item:RosterItem):void {
+			if(item.jid.domain == null || item.jid.domain == ""){
+				item.jid = new UnescapedJID(item.jid.node + "@" + connection.server + "/" + item.jid.resource).escaped;
 			}
 		}
 
