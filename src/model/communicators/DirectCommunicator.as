@@ -28,7 +28,7 @@ package model.communicators {
 	}
 	override public function markAsRead(ackMessage:ChatMessage):Boolean {
 		super.markAsRead(ackMessage);
-		if(!ackMessage.to.equals(_chatUser.jid.escaped, true)){
+		if(ackMessage.to.equals(_chatUser.jid.escaped, true) && !ackMessage.read){
 			unreadCount--;
 		}
 		return false;
