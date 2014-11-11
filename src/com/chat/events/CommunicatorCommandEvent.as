@@ -10,9 +10,11 @@ public class CommunicatorCommandEvent extends Event {
 
 		public static const HELP:String = "help";
 		public static const PRIVATE_MESSAGE:String = "privateMessage";
-		public static const ROOM_MESSAGE:String = "roomMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
+
+		public static const ROOM_INFO:String = "infoMessage";
+		public static const ROOM_MESSAGE:String = "roomMessage";
 		public static const CREATE_ROOM:String = "roomCreate";
 		public static const JOIN_ROOM:String = "joinRoom";
 
