@@ -11,6 +11,7 @@ package events {
 		public static const HELP:String = "help";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
+		public static const CREATE_ROOM:String = "roomCreate";
 
 		private var _communicator:ICommunicator;
 		private var _params:Array;

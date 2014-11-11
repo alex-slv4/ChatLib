@@ -27,11 +27,11 @@ package controller.commands {
 		public function hasErrors():Boolean {
 			var result:Boolean;
 			if(communicator == null){
-				result = false;
+				result = true;
 			}
-			if(params.length < this.requiredArgsCount){
-				error("params expected", this.requiredArgsCount, "got", params.length);
-				result = false;
+			if(params.length < this.requiredParamsCount){
+				error("params expected", this.requiredParamsCount, "got", params.length);
+				result = true;
 			}
 			return result;
 		}
@@ -57,7 +57,7 @@ package controller.commands {
 			return event.params;
 		}
 
-		public function get requiredArgsCount():int {
+		public function get requiredParamsCount():int {
 			return 0;
 		}
 	}

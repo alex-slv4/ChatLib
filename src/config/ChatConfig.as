@@ -4,6 +4,7 @@
 package config {
 	import controller.ChatController;
 	import controller.commands.ClearCMCommand;
+	import controller.commands.RoomCreateCMCommand;
 	import controller.commands.TraceCMCommand;
 
 	import events.CMEvent;
@@ -49,6 +50,7 @@ package config {
 		private function mapCommands():void {
 			commandMap.map(CMEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CMEvent.CLEAR).toCommand(ClearCMCommand);
+			commandMap.map(CMEvent.CREATE_ROOM).toCommand(RoomCreateCMCommand);
 		}
 
 		private function mapView():void {
