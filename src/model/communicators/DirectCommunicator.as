@@ -36,8 +36,11 @@ package model.communicators {
 	}
 
 	override public function add(data:Object):void {
-		if((data as Message).receipt){
-			unreadCount++;
+		if(data is Message){
+			var message:Message = (data as Message);
+			if(message.receipt){
+				unreadCount++;
+			}
 		}
 		super.add(data);
 	}
