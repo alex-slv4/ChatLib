@@ -10,6 +10,7 @@ package events {
 
 		public static const HELP:String = "help";
 		public static const PRIVATE_MESSAGE:String = "privateMessage";
+		public static const ROOM_MESSAGE:String = "roomMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
 		public static const CREATE_ROOM:String = "roomCreate";

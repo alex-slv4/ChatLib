@@ -8,6 +8,7 @@ package controller.commands.muc {
 	import model.ChatModel;
 
 	import model.ChatRoom;
+	import model.communicators.ICommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.events.RoomEvent;
@@ -30,7 +31,8 @@ package controller.commands.muc {
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {
-			event;
+			var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(_chatRoom);
+			iCommunicator; //Room created
 		}
 
 		override public function get requiredParamsCount():int {

@@ -51,10 +51,7 @@ package model.communicators {
 			if(message.type == Message.TYPE_GROUPCHAT){
 				iCommunicator = _roomCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
-					iCommunicator = new DirectCommunicator(keyJID.unescaped, _model.currentUser);
-					_roomCommunications[key] = iCommunicator;
-					_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
-					_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+					throw new Error("No room for", key);
 				}
 			}else{
 				iCommunicator = _privateCommunications[key] as ICommunicator;

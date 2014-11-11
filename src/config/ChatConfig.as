@@ -8,6 +8,7 @@ package config {
 	import controller.commands.TraceCMCommand;
 	import controller.commands.muc.RoomCreateCMCommand;
 	import controller.commands.muc.RoomJoinCMCommand;
+	import controller.commands.muc.SendRoomMessageCMCommand;
 
 	import events.CommunicatorCommandEvent;
 
@@ -53,6 +54,7 @@ package config {
 			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CREATE_ROOM).toCommand(RoomCreateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.JOIN_ROOM).toCommand(RoomJoinCMCommand);
 		}
