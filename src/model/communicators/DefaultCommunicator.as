@@ -50,6 +50,12 @@ package model.communicators {
 			return _history;
 		}
 
+		public function clear():void {
+			_history = [];
+			_count = 0;
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.REPLACED, this));
+		}
+
 		override public function toString():String {
 			return "[DefaultCommunicator]";
 		}

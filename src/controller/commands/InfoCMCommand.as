@@ -15,9 +15,9 @@ package controller.commands {
 		override public function exec(...args):Boolean {
 			var result:Boolean = super.exec.apply(args);
 			if(result){
-				_communicator.add("Commands map:");
+				print("Commands map:");
 				for(var key:String in _commandMap) {
-					_communicator.add(key + " " + _commandMap[key]);
+					print(key, _commandMap[key]);
 				}
 			}
 			return result;
