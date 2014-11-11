@@ -2,18 +2,24 @@
  * Created by kvint on 01.11.14.
  */
 package config {
-import controller.ChatController;
+	import controller.ChatController;
+	import controller.commands.ClearCMCommand;
+	import controller.commands.TraceCMCommand;
 
-import model.ChatModel;
-import model.communicators.CommunicatorProvider;
-import model.communicators.ICommunicatorProvider;
+	import events.CMEvent;
 
-import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
-import robotlegs.bender.framework.api.IConfig;
-import robotlegs.bender.framework.api.IContext;
-import robotlegs.bender.framework.api.IInjector;
+	import model.ChatModel;
+	import model.communicators.CommunicatorProvider;
+	import model.communicators.ICommunicatorProvider;
 
-public class ChatConfig implements IConfig {
+	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.bender.framework.api.IConfig;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
+
+	public class ChatConfig implements IConfig {
 
 		[Inject]
 		public var context:IContext;
@@ -24,10 +30,15 @@ public class ChatConfig implements IConfig {
 		[Inject]
 		public var mediatorMap:IMediatorMap;
 
+		[Inject]
+		public var commandMap:IEventCommandMap;
+
 		public function configure():void {
 			mapMembership();
 			mapView();
+			mapCommands();
 		}
+
 
 		private function mapMembership():void {
 			injector.map(Chat).toSingleton(ChatClient);
@@ -35,9 +46,12 @@ public class ChatConfig implements IConfig {
 			injector.map(ChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
 		}
+		private function mapCommands():void {
+			commandMap.map(CMEvent.TRACE).toCommand(TraceCMCommand);
+			commandMap.map(CMEvent.CLEAR).toCommand(ClearCMCommand);
+		}
 
-		private function mapView():void
-		{
+		private function mapView():void {
 //			mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);
 			//mediatorMap.map(TeamCommunicatorView).toMediator(TeamCommunicatorMediator);
 			//mediatorMap.map(GlobalCommunicatorView).toMediator(GlobalCommunicatorMediator);

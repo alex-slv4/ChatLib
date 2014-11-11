@@ -5,8 +5,8 @@ package controller.commands {
 	import model.communicators.ICommunicator;
 
 	public interface ICMCommand {
-		function exec(...args):Boolean;
-		function get requiredArgsCount():int ;
-		function set communicator(value:ICommunicator):void;
+		function get requiredArgsCount():int;
+		function get communicator():ICommunicator;
+		function get params():Array;
 	}
 }

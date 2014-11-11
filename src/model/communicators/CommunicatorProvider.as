@@ -24,6 +24,7 @@ package model.communicators {
 		private var _model:ChatModel;
 		private var _controller:ChatController;
 		private var _privateCommunications:Dictionary = new Dictionary();
+		private var _roomCommunications:Dictionary = new Dictionary();
 
 		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
@@ -34,6 +35,9 @@ package model.communicators {
 				case Message:
 				case ChatMessage:
 					constructFunc = getCommunicatorForMessage;
+					break;
+				case String:
+					constructFunc = getCommunicatorForRoom;
 			}
 			return constructFunc(data);
 		}
@@ -57,6 +61,13 @@ package model.communicators {
 			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
 				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
+		}
+		private function getCommunicatorForRoom(roomName:String):ICommunicator {
+			var iCommunicator:ICommunicator = _roomCommunications[roomName] as ICommunicator;
+			if(iCommunicator == null){
+				iCommunicator = new RoomCommunicator(roomName);
+			}
+			return iCommunicator;
 		}
 		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {
 			var keyJID:UnescapedJID = item.jid;

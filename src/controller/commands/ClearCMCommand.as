@@ -4,13 +4,8 @@
 package controller.commands {
 	public class ClearCMCommand extends CMCommand {
 
-		override public function exec(...args):Boolean {
-			var result:Boolean = super.exec.apply(args);
-			if(result){
-				_communicator.clear();
-			}
-			return result;
+		override protected function _execute():void {
+			communicator.clear();
 		}
-
 	}
 }

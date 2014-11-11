@@ -2,24 +2,39 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package controller.commands {
+	import events.CMEvent;
+
 	import model.communicators.ICommunicator;
 	import model.data.ListData;
 
-	public class CMCommand implements ICMCommand {
+	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
-		protected var _communicator:ICommunicator;
+	public class CMCommand implements ICommand, ICMCommand{
 
-		public function exec(...args):Boolean {
-			if(_communicator == null){
-				return false;
+		[Inject]
+		public var event:CMEvent;
+
+		public function execute():void {
+			if(!hasErrors()){
+				_execute();
 			}
-			if(args.length < this.requiredArgsCount){
-				error("args expected", this.requiredArgsCount, "got", args.length);
-				return false;
-			}
-			return true;
 		}
 
+		protected function _execute():void {
+
+		}
+
+		public function hasErrors():Boolean {
+			var result:Boolean;
+			if(communicator == null){
+				result = false;
+			}
+			if(params.length < this.requiredArgsCount){
+				error("params expected", this.requiredArgsCount, "got", params.length);
+				result = false;
+			}
+			return result;
+		}
 		protected function print(...args):void {
 			args.unshift(0);
 			write.apply(this, args);
@@ -32,10 +47,14 @@ package controller.commands {
 		public function write(type:int, ...args):void {
 			//TODO: use type as ListData type
 			var prefix:String = type == 1 ? "error" : "";
-			_communicator.add(new ListData(prefix + " " + args.join(" ")));
+			communicator.add(new ListData(prefix + " " + args.join(" ")));
 		}
-		public function set communicator(value:ICommunicator):void {
-			_communicator = value;
+		public function get communicator():ICommunicator {
+			return event.communicator;
+		}
+
+		public function get params():Array {
+			return event.params;
 		}
 
 		public function get requiredArgsCount():int {
