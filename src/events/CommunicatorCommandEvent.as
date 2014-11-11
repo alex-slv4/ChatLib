@@ -6,10 +6,10 @@ package events {
 
 	import model.communicators.ICommunicator;
 
-	public class CMEvent extends Event {
+	public class CommunicatorCommandEvent extends Event {
 
 		public static const HELP:String = "help";
-		public static const MESSAGE:String = "privateMessage";
+		public static const PRIVATE_MESSAGE:String = "privateMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
 		public static const CREATE_ROOM:String = "roomCreate";
@@ -17,7 +17,7 @@ package events {
 		private var _communicator:ICommunicator;
 		private var _params:Array;
 
-		public function CMEvent(type:String, communicator:ICommunicator, params:Array) {
+		public function CommunicatorCommandEvent(type:String, communicator:ICommunicator, params:Array) {
 			super(type, false, false);
 			_params = params;
 			_communicator = communicator;

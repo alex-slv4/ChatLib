@@ -2,7 +2,7 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package controller.commands {
-	import events.CMEvent;
+	import events.CommunicatorCommandEvent;
 
 	import model.communicators.ICommunicator;
 	import model.data.ListData;
@@ -12,7 +12,7 @@ package controller.commands {
 	public class CMCommand implements ICommand, ICMCommand{
 
 		[Inject]
-		public var event:CMEvent;
+		public var event:CommunicatorCommandEvent;
 
 		public function execute():void {
 			if(!hasErrors()){
