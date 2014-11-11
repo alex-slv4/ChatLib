@@ -5,8 +5,9 @@ package config {
 	import controller.ChatController;
 	import controller.commands.ClearCMCommand;
 	import controller.commands.SendPrivateMessageCMCommand;
-	import controller.commands.RoomCreateCMCommand;
 	import controller.commands.TraceCMCommand;
+	import controller.commands.muc.RoomCreateCMCommand;
+	import controller.commands.muc.RoomJoinCMCommand;
 
 	import events.CommunicatorCommandEvent;
 
@@ -53,6 +54,7 @@ package config {
 			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CREATE_ROOM).toCommand(RoomCreateCMCommand);
+			commandMap.map(CommunicatorCommandEvent.JOIN_ROOM).toCommand(RoomJoinCMCommand);
 		}
 
 		private function mapView():void {

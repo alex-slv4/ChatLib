@@ -1,16 +1,15 @@
 /**
  * Created by AlexanderSla on 11.11.2014.
  */
-package controller.commands {
+package controller.commands.muc {
 	import controller.ChatController;
+	import controller.commands.*;
 
 	import model.ChatModel;
 	import model.ChatRoom;
 	import model.communicators.ICommunicator;
-	import model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.data.forms.FormExtension;
-
 	import org.igniterealtime.xiff.events.RoomEvent;
 
 	public class RoomCreateCMCommand extends CMCommand {
@@ -41,7 +40,7 @@ package controller.commands {
 
 		private function onRoomConfigureComplete(event:RoomEvent):void {
 			var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(_chatRoom);
-			iCommunicator;
+//			iCommunicator.activate();
 		}
 
 		override public function get requiredParamsCount():int {

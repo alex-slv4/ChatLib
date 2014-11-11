@@ -13,6 +13,7 @@ package events {
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
 		public static const CREATE_ROOM:String = "roomCreate";
+		public static const JOIN_ROOM:String = "joinRoom";
 
 		private var _communicator:ICommunicator;
 		private var _params:Array;

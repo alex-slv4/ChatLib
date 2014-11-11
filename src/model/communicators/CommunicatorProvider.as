@@ -44,16 +44,24 @@ package model.communicators {
 		}
 
 		private function getCommunicatorForMessage(message:Message):ICommunicator {
-			if(message.type == Message.TYPE_GROUPCHAT){
-				throw  new Error("Implement");
-			}
 			var isCurrentUserMessage:Boolean = message.from.equals(_model.currentUser.jid.escaped, true);
 			var keyJID:EscapedJID = isCurrentUserMessage ? message.to : message.from;
+			var iCommunicator:ICommunicator;
 			var key:String = keyJID.bareJID;
-			var iCommunicator:ICommunicator = _privateCommunications[key] as ICommunicator;
-			if(iCommunicator == null){
-				iCommunicator = new DirectCommunicator(keyJID.unescaped, _model.currentUser);
-				addCommunicator(key, iCommunicator);
+			if(message.type == Message.TYPE_GROUPCHAT){
+				iCommunicator = _roomCommunications[key] as ICommunicator;
+				if(iCommunicator == null){
+					iCommunicator = new DirectCommunicator(keyJID.unescaped, _model.currentUser);
+					_roomCommunications[key] = iCommunicator;
+					_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
+					_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+				}
+			}else{
+				iCommunicator = _privateCommunications[key] as ICommunicator;
+				if(iCommunicator == null){
+					iCommunicator = new DirectCommunicator(keyJID.unescaped, _model.currentUser);
+					addCommunicator(key, iCommunicator);
+				}
 			}
 			return iCommunicator;
 		}
@@ -66,11 +74,11 @@ package model.communicators {
 			}
 		}
 		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
-			var roomName:String = chatRoom.room.roomName;
-			var iCommunicator:ICommunicator = _roomCommunications[roomName] as ICommunicator;
+			var key:String = chatRoom.room.roomJID.bareJID;
+			var iCommunicator:ICommunicator = _roomCommunications[key] as ICommunicator;
 			if(iCommunicator == null){
 				iCommunicator = new RoomCommunicator(chatRoom);
-				_roomCommunications[roomName] = iCommunicator;
+				_roomCommunications[key] = iCommunicator;
 				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
@@ -90,6 +98,9 @@ package model.communicators {
 		public function getAll():Vector.<ICommunicator> {
 			var result:Vector.<ICommunicator> = new <ICommunicator>[];
 			for each (var communicator:ICommunicator in _privateCommunications) {
+				result.push(communicator);
+			}
+			for each (var communicator:ICommunicator in _roomCommunications) {
 				result.push(communicator);
 			}
 			return result;
