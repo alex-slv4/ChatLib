@@ -93,7 +93,7 @@ public class CommunicatorProvider implements ICommunicatorProvider {
 			for each (var communicator:ICommunicator in _privateCommunications) {
 				result.push(communicator);
 			}
-			for each (var communicator:ICommunicator in _roomCommunications) {
+			for each (communicator in _roomCommunications) {
 				result.push(communicator);
 			}
 			return result;
