@@ -31,5 +31,6 @@ package model.communicators {
 
 		function clear():void;
 
+		function destroy():void;
 	}
 }

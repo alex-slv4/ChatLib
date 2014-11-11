@@ -9,6 +9,7 @@ package model.communicators {
 	import flash.utils.Dictionary;
 
 	import model.ChatModel;
+	import model.ChatRoom;
 	import model.data.ChatMessage;
 
 	import org.as3commons.lang.DictionaryUtils;
@@ -36,14 +37,16 @@ package model.communicators {
 				case ChatMessage:
 					constructFunc = getCommunicatorForMessage;
 					break;
-				case String:
+				case ChatRoom:
 					constructFunc = getCommunicatorForRoom;
 			}
 			return constructFunc(data);
 		}
 
 		private function getCommunicatorForMessage(message:Message):ICommunicator {
-			//TODO: MUC
+			if(message.type == Message.TYPE_GROUPCHAT){
+				throw  new Error("Implement");
+			}
 			var isCurrentUserMessage:Boolean = message.from.equals(_model.currentUser.jid.escaped, true);
 			var keyJID:EscapedJID = isCurrentUserMessage ? message.to : message.from;
 			var key:String = keyJID.bareJID;
@@ -62,10 +65,14 @@ package model.communicators {
 				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
 		}
-		private function getCommunicatorForRoom(roomName:String):ICommunicator {
+		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
+			var roomName:String = chatRoom.room.roomName;
 			var iCommunicator:ICommunicator = _roomCommunications[roomName] as ICommunicator;
 			if(iCommunicator == null){
-				iCommunicator = new RoomCommunicator(roomName);
+				iCommunicator = new RoomCommunicator(chatRoom);
+				_roomCommunications[roomName] = iCommunicator;
+				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
+				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
 			return iCommunicator;
 		}

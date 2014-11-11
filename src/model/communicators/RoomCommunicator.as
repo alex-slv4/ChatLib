@@ -6,12 +6,18 @@ package model.communicators {
 
 	public class RoomCommunicator extends DefaultCommunicator {
 
-		private var _name:String;
 		private var _chatRoom:ChatRoom;
 
-		public function RoomCommunicator(name:String) {
-			_name = name;
-			_chatRoom = new ChatRoom();
+		public function RoomCommunicator(chatRoom:ChatRoom) {
+			_chatRoom = chatRoom;
+		}
+
+		override public function get type():int {
+			return CommunicatorType.MUC;
+		}
+
+		override public function get label():String {
+			return _chatRoom.room.roomName;
 		}
 
 		public function get chatRoom():ChatRoom {
