@@ -9,6 +9,7 @@ package events {
 	public class CMEvent extends Event {
 
 		public static const HELP:String = "help";
+		public static const MESSAGE:String = "privateMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
 		public static const CREATE_ROOM:String = "roomCreate";

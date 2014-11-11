@@ -4,6 +4,7 @@
 package config {
 	import controller.ChatController;
 	import controller.commands.ClearCMCommand;
+	import controller.commands.SendPrivateMessageCMCommand;
 	import controller.commands.RoomCreateCMCommand;
 	import controller.commands.TraceCMCommand;
 
@@ -48,6 +49,7 @@ package config {
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
 		}
 		private function mapCommands():void {
+			commandMap.map(CMEvent.MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CMEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CMEvent.CLEAR).toCommand(ClearCMCommand);
 			commandMap.map(CMEvent.CREATE_ROOM).toCommand(RoomCreateCMCommand);

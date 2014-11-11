@@ -54,11 +54,9 @@ package controller {
 			switch (event.type){
 				case ChatModelEvent.COMMUNICATOR_ADDED:
 					communicator.addEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
-					communicator.addEventListener(CommunicatorEvent.ITEM_SENT, onMessageSent);
 					break;
 				case ChatModelEvent.COMMUNICATOR_REMOVED:
 					communicator.removeEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
-					communicator.removeEventListener(CommunicatorEvent.ITEM_SENT, onMessageSent);
 					break;
 				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
 					chatModel.activeCommunicator = communicator;
@@ -71,8 +69,7 @@ package controller {
 			chatModel.roster = _roster;
 		}
 
-		private function onMessageSent(event:CommunicatorEvent):void {
-			var message:ChatMessage = event.data as ChatMessage;
+		public function sendMessage(message:ChatMessage):void {
 			//Append receipt data
 			requestReceipt(message);
 
