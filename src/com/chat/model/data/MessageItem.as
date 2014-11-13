@@ -18,7 +18,7 @@ package com.chat.model.data {
 		}
 
 		public function get from():Object {
-			return null;
+			return _data.from;
 		}
 
 		public function get body():Object {

@@ -265,7 +265,7 @@ package org.igniterealtime.xiff.im
 
 		private function fixJIDDomainIfNeeded(item:RosterItem):void {
 			if(item.jid.domain == null || item.jid.domain == ""){
-				item.jid = new UnescapedJID(item.jid.node + "@" + connection.server + "/" + item.jid.resource).escaped;
+				item.jid = new UnescapedJID(item.jid.node + "@" + connection.domain + "/" + item.jid.resource).escaped;
 			}
 		}
 
