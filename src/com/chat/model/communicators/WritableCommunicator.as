@@ -35,6 +35,7 @@ package com.chat.model.communicators {
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
 			commandsMap["/muc"] = CommunicatorCommandEvent.CREATE_ROOM;
 			commandsMap["/join"] = CommunicatorCommandEvent.JOIN_ROOM;
+			commandsMap["/add"] = CommunicatorCommandEvent.ADD;
 			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
 		}
 
@@ -61,12 +62,15 @@ package com.chat.model.communicators {
 				var params:Array = body.split(ARG_DELIMITER);
 				params.shift();
 				var event:String = commandsMap[commandName];
-				if(event == CommunicatorCommandEvent.HELP){
-					dispatch(new CommunicatorCommandEvent(event, this, [commandsMap]));
-				}else{
-					dispatch(new CommunicatorCommandEvent(event, this, params));
+
+				if (event != null) {
+					if (event == CommunicatorCommandEvent.HELP) {
+						dispatch(new CommunicatorCommandEvent(event, this, [commandsMap]));
+					} else {
+						dispatch(new CommunicatorCommandEvent(event, this, params));
+					}
+					success = true;
 				}
-				success = true;
 			}
 			return success;
 		}
