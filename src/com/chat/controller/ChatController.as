@@ -84,9 +84,6 @@ use namespace archive_internal;
 			connection.send(message);
 
 			message.receipt = null;
-
-			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-			//communicator.add(message);
 		}
 
 		override protected function onMessageCome(event:MessageEvent):void {

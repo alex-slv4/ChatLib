@@ -35,10 +35,14 @@ package com.chat.controller.commands {
 				result = true;
 			}
 			if (params.length < this.requiredParamsCount) {
-				error("params expected", this.requiredParamsCount, "got", params.length);
+				onParamsError();
 				result = true;
 			}
 			return result;
+		}
+
+		protected function onParamsError():void {
+			error("params expected", this.requiredParamsCount, "got", params.length);
 		}
 
 		protected function print(...args):void {

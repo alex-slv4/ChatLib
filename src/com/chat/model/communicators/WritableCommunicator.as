@@ -33,8 +33,7 @@ package com.chat.model.communicators {
 		public function WritableCommunicator() {
 			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
-			commandsMap["/muc"] = CommunicatorCommandEvent.CREATE_ROOM;
-			commandsMap["/join"] = CommunicatorCommandEvent.JOIN_ROOM;
+			commandsMap["/muc"] = CommunicatorCommandEvent.ROOM;
 			commandsMap["/add"] = CommunicatorCommandEvent.ADD;
 			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
 		}
