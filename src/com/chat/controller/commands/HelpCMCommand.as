@@ -11,6 +11,7 @@ package com.chat.controller.commands {
 		override protected function _execute():void {
 			var commandsMap:Dictionary = params[0];
 			var keys:Array = DictionaryUtils.getKeys(commandsMap);
+			print(communicator);
 			for (var i:int = 0; i < keys.length; i++) {
 				print(keys[i]);
 			}

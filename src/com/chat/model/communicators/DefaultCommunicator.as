@@ -59,7 +59,7 @@ package com.chat.model.communicators {
 		}
 
 		override public function toString():String {
-			return "[DefaultCommunicator]";
+			return super.toString();
 		}
 
 		public function push(data:ICItem):void {
