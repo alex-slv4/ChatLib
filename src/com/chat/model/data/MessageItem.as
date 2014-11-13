@@ -28,5 +28,9 @@ package com.chat.model.data {
 		public function get isRead():Boolean {
 			return _isRead;
 		}
+
+		public function get data():Message {
+			return _data;
+		}
 	}
 }

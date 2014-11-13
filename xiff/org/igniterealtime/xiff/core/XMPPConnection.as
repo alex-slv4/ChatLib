@@ -505,7 +505,7 @@ package org.igniterealtime.xiff.core
 				return;
 			}
 
-			var iq:IQ = new IQ( new EscapedJID( server ), IQ.TYPE_GET, null, sendKeepAlive_response, sendKeepAlive_error );
+			var iq:IQ = new IQ( new EscapedJID( domain ), IQ.TYPE_GET, null, sendKeepAlive_response, sendKeepAlive_error );
 			iq.addExtension( new PingExtension() );
 			send( iq );
 		}

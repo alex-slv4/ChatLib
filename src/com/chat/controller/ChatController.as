@@ -7,7 +7,8 @@ import com.chat.events.CommunicatorEvent;
 import com.chat.model.ChatModel;
 import com.chat.model.ChatUser;
 import com.chat.model.communicators.ICommunicator;
-import com.chat.model.data.ChatMessage;
+	import com.chat.model.data.CIString;
+	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.MessageItem;
 
 	import flash.events.Event;
@@ -93,7 +94,11 @@ use namespace archive_internal;
 			handleReceiptReceived(message);
 			if(message.type != null) {
 				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-				communicator.push(new MessageItem(event.data));
+				if(message.body == null){
+					communicator.push(new CIString(message.state));
+				}else{
+					communicator.push(new MessageItem(event.data));
+				}
 			}
 		}
 
