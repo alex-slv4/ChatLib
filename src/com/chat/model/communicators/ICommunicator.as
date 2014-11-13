@@ -26,7 +26,10 @@ import com.chat.model.data.ChatMessage;
 
 		function get unreadCount():int;
 
-		function markAsRead(ackMessage:ChatMessage):Boolean;
+		function push(data:ICItem):void;
+
+//		function markAsRead(ackMessage:ChatMessage):Boolean;
+		function markAsRead(ackMessage:ICItem):Boolean;
 
 		function clear():void;
 

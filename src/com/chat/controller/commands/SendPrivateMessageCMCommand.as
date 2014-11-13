@@ -2,13 +2,13 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.controller.commands {
-import com.chat.controller.ChatController;
-import com.chat.model.communicators.DirectCommunicator;
-import com.chat.model.data.ChatMessage;
+	import com.chat.controller.ChatController;
+	import com.chat.model.communicators.DirectCommunicator;
+	import com.chat.model.data.ChatMessage;
 
-import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Message;
 
-public class SendPrivateMessageCMCommand extends CMCommand {
+	public class SendPrivateMessageCMCommand extends CMCommand {
 
 		[Inject]
 		public var chatController:ChatController;

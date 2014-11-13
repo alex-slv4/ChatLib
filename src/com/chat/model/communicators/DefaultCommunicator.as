@@ -5,7 +5,6 @@ package com.chat.model.communicators {
 	import com.chat.controller.ChatController;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
-	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
 
 	import flash.events.EventDispatcher;
@@ -20,7 +19,7 @@ package com.chat.model.communicators {
 
 		protected var _label:String;
 		private var _count:int = 0;
-		private var _items:Vector.<ICItem> = new <ICItem>[];
+		protected var _items:Vector.<ICItem> = new <ICItem>[];
 
 		public function DefaultCommunicator() {
 		}
@@ -32,16 +31,11 @@ package com.chat.model.communicators {
 			return _label ? _label : toString();
 		}
 
-		public function add(data:ICItem):void {
-			_items.push(data);
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
-		}
-
-		public function markAsRead(ackMessage:ChatMessage):Boolean {
-			if(ackMessage.receipt){
+		public function markAsRead(ackMessage:ICItem):Boolean {
+			/*if(ackMessage.receipt){
 				dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_RECEIPT_REPLIED, ackMessage));
 				return true;
-			}
+			}*/
 			return false;
 		}
 
@@ -66,6 +60,11 @@ package com.chat.model.communicators {
 
 		override public function toString():String {
 			return "[DefaultCommunicator]";
+		}
+
+		public function push(data:ICItem):void {
+			_items.push(data);
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
 		public function destroy():void {

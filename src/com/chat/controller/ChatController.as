@@ -8,8 +8,9 @@ import com.chat.model.ChatModel;
 import com.chat.model.ChatUser;
 import com.chat.model.communicators.ICommunicator;
 import com.chat.model.data.ChatMessage;
+	import com.chat.model.data.MessageItem;
 
-import flash.events.Event;
+	import flash.events.Event;
 
 import org.igniterealtime.xiff.core.Browser;
 import org.igniterealtime.xiff.core.EscapedJID;
@@ -89,22 +90,9 @@ use namespace archive_internal;
 
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:ChatMessage = ChatMessage.createFromBase(event.data);
-			event.data = message;
 			handleReceiptReceived(message);
-			switch (message.type) {
-				case Message.TYPE_CHAT:
-				case Message.TYPE_GROUPCHAT:
-					if(message.body == null){
-						//TODO: fix it
-						trace("message skip", message.id);
-						return;
-					}
-					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-					//communicator.add(message);
-					break;
-				default :
-					super.onMessageCome(event);
-			}
+			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
+			communicator.push(new MessageItem(event.data));
 		}
 
 		private function requestReceipt(message:ChatMessage):void {

@@ -2,9 +2,9 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.model.communicators {
-import com.chat.model.ChatRoom;
+	import com.chat.model.ChatRoom;
 
-public class RoomCommunicator extends DefaultCommunicator {
+	public class RoomCommunicator extends WritableCommunicator {
 
 		private var _chatRoom:ChatRoom;
 

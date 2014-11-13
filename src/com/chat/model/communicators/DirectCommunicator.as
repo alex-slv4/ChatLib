@@ -2,14 +2,16 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
+	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
+	import com.chat.model.data.MessageItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.Message;
 
-	public class DirectCommunicator extends DefaultCommunicator {
+	public class DirectCommunicator extends WritableCommunicator {
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;
@@ -24,7 +26,7 @@ package com.chat.model.communicators {
 			return CommunicatorType.DIRECT;
 		}
 
-		override public function markAsRead(ackMessage:ChatMessage):Boolean {
+		override public function markAsRead(ackMessage:ICItem):Boolean {
 			var messageMarked:Boolean = super.markAsRead(ackMessage);
 			if(messageMarked) {
 				unreadCount--;
@@ -32,14 +34,21 @@ package com.chat.model.communicators {
 			return messageMarked;
 		}
 
-		override public function add(data:ICItem):void {
-			if(data is Message) {
+		override public function send(data:Object):void {
+			/*if(data is Message) {
 				var message:Message = (data as Message);
 				if(message.receipt) {
 					unreadCount++;
 				}
-			}
-			super.add(data);
+			}*/
+			var message:ChatMessage = new ChatMessage(_participant.escaped);
+			message.type = Message.TYPE_CHAT;
+			message.from = _chatUser.jid.escaped;
+			message.body = String(data);
+
+			controller.sendMessage(message);
+
+			push(new MessageItem(message));
 		}
 
 		public function get participant():UnescapedJID {
@@ -48,6 +57,11 @@ package com.chat.model.communicators {
 
 		public function get chatUser():ChatUser {
 			return _chatUser;
+		}
+
+		public function add(data:ICItem):void {
+			_items.push(data);
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 	}
 }
