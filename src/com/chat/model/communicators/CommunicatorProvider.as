@@ -2,10 +2,10 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package com.chat.model.communicators {
+	import com.chat.controller.ChatController;
 	import com.chat.events.ChatModelEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
-	import com.chat.model.IChatModel;
 	import com.chat.model.data.ChatMessage;
 
 	import flash.utils.Dictionary;
@@ -27,7 +27,7 @@ package com.chat.model.communicators {
 		public var injector:IInjector;
 
 		[Inject]
-		public var _model:ChatModel;
+		public var model:ChatModel;
 
 		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
@@ -48,7 +48,7 @@ package com.chat.model.communicators {
 		}
 
 		private function getCommunicatorForMessage(message:Message):ICommunicator {
-			var isCurrentUserMessage:Boolean = message.from.equals(_model.currentUser.jid.escaped, true);
+			var isCurrentUserMessage:Boolean = message.from.equals(model.currentUser.jid.escaped, true);
 			var keyJID:EscapedJID = isCurrentUserMessage ? message.to : message.from;
 			var iCommunicator:ICommunicator;
 			var key:String = keyJID.bareJID;
@@ -60,7 +60,7 @@ package com.chat.model.communicators {
 			}else{
 				iCommunicator = _privateCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
-					iCommunicator = new DirectCommunicator(keyJID.unescaped, _model.currentUser);
+					iCommunicator = new DirectCommunicator(keyJID.unescaped, model.currentUser);
 					addCommunicator(key, iCommunicator);
 				}
 			}
@@ -69,9 +69,9 @@ package com.chat.model.communicators {
 
 		private function addCommunicator(key:String, iCommunicator:ICommunicator):void {
 			_privateCommunications[key] = iCommunicator;
-			_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
+			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
-				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
 		}
 		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
@@ -80,8 +80,8 @@ package com.chat.model.communicators {
 			if(iCommunicator == null){
 				iCommunicator = new RoomCommunicator(chatRoom);
 				_roomCommunications[key] = iCommunicator;
-				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
-				_model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
+				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
 			}
 			return iCommunicator;
 		}
@@ -90,7 +90,7 @@ package com.chat.model.communicators {
 			var key:String = keyJID.bareJID;
 			var iCommunicator:ICommunicator = _privateCommunications[key] as ICommunicator;
 			if(iCommunicator == null){
-				iCommunicator = new DirectCommunicator(keyJID, _model.currentUser);
+				iCommunicator = new DirectCommunicator(keyJID, model.currentUser);
 				addCommunicator(key, iCommunicator);
 			}
 			return iCommunicator;

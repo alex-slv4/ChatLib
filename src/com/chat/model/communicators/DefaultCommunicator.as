@@ -2,13 +2,21 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
-import com.chat.events.CommunicatorEvent;
-import com.chat.model.data.ChatMessage;
+	import com.chat.controller.ChatController;
+	import com.chat.events.CommunicatorEvent;
+	import com.chat.model.ChatModel;
+	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
 
 	import flash.events.EventDispatcher;
 
-public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
+	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
+
+		[Inject]
+		public var model:ChatModel;
+
+		[Inject]
+		public var controller:ChatController;
 
 		protected var _label:String;
 		private var _count:int = 0;

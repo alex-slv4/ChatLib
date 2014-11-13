@@ -2,14 +2,14 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
-import com.chat.model.ChatUser;
-import com.chat.model.data.ChatMessage;
+	import com.chat.model.ChatUser;
+	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
-import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Message;
 
-public class DirectCommunicator extends DefaultCommunicator {
+	public class DirectCommunicator extends DefaultCommunicator {
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;

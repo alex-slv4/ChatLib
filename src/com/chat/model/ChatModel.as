@@ -10,6 +10,8 @@ import flash.utils.Dictionary;
 
 import org.igniterealtime.xiff.im.Roster;
 
+	import robotlegs.bender.framework.api.IInjector;
+
 	[Event(name="onCommunicatorAdded", type="com.chat.events.ChatModelEvent")]
 	[Event(name="onCommunicatorRemoved", type="com.chat.events.ChatModelEvent")]
 	[Event(name="onCommunicatorActivated", type="com.chat.events.ChatModelEvent")]
@@ -17,7 +19,7 @@ import org.igniterealtime.xiff.im.Roster;
 	public class ChatModel extends EventDispatcher {
 
 		[Inject]
-		public var provider:ICommunicatorProvider;
+		public var injector:IInjector;
 
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
@@ -46,6 +48,10 @@ import org.igniterealtime.xiff.im.Roster;
 
 		public function set activeCommunicator(value:ICommunicator):void {
 			_activeCommunicator = value;
+		}
+
+		public function get provider():ICommunicatorProvider {
+			return injector.getInstance(ICommunicatorProvider);
 		}
 	}
 }
