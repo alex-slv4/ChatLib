@@ -2,19 +2,25 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.controller.commands {
-import com.chat.events.CommunicatorCommandEvent;
-import com.chat.model.communicators.ICommunicator;
-import com.chat.model.data.ListData;
+	import com.chat.controller.ChatController;
+	import com.chat.events.CommunicatorCommandEvent;
+	import com.chat.model.ChatModel;
+	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.data.CIString;
 
-import robotlegs.bender.extensions.commandCenter.api.ICommand;
+	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
-public class CMCommand implements ICommand, ICMCommand{
+	public class CMCommand implements ICommand, ICMCommand {
 
 		[Inject]
 		public var event:CommunicatorCommandEvent;
+		[Inject]
+		public var chatModel:ChatModel;
+		[Inject]
+		public var chatController:ChatController;
 
 		public function execute():void {
-			if(!hasErrors()){
+			if (!hasErrors()) {
 				_execute();
 			}
 		}
@@ -25,29 +31,31 @@ public class CMCommand implements ICommand, ICMCommand{
 
 		public function hasErrors():Boolean {
 			var result:Boolean;
-			if(communicator == null){
+			if (communicator == null) {
 				result = true;
 			}
-			if(params.length < this.requiredParamsCount){
+			if (params.length < this.requiredParamsCount) {
 				error("params expected", this.requiredParamsCount, "got", params.length);
 				result = true;
 			}
 			return result;
 		}
+
 		protected function print(...args):void {
 			args.unshift(0);
 			write.apply(this, args);
 		}
+
 		protected function error(...args):void {
 			args.unshift(1);
 			write.apply(this, args);
 		}
 
 		public function write(type:int, ...args):void {
-			//TODO: use type as ListData type
 			var prefix:String = type == 1 ? "error" : "";
-			//communicator.add(new ListData(prefix + " " + args.join(" ")));
+			communicator.push(new CIString(prefix + " " + args.join(" ")));
 		}
+
 		public function get communicator():ICommunicator {
 			return event.communicator;
 		}

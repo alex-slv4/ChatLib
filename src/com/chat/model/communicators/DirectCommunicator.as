@@ -34,21 +34,25 @@ package com.chat.model.communicators {
 			return messageMarked;
 		}
 
-		override public function send(data:Object):void {
+		override public function send(data:Object):int {
+			var result:int = super.send(data);
 			/*if(data is Message) {
 				var message:Message = (data as Message);
 				if(message.receipt) {
 					unreadCount++;
 				}
 			}*/
-			var message:ChatMessage = new ChatMessage(_participant.escaped);
-			message.type = Message.TYPE_CHAT;
-			message.from = _chatUser.jid.escaped;
-			message.body = String(data);
+			if(result == SUCCESS){
+				var message:ChatMessage = new ChatMessage(_participant.escaped);
+				message.type = Message.TYPE_CHAT;
+				message.from = _chatUser.jid.escaped;
+				message.body = String(data);
 
-			controller.sendMessage(message);
+				controller.sendMessage(message);
 
-			push(new MessageItem(message));
+				push(new MessageItem(message));
+			}
+			return result;
 		}
 
 		public function get participant():UnescapedJID {

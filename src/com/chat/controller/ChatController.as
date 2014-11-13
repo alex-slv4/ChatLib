@@ -91,8 +91,10 @@ use namespace archive_internal;
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:ChatMessage = ChatMessage.createFromBase(event.data);
 			handleReceiptReceived(message);
-			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-			communicator.push(new MessageItem(event.data));
+			if(message.type != null) {
+				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
+				communicator.push(new MessageItem(event.data));
+			}
 		}
 
 		private function requestReceipt(message:ChatMessage):void {

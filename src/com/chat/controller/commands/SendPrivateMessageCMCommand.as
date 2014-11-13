@@ -10,9 +10,6 @@ package com.chat.controller.commands {
 
 	public class SendPrivateMessageCMCommand extends CMCommand {
 
-		[Inject]
-		public var chatController:ChatController;
-
 		override protected function _execute():void {
 			var message:ChatMessage = new ChatMessage(directCommunicatorData.participant.escaped);
 

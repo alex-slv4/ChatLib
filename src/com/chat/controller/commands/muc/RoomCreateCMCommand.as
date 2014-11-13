@@ -2,21 +2,15 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.controller.commands.muc {
-import com.chat.controller.ChatController;
-import com.chat.controller.commands.CMCommand;
-import com.chat.model.ChatModel;
-import com.chat.model.ChatRoom;
-import com.chat.model.communicators.ICommunicator;
+	import com.chat.controller.commands.CMCommand;
+	import com.chat.model.ChatRoom;
+	import com.chat.model.communicators.ICommunicator;
 
-import org.igniterealtime.xiff.data.forms.FormExtension;
-import org.igniterealtime.xiff.events.RoomEvent;
+	import org.igniterealtime.xiff.data.forms.FormExtension;
+	import org.igniterealtime.xiff.events.RoomEvent;
 
-public class RoomCreateCMCommand extends CMCommand {
+	public class RoomCreateCMCommand extends CMCommand {
 
-		[Inject]
-		public var chatModel:ChatModel;
-		[Inject]
-		public var chatController:ChatController;
 		private var _chatRoom:ChatRoom;
 
 		override protected function _execute():void {

@@ -6,6 +6,7 @@ package com.chat.config {
 	import com.chat.ChatClient;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.commands.ClearCMCommand;
+	import com.chat.controller.commands.HelpCMCommand;
 	import com.chat.controller.commands.SendPrivateMessageCMCommand;
 	import com.chat.controller.commands.TraceCMCommand;
 	import com.chat.controller.commands.muc.RoomCreateCMCommand;
@@ -58,6 +59,7 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CREATE_ROOM).toCommand(RoomCreateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.JOIN_ROOM).toCommand(RoomJoinCMCommand);
+			commandMap.map(CommunicatorCommandEvent.HELP).toCommand(HelpCMCommand);
 		}
 
 		private function mapView():void {

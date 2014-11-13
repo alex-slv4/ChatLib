@@ -2,7 +2,6 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
-import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
 
 	import flash.events.IEventDispatcher;
@@ -28,7 +27,6 @@ import com.chat.model.data.ChatMessage;
 
 		function push(data:ICItem):void;
 
-//		function markAsRead(ackMessage:ChatMessage):Boolean;
 		function markAsRead(ackMessage:ICItem):Boolean;
 
 		function clear():void;
