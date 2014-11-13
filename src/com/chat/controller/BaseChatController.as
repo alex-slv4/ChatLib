@@ -110,7 +110,7 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		public function get conferenceServer():String {
-			return "conference." + _connection.server;
+			return "conference." + _connection.domain;
 		}
 
 		public function connect(username:String, password:String):void {
