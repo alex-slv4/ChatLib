@@ -4,14 +4,15 @@
 package com.chat.model.communicators {
 import com.chat.events.CommunicatorEvent;
 import com.chat.model.data.ChatMessage;
+	import com.chat.model.data.ICItem;
 
-import flash.events.EventDispatcher;
+	import flash.events.EventDispatcher;
 
 public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
 		protected var _label:String;
 		private var _count:int = 0;
-		private var _history:Array = [];
+		private var _items:Vector.<ICItem> = new <ICItem>[];
 
 		public function DefaultCommunicator() {
 		}
@@ -23,8 +24,8 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 			return _label ? _label : toString();
 		}
 
-		public function add(data:Object):void {
-			_history.push(data);
+		public function add(data:ICItem):void {
+			_items.push(data);
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
@@ -45,12 +46,12 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 			return _count;
 		}
 
-		public function get history():Array {
-			return _history;
+		public function get items():Vector.<ICItem> {
+			return _items;
 		}
 
 		public function clear():void {
-			_history = [];
+			_items = new <ICItem>[];
 			_count = 0;
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.REPLACED, this));
 		}

@@ -4,8 +4,9 @@
 package com.chat.model.communicators {
 import com.chat.model.ChatUser;
 import com.chat.model.data.ChatMessage;
+	import com.chat.model.data.ICItem;
 
-import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.core.UnescapedJID;
 import org.igniterealtime.xiff.data.Message;
 
 public class DirectCommunicator extends DefaultCommunicator {
@@ -31,7 +32,7 @@ public class DirectCommunicator extends DefaultCommunicator {
 			return messageMarked;
 		}
 
-		override public function add(data:Object):void {
+		override public function add(data:ICItem):void {
 			if(data is Message) {
 				var message:Message = (data as Message);
 				if(message.receipt) {

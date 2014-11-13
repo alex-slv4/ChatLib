@@ -24,11 +24,6 @@ import org.igniterealtime.xiff.im.Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
 		private var _activeCommunicator:ICommunicator;
 
-		[PostConstruct]
-		public function init():void {
-			provider.chatModel = this;
-		}
-
 		public function get currentUser():ChatUser {
 			return _currentUser;
 		}

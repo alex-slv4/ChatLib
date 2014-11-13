@@ -2,26 +2,32 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package com.chat.model.communicators {
-import com.chat.controller.ChatController;
-import com.chat.events.ChatModelEvent;
-import com.chat.model.ChatModel;
-import com.chat.model.ChatRoom;
-import com.chat.model.data.ChatMessage;
+	import com.chat.events.ChatModelEvent;
+	import com.chat.model.ChatModel;
+	import com.chat.model.ChatRoom;
+	import com.chat.model.IChatModel;
+	import com.chat.model.data.ChatMessage;
 
-import flash.utils.Dictionary;
+	import flash.utils.Dictionary;
 
-import org.as3commons.lang.DictionaryUtils;
-import org.igniterealtime.xiff.core.EscapedJID;
-import org.igniterealtime.xiff.core.UnescapedJID;
-import org.igniterealtime.xiff.data.Message;
-import org.igniterealtime.xiff.data.im.RosterItemVO;
+	import org.as3commons.lang.DictionaryUtils;
+	import org.igniterealtime.xiff.core.EscapedJID;
+	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.im.RosterItemVO;
 
-public class CommunicatorProvider implements ICommunicatorProvider {
+	import robotlegs.bender.framework.api.IInjector;
 
-		private var _model:ChatModel;
-		private var _controller:ChatController;
+	public class CommunicatorProvider implements ICommunicatorProvider {
+
 		private var _privateCommunications:Dictionary = new Dictionary();
 		private var _roomCommunications:Dictionary = new Dictionary();
+
+		[Inject]
+		public var injector:IInjector;
+
+		[Inject]
+		public var _model:ChatModel;
 
 		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
@@ -36,7 +42,9 @@ public class CommunicatorProvider implements ICommunicatorProvider {
 				case ChatRoom:
 					constructFunc = getCommunicatorForRoom;
 			}
-			return constructFunc(data);
+			var iCommunicator:ICommunicator = constructFunc(data);
+			injector.injectInto(iCommunicator);
+			return iCommunicator;
 		}
 
 		private function getCommunicatorForMessage(message:Message):ICommunicator {
@@ -97,14 +105,6 @@ public class CommunicatorProvider implements ICommunicatorProvider {
 				result.push(communicator);
 			}
 			return result;
-		}
-
-		public function set chatModel(value:ChatModel):void {
-			_model = value;
-		}
-
-		public function set chatController(value:ChatController):void {
-			_controller = value;
 		}
 	}
 }

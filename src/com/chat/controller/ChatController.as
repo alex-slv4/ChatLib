@@ -72,7 +72,7 @@ use namespace archive_internal;
 			connection.send(message);
 
 			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-			communicator.add(message);
+			//communicator.add(message);
 		}
 		public function sendMessage(message:ChatMessage):void {
 			//Append receipt data
@@ -84,7 +84,7 @@ use namespace archive_internal;
 			message.receipt = null;
 
 			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-			communicator.add(message);
+			//communicator.add(message);
 		}
 
 		override protected function onMessageCome(event:MessageEvent):void {
@@ -100,7 +100,7 @@ use namespace archive_internal;
 						return;
 					}
 					var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-					communicator.add(message);
+					//communicator.add(message);
 					break;
 				default :
 					super.onMessageCome(event);

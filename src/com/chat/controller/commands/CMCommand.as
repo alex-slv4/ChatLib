@@ -46,7 +46,7 @@ public class CMCommand implements ICommand, ICMCommand{
 		public function write(type:int, ...args):void {
 			//TODO: use type as ListData type
 			var prefix:String = type == 1 ? "error" : "";
-			communicator.add(new ListData(prefix + " " + args.join(" ")));
+			//communicator.add(new ListData(prefix + " " + args.join(" ")));
 		}
 		public function get communicator():ICommunicator {
 			return event.communicator;
