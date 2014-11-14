@@ -6,20 +6,27 @@ package com.chat.controller.commands.muc {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatRoom;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.data.forms.FormExtension;
 	import org.igniterealtime.xiff.events.RoomEvent;
 
-	public class MUCCMCommand extends MacroCMCommand {
+	public class RoomCMCommand extends MacroCMCommand {
 
 		private var _chatRoom:ChatRoom;
 
-		public function MUCCMCommand() {
-			subCommands["info"] = CommunicatorCommandEvent.TRACE;
-			subCommands["join"] = CommunicatorCommandEvent.TRACE;
-			subCommands["create"] = CommunicatorCommandEvent.TRACE;
+		public function RoomCMCommand() {
+			subCommands["join"] = CommunicatorCommandEvent.ROOM_JOIN;
+			subCommands["create"] = CommunicatorCommandEvent.ROOM_CREATE;
 		}
 
+
+		override public function execute():void {
+			if(communicator is RoomCommunicator){
+				subCommands["info"] = CommunicatorCommandEvent.ROOM_INFO;
+			}
+			super.execute();
+		}
 
 		/*_chatRoom = new ChatRoom();
 		 _chatRoom.chatManager = chatController;

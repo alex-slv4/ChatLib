@@ -5,15 +5,17 @@ package com.chat.config {
 	import com.chat.Chat;
 	import com.chat.ChatClient;
 	import com.chat.controller.ChatController;
-	import com.chat.controller.commands.AddUserCMCommand;
 	import com.chat.controller.commands.ClearCMCommand;
 	import com.chat.controller.commands.HelpCMCommand;
+	import com.chat.controller.commands.roster.AddUserCMCommand;
+	import com.chat.controller.commands.roster.RosterCMCommand;
 	import com.chat.controller.commands.SendPrivateMessageCMCommand;
 	import com.chat.controller.commands.TraceCMCommand;
-	import com.chat.controller.commands.muc.MUCCMCommand;
+	import com.chat.controller.commands.muc.RoomCMCommand;
 	import com.chat.controller.commands.muc.RoomInfoCMCommand;
 	import com.chat.controller.commands.muc.RoomJoinCMCommand;
 	import com.chat.controller.commands.muc.SendRoomMessageCMCommand;
+	import com.chat.controller.commands.roster.RosterInfoCommand;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.communicators.CommunicatorProvider;
@@ -56,12 +58,16 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);
+			commandMap.map(CommunicatorCommandEvent.HELP).toCommand(HelpCMCommand);
+
+			commandMap.map(CommunicatorCommandEvent.ROOM).toCommand(RoomCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_INFO).toCommand(RoomInfoCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM).toCommand(MUCCMCommand);
-			commandMap.map(CommunicatorCommandEvent.JOIN_ROOM).toCommand(RoomJoinCMCommand);
-			commandMap.map(CommunicatorCommandEvent.HELP).toCommand(HelpCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ADD).toCommand(AddUserCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROOM_JOIN).toCommand(RoomJoinCMCommand);
+
+			commandMap.map(CommunicatorCommandEvent.ROSTER).toCommand(RosterCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROSTER_ADD).toCommand(AddUserCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROSTER_INFO).toCommand(RosterInfoCommand);
 		}
 
 		private function mapView():void {

@@ -11,7 +11,15 @@ package com.chat.model.communicators {
 
 		public function RoomCommunicator(chatRoom:ChatRoom) {
 			_chatRoom = chatRoom;
-			commandsMap["/info"] = CommunicatorCommandEvent.ROOM_INFO;
+			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
+		}
+
+		override public function send(data:Object):int {
+			var result:int = super.send(data);
+			if(result == SUCCESS){
+				dispatch(CommunicatorCommandEvent.ROOM_MESSAGE, [data]);
+			}
+			return result;
 		}
 
 		override public function get type():int {

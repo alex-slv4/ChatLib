@@ -10,7 +10,6 @@ package com.chat.controller.commands.muc {
 
 	public class SendRoomMessageCMCommand extends CMCommand {
 
-
 		override protected function _execute():void {
 			var messageText:String = params[0];
 			var message:ChatMessage = new ChatMessage();

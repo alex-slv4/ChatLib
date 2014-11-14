@@ -31,11 +31,11 @@ package com.chat.model.communicators {
 		 */
 
 		public function WritableCommunicator() {
-			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
+			commandsMap["/roster"] = CommunicatorCommandEvent.ROSTER;
+			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
-			commandsMap["/muc"] = CommunicatorCommandEvent.ROOM;
-			commandsMap["/add"] = CommunicatorCommandEvent.ADD;
 			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
+			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
 		}
 
 		public function send(data:Object):int {
@@ -60,13 +60,13 @@ package com.chat.model.communicators {
 				var commandName:String = StringUtils.trim(commands[0])
 				var params:Array = body.split(ARG_DELIMITER);
 				params.shift();
-				var event:String = commandsMap[commandName];
+				var eventName:String = commandsMap[commandName];
 
-				if (event != null) {
-					if (event == CommunicatorCommandEvent.HELP) {
-						dispatch(new CommunicatorCommandEvent(event, this, [commandsMap]));
+				if (eventName != null) {
+					if (eventName == CommunicatorCommandEvent.HELP) {
+						dispatch(eventName, [commandsMap]);
 					} else {
-						dispatch(new CommunicatorCommandEvent(event, this, params));
+						dispatch(eventName, params);
 					}
 					success = true;
 				}
@@ -74,8 +74,8 @@ package com.chat.model.communicators {
 			return success;
 		}
 
-		public function dispatch(e:Event):void {
-			eventDispatcher.dispatchEvent(e);
+		public function dispatch(eventName:String, params:Array):void {
+			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 	}
 }

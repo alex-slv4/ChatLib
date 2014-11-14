@@ -72,9 +72,6 @@ use namespace archive_internal;
 
 		public function sendRoomMessage(message:ChatMessage):void {
 			connection.send(message);
-
-			var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-			//communicator.add(message);
 		}
 		public function sendMessage(message:ChatMessage):void {
 			//Append receipt data

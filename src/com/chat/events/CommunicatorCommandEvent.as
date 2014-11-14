@@ -13,11 +13,15 @@ public class CommunicatorCommandEvent extends Event {
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
 
-		public static const ROOM_INFO:String = "infoMessage";
-		public static const ROOM_MESSAGE:String = "roomMessage";
 		public static const ROOM:String = "room";
-		public static const JOIN_ROOM:String = "joinRoom";
-		public static const ADD:String = "add";
+		public static const ROOM_CREATE:String = "roomCreate";
+		public static const ROOM_INFO:String = "roomInfo";
+		public static const ROOM_JOIN:String = "roomJoin";
+		public static const ROOM_MESSAGE:String = "roomMessage";
+
+		public static const ROSTER:String = "roster";
+		public static const ROSTER_ADD:String = "rosterAdd";
+		public static const ROSTER_INFO:String = "rosterInfo";
 
 		private var _communicator:ICommunicator;
 		private var _params:Array;

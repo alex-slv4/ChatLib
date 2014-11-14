@@ -2,9 +2,9 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.controller.commands {
-	import com.chat.controller.ChatController;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.ChatMessage;
+	import com.chat.model.data.MessageItem;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -16,6 +16,8 @@ package com.chat.controller.commands {
 			message.type = Message.TYPE_CHAT;
 			message.from = directCommunicatorData.chatUser.jid.escaped;
 			message.body = params[0];
+
+			directCommunicatorData.push(new MessageItem(message));
 
 			chatController.sendMessage(message);
 		}

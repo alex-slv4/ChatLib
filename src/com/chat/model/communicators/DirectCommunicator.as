@@ -2,6 +2,7 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
+	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.data.ChatMessage;
@@ -43,14 +44,7 @@ package com.chat.model.communicators {
 				}
 			}*/
 			if(result == SUCCESS){
-				var message:ChatMessage = new ChatMessage(_participant.escaped);
-				message.type = Message.TYPE_CHAT;
-				message.from = _chatUser.jid.escaped;
-				message.body = String(data);
-
-				controller.sendMessage(message);
-
-				push(new MessageItem(message));
+				dispatch(CommunicatorCommandEvent.PRIVATE_MESSAGE, [data]);
 			}
 			return result;
 		}
@@ -63,9 +57,5 @@ package com.chat.model.communicators {
 			return _chatUser;
 		}
 
-		public function add(data:ICItem):void {
-			_items.push(data);
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
-		}
 	}
 }

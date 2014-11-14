@@ -18,7 +18,8 @@ package com.chat.controller.commands {
 			printInfo();
 		}
 
-		private function printInfo():void {
+		protected function printInfo():void {
+			print(this);
 			var keys:Array = DictionaryUtil.getKeys(subCommands);
 			for (var i:int = 0; i < keys.length; i++) {
 				print(keys[i]);
@@ -38,10 +39,10 @@ package com.chat.controller.commands {
 		override protected function _execute():void {
 			var subCommandName:String = params[0];
 			var keys:Array = DictionaryUtil.getKeys(subCommands);
-			if (subCommandName in keys) {
+			if (keys.indexOf(subCommandName) != -1) {
 				runSubCommand(subCommandName);
 			} else {
-				error("MUCCMCommand failed");
+				error(this, "failed");
 			}
 		}
 	}
