@@ -4,6 +4,7 @@
 package com.chat.controller.commands {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
+	import com.chat.model.communicators.WritableCommunicator;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -12,42 +13,19 @@ package com.chat.controller.commands {
 
 	public class SendMessageStateCMCommand extends CMCommand {
 
-		private static const COMPOSING_DELAY:uint = 2500;
-		private static const PAUSED_DELAY:uint = 10000;
+		private static const PAUSED_DELAY:uint = 7000;
 
 		public static var STATE_TIMER_ID:uint;
 
 		override protected function executeIfNoErrors():void {
 			var state:String = params[0];
-			switch (state){
-
-				case Message.STATE_COMPOSING:
-					//send composing and start timer
-					clearTimeout(STATE_TIMER_ID);
-					sendState(Message.STATE_COMPOSING);
-					STATE_TIMER_ID = setTimeout(sendState, PAUSED_DELAY, Message.STATE_PAUSED);
-					break;
-
-				case Message.STATE_PAUSED:
-					//send paused and start timer
-					clearTimeout(STATE_TIMER_ID);
-					STATE_TIMER_ID = setTimeout(sendState, PAUSED_DELAY, Message.STATE_PAUSED);
-					break;
-
-				case Message.STATE_ACTIVE:
-					//send active
-					sendState(Message.STATE_ACTIVE);
-				case Message.STATE_GONE:
-					//send gone
-					sendState(Message.STATE_GONE);
-				case Message.STATE_INACTIVE:
-				default:
-					//send inactive
-					sendState(Message.STATE_INACTIVE);
-			}
+			sendState(state);
 		}
 
 		private function sendState(state:String):void {
+
+			clearTimeout(STATE_TIMER_ID);
+
 			var message:Message = new Message();
 			message.state = state;
 			message.from = model.currentUser.jid.escaped;
@@ -60,13 +38,16 @@ package com.chat.controller.commands {
 				message.type = Message.TYPE_GROUPCHAT;
 			}
 
-			clearTimeout(STATE_TIMER_ID);
-			if(state == Message.STATE_COMPOSING){
-				STATE_TIMER_ID = setTimeout(sendState, COMPOSING_DELAY, Message.STATE_PAUSED);
-			}else if(state == Message.STATE_PAUSED){
-				STATE_TIMER_ID = setTimeout(sendState, PAUSED_DELAY, Message.STATE_ACTIVE);
+			if(state == Message.STATE_COMPOSING) {
+				STATE_TIMER_ID = setTimeout(function():void{
+					writableCommunicator.state = Message.STATE_PAUSED;
+				}, PAUSED_DELAY);
 			}
 			controller.connection.send(message);
+		}
+
+		private function get writableCommunicator():WritableCommunicator {
+			return communicator as WritableCommunicator;
 		}
 
 		private function get roomCommunicator():RoomCommunicator {

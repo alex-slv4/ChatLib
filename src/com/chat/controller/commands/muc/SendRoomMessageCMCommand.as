@@ -3,8 +3,11 @@
  */
 package com.chat.controller.commands.muc {
 	import com.chat.controller.commands.CMCommand;
+	import com.chat.controller.commands.SendMessageStateCMCommand;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.data.ChatMessage;
+
+	import flash.utils.clearTimeout;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -17,6 +20,10 @@ package com.chat.controller.commands.muc {
 			message.from = model.currentUser.jid.escaped;
 			message.to = roomCommunicator.chatRoom.room.roomJID.escaped;
 			message.body = messageText;
+			message.state = Message.STATE_ACTIVE;
+
+			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
+
 			controller.sendRoomMessage(message);
 		}
 

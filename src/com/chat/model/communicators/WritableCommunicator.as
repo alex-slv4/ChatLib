@@ -20,6 +20,7 @@ package com.chat.model.communicators {
 		public static const BLANK_BODY:int = -1;
 		public static const SUCCESS:int = 0;
 		protected var commandsMap:Dictionary = new Dictionary();
+		private var _state:String;
 
 		[Inject]
 		public var eventDispatcher:IEventDispatcher;
@@ -76,6 +77,17 @@ package com.chat.model.communicators {
 
 		public function dispatch(eventName:String, params:Array):void {
 			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
+		}
+
+		public function get state():String {
+			return _state;
+		}
+
+		public function set state(value:String):void {
+			if(_state != value){
+				_state = value;
+				dispatch(CommunicatorCommandEvent.SEND_MESSAGE_STATE, [_state]);
+			}
 		}
 	}
 }
