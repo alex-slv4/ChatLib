@@ -2,11 +2,9 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package com.chat.model.communicators {
-	import com.chat.controller.ChatController;
 	import com.chat.events.ChatModelEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
-	import com.chat.model.data.ChatMessage;
 
 	import flash.utils.Dictionary;
 
@@ -36,7 +34,6 @@ package com.chat.model.communicators {
 					constructFunc = getCommunicatorForRoster;
 					break;
 				case Message:
-				case ChatMessage:
 					constructFunc = getCommunicatorForMessage;
 					break;
 				case ChatRoom:

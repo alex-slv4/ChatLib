@@ -22,9 +22,6 @@ package com.chat.model.communicators {
 		protected var commandsMap:Dictionary = new Dictionary();
 		private var _state:String;
 
-		[Inject]
-		public var eventDispatcher:IEventDispatcher;
-
 		/**
 		 *
 		 * @param data
@@ -73,10 +70,6 @@ package com.chat.model.communicators {
 				}
 			}
 			return success;
-		}
-
-		public function dispatch(eventName:String, params:Array):void {
-			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 
 		public function get state():String {

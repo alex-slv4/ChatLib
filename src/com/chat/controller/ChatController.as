@@ -2,31 +2,30 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.controller {
-import com.chat.events.ChatModelEvent;
-import com.chat.events.CommunicatorEvent;
-import com.chat.model.ChatModel;
-import com.chat.model.ChatUser;
-import com.chat.model.communicators.ICommunicator;
+	import com.chat.events.ChatModelEvent;
+	import com.chat.events.CommunicatorEvent;
+	import com.chat.model.ChatModel;
+	import com.chat.model.ChatUser;
+	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.CIString;
-	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.MessageItem;
 
 	import flash.events.Event;
 
-import org.igniterealtime.xiff.core.Browser;
-import org.igniterealtime.xiff.core.EscapedJID;
-import org.igniterealtime.xiff.data.IQ;
-import org.igniterealtime.xiff.data.Message;
-import org.igniterealtime.xiff.data.archive.RetrieveStanza;
-import org.igniterealtime.xiff.data.archive.archive_internal;
-import org.igniterealtime.xiff.data.disco.DiscoExtension;
-import org.igniterealtime.xiff.data.disco.DiscoFeature;
-import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
-import org.igniterealtime.xiff.events.LoginEvent;
-import org.igniterealtime.xiff.events.MessageEvent;
-import org.igniterealtime.xiff.util.DateTimeParser;
+	import org.igniterealtime.xiff.core.Browser;
+	import org.igniterealtime.xiff.core.EscapedJID;
+	import org.igniterealtime.xiff.data.IQ;
+	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
+	import org.igniterealtime.xiff.data.archive.archive_internal;
+	import org.igniterealtime.xiff.data.disco.DiscoExtension;
+	import org.igniterealtime.xiff.data.disco.DiscoFeature;
+	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
+	import org.igniterealtime.xiff.events.LoginEvent;
+	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.util.DateTimeParser;
 
-use namespace archive_internal;
+	use namespace archive_internal;
 
 	public class ChatController extends BaseChatController {
 
@@ -54,10 +53,8 @@ use namespace archive_internal;
 			var communicator:ICommunicator = event.data as ICommunicator;
 			switch (event.type){
 				case ChatModelEvent.COMMUNICATOR_ADDED:
-					communicator.addEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
 					break;
 				case ChatModelEvent.COMMUNICATOR_REMOVED:
-					communicator.removeEventListener(CommunicatorEvent.ITEM_RECEIPT_REPLIED, handleReceiptRequested);
 					break;
 				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
 					chatModel.activeCommunicator = communicator;
@@ -70,61 +67,15 @@ use namespace archive_internal;
 			chatModel.roster = _roster;
 		}
 
-		public function sendRoomMessage(message:ChatMessage):void {
+		public function sendRoomMessage(message:Message):void {
 			connection.send(message);
-		}
-		public function sendMessage(message:ChatMessage):void {
-			//Append receipt data
-			requestReceipt(message);
-
-			//Send the message
-			connection.send(message);
-
-			message.receipt = null;
 		}
 
 		override protected function onMessageCome(event:MessageEvent):void {
-			var message:ChatMessage = ChatMessage.createFromBase(event.data);
-			handleReceiptReceived(message);
+			var message:Message = event.data;
 			if(message.type != null) {
 				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-				if(message.body == null){
-					communicator.push(new CIString(message.state));
-				}else{
-					communicator.push(new MessageItem(event.data));
-				}
-			}
-		}
-
-		private function requestReceipt(message:ChatMessage):void {
-			message.receipt = Message.RECEIPT_REQUEST;
-			chatModel.receiptRequests[message.id] = message;
-		}
-
-		private function handleReceiptReceived(ackMessage:ChatMessage):void {
-			if (ackMessage.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
-				var receiptMessage:ChatMessage = chatModel.receiptRequests[ackMessage.receiptId];
-				if (receiptMessage) {
-					delete chatModel.receiptRequests[ackMessage.receiptId];
-					receiptMessage.receipt = null;
-					receiptMessage.read = true;
-					var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(receiptMessage);
-					iCommunicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessage));
-				}
-			}
-		}
-
-		public function handleReceiptRequested(event:CommunicatorEvent):void {
-			var message:ChatMessage = event.data as ChatMessage;
-			if (message.receipt == Message.RECEIPT_REQUEST) {
-				message.receipt = null;
-				message.read = true;
-				var ackMessage:Message = new Message();
-				ackMessage.from = message.to;
-				ackMessage.to = message.from;
-				ackMessage.receipt = Message.RECEIPT_RECEIVED;
-				ackMessage.receiptId = message.id;
-				connection.send(ackMessage);
+				communicator.push(new MessageItem(event.data));
 			}
 		}
 

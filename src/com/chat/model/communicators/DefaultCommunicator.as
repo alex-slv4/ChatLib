@@ -3,11 +3,14 @@
  */
 package com.chat.model.communicators {
 	import com.chat.controller.ChatController;
+	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.data.ICItem;
+	import com.chat.model.data.MessageItem;
 
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
 
@@ -16,6 +19,10 @@ package com.chat.model.communicators {
 
 		[Inject]
 		public var controller:ChatController;
+
+		[Inject]
+		public var eventDispatcher:IEventDispatcher;
+
 
 		protected var _label:String;
 		private var _count:int = 0;
@@ -29,14 +36,6 @@ package com.chat.model.communicators {
 		}
 		public function get label():String {
 			return _label ? _label : toString();
-		}
-
-		public function markAsRead(ackMessage:ICItem):Boolean {
-			/*if(ackMessage.receipt){
-				dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_RECEIPT_REPLIED, ackMessage));
-				return true;
-			}*/
-			return false;
 		}
 
 		public function set unreadCount(value:int):void {
@@ -67,6 +66,15 @@ package com.chat.model.communicators {
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
+		public function read(data:ICItem):void {
+			var messageItem:MessageItem = data as MessageItem;
+			if(messageItem){
+				dispatch(CommunicatorCommandEvent.MARK_AS_RECEIVED, [messageItem]);
+			}
+		}
+		public function dispatch(eventName:String, params:Array):void {
+			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
+		}
 		public function destroy():void {
 
 		}

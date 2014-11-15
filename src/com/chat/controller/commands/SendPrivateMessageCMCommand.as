@@ -3,7 +3,6 @@
  */
 package com.chat.controller.commands {
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.MessageItem;
 
 	import flash.utils.clearTimeout;
@@ -14,17 +13,27 @@ package com.chat.controller.commands {
 
 		override protected function executeIfNoErrors():void {
 
-
-			var message:ChatMessage = new ChatMessage(directCommunicatorData.participant.escaped);
+			var message:Message = new Message(directCommunicatorData.participant.escaped);
 
 			message.type = Message.TYPE_CHAT;
 			message.from = directCommunicatorData.chatUser.jid.escaped;
 			message.body = params[0];
 			message.state = Message.STATE_ACTIVE;
-			directCommunicatorData.push(new MessageItem(message));
 
-			controller.sendMessage(message);
+			var messageItem:MessageItem = new MessageItem(message);
+			directCommunicatorData.push(messageItem);
 
+			//save receipt
+			message.receipt = Message.RECEIPT_REQUEST;
+			model.receiptRequests[message.id] = messageItem;
+
+			//send data
+			controller.connection.send(message);
+
+			//clear receipt
+			message.receipt = null;
+
+			//clear composing timer
 			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
 		}
 

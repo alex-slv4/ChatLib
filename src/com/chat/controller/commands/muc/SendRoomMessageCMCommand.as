@@ -5,7 +5,6 @@ package com.chat.controller.commands.muc {
 	import com.chat.controller.commands.CMCommand;
 	import com.chat.controller.commands.SendMessageStateCMCommand;
 	import com.chat.model.communicators.RoomCommunicator;
-	import com.chat.model.data.ChatMessage;
 
 	import flash.utils.clearTimeout;
 
@@ -15,7 +14,7 @@ package com.chat.controller.commands.muc {
 
 		override protected function executeIfNoErrors():void {
 			var messageText:String = params[0];
-			var message:ChatMessage = new ChatMessage();
+			var message:Message = new Message();
 			message.type = Message.TYPE_GROUPCHAT;
 			message.from = model.currentUser.jid.escaped;
 			message.to = roomCommunicator.chatRoom.room.roomJID.escaped;

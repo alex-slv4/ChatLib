@@ -3,14 +3,11 @@
  */
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
-	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatUser;
-	import com.chat.model.data.ChatMessage;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.MessageItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
-	import org.igniterealtime.xiff.data.Message;
 
 	public class DirectCommunicator extends WritableCommunicator {
 
@@ -27,23 +24,17 @@ package com.chat.model.communicators {
 			return CommunicatorType.DIRECT;
 		}
 
-		override public function markAsRead(ackMessage:ICItem):Boolean {
-			var messageMarked:Boolean = super.markAsRead(ackMessage);
-			if(messageMarked) {
-				unreadCount--;
+		override public function push(data:ICItem):void {
+			super.push(data);
+			var messageItem:MessageItem = data as MessageItem;
+			if(messageItem){
+				dispatch(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED, [messageItem]);
 			}
-			return messageMarked;
 		}
 
 		override public function send(data:Object):int {
 			var result:int = super.send(data);
-			/*if(data is Message) {
-				var message:Message = (data as Message);
-				if(message.receipt) {
-					unreadCount++;
-				}
-			}*/
-			if(result == SUCCESS){
+			if (result == SUCCESS) {
 				dispatch(CommunicatorCommandEvent.PRIVATE_MESSAGE, [data]);
 			}
 			return result;

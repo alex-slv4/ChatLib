@@ -25,9 +25,9 @@ package com.chat.model.communicators {
 
 		function get unreadCount():int;
 
-		function push(data:ICItem):void;
+		function read(data:ICItem):void;
 
-		function markAsRead(ackMessage:ICItem):Boolean;
+		function push(data:ICItem):void;
 
 		function clear():void;
 
