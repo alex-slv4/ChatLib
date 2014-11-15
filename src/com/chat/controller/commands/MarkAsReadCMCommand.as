@@ -14,8 +14,10 @@ package com.chat.controller.commands {
 			if(message.from.equals(model.currentUser.jid.escaped, true)) {
 				//do nothing
 			}else{
-				messageItem.isRead = true;
-				communicator.unreadCount--;
+				if(!messageItem.isRead){
+					communicator.unreadCount--;
+					messageItem.isRead = true;
+				}
 			}
 			if(message.receipt == Message.RECEIPT_REQUEST){
 				message.receipt = null;
