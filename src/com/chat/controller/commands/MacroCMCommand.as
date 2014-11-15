@@ -10,8 +10,6 @@ package com.chat.controller.commands {
 
 	public class MacroCMCommand extends CMCommand {
 
-		[Inject]
-		public var eventDispatcher:IEventDispatcher;
 		protected var subCommands:Dictionary = new Dictionary();
 
 		override protected function onParamsError():void {
@@ -36,7 +34,7 @@ package com.chat.controller.commands {
 			return 1;
 		}
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			var subCommandName:String = params[0];
 			var keys:Array = DictionaryUtil.getKeys(subCommands);
 			if (keys.indexOf(subCommandName) != -1) {

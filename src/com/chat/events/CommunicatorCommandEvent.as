@@ -23,6 +23,8 @@ public class CommunicatorCommandEvent extends Event {
 		public static const ROSTER_ADD:String = "rosterAdd";
 		public static const ROSTER_INFO:String = "rosterInfo";
 
+		public static const SEND_MESSAGE_STATE:String = "sendMessageState";
+
 		private var _communicator:ICommunicator;
 		private var _params:Array;
 

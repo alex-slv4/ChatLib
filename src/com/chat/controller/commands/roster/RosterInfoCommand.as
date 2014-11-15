@@ -8,10 +8,10 @@ package com.chat.controller.commands.roster {
 
 	public class RosterInfoCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			print(this);
-			for (var i:int = 0; i < chatModel.roster.length; i++) {
-				var itemAt:RosterItemVO = chatModel.roster.getItemAt(i);
+			for (var i:int = 0; i < model.roster.length; i++) {
+				var itemAt:RosterItemVO = model.roster.getItemAt(i);
 				print(itemAt.nickname, "|", itemAt.subscribeType);
 			}
 		}

@@ -8,7 +8,7 @@ package com.chat.controller.commands.muc {
 
 	public class RoomInfoCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			for (var i:int = 0; i < roomCommunicator.chatRoom.users.length; i++) {
 				var user:ChatUser = roomCommunicator.chatRoom.users.getItemAt(i) as ChatUser;
 				print(user.displayName + " (" + user.jid + ")");

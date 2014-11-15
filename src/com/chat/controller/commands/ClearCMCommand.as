@@ -4,7 +4,7 @@
 package com.chat.controller.commands {
 	public class ClearCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			communicator.clear();
 		}
 	}

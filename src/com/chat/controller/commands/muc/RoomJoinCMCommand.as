@@ -13,17 +13,17 @@ package com.chat.controller.commands.muc {
 
 		private var _chatRoom:ChatRoom;
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0];
-			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + chatController.conferenceServer);
+			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + controller.conferenceServer);
 			_chatRoom = new ChatRoom();
-			_chatRoom.chatManager = chatController;
+			_chatRoom.chatManager = controller;
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
 			_chatRoom.join(roomJID);
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {
-			var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(_chatRoom);
+			var iCommunicator:ICommunicator = model.provider.getCommunicator(_chatRoom);
 			iCommunicator; //Room created
 		}
 

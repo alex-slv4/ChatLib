@@ -7,6 +7,7 @@ package com.chat.config {
 	import com.chat.controller.ChatController;
 	import com.chat.controller.commands.ClearCMCommand;
 	import com.chat.controller.commands.HelpCMCommand;
+	import com.chat.controller.commands.SendMessageStateCMCommand;
 	import com.chat.controller.commands.roster.AddUserCMCommand;
 	import com.chat.controller.commands.roster.RosterCMCommand;
 	import com.chat.controller.commands.SendPrivateMessageCMCommand;
@@ -68,6 +69,8 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.ROSTER).toCommand(RosterCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROSTER_ADD).toCommand(AddUserCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROSTER_INFO).toCommand(RosterInfoCommand);
+
+			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
 		}
 
 		private function mapView():void {

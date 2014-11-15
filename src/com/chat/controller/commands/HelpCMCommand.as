@@ -8,7 +8,7 @@ package com.chat.controller.commands {
 
 	public class HelpCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			var commandsMap:Dictionary = params[0];
 			var keys:Array = DictionaryUtils.getKeys(commandsMap);
 			print(communicator);

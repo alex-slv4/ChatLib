@@ -10,14 +10,14 @@ package com.chat.controller.commands.muc {
 
 	public class SendRoomMessageCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			var messageText:String = params[0];
 			var message:ChatMessage = new ChatMessage();
 			message.type = Message.TYPE_GROUPCHAT;
-			message.from = chatModel.currentUser.jid.escaped;
+			message.from = model.currentUser.jid.escaped;
 			message.to = roomCommunicator.chatRoom.room.roomJID.escaped;
 			message.body = messageText;
-			chatController.sendRoomMessage(message);
+			controller.sendRoomMessage(message);
 		}
 
 		private function get roomCommunicator():RoomCommunicator {

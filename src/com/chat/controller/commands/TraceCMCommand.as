@@ -4,7 +4,7 @@
 package com.chat.controller.commands {
 	public class TraceCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			print("trace:");
 			for(var i:int = 0; i < params.length; i++) {
 				var string:String = params[i];

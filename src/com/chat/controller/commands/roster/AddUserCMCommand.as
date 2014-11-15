@@ -7,9 +7,9 @@ package com.chat.controller.commands.roster {
 
 	public class AddUserCMCommand extends CMCommand {
 
-		override protected function _execute():void {
+		override protected function executeIfNoErrors():void {
 			var bodyName:String = params[0];
-			chatController.addBuddy(new UnescapedJID(bodyName));
+			controller.addBuddy(new UnescapedJID(bodyName));
 		}
 
 		override public function get requiredParamsCount():int {

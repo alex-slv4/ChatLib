@@ -42,7 +42,7 @@ package com.chat.controller.commands.muc {
 		}
 
 		private function onRoomConfigureComplete(event:RoomEvent):void {
-			var iCommunicator:ICommunicator = chatModel.provider.getCommunicator(_chatRoom);
+			var iCommunicator:ICommunicator = model.provider.getCommunicator(_chatRoom);
 //			iCommunicator.activate();
 		}
 

@@ -8,6 +8,8 @@ package com.chat.controller.commands {
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.CIString;
 
+	import flash.events.IEventDispatcher;
+
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
 	public class CMCommand implements ICommand, ICMCommand {
@@ -15,17 +17,20 @@ package com.chat.controller.commands {
 		[Inject]
 		public var event:CommunicatorCommandEvent;
 		[Inject]
-		public var chatModel:ChatModel;
+		public var model:ChatModel;
 		[Inject]
-		public var chatController:ChatController;
+		public var controller:ChatController;
+
+		[Inject]
+		public var eventDispatcher:IEventDispatcher;
 
 		public function execute():void {
 			if (!hasErrors()) {
-				_execute();
+				executeIfNoErrors();
 			}
 		}
 
-		protected function _execute():void {
+		protected function executeIfNoErrors():void {
 
 		}
 
