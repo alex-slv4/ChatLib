@@ -57,7 +57,7 @@ package com.chat.model.communicators {
 				iCommunicator = _roomCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
 					var chatRoom:ChatRoom = new ChatRoom();
-					chatRoom.chatManager = controller;
+					chatRoom.join(keyJID.unescaped);
 					iCommunicator = getCommunicatorForRoom(chatRoom);
 				}
 			}else{
