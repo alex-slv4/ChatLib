@@ -2,15 +2,15 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.controller {
+	import com.chat.events.ChatEvent;
 	import com.chat.events.ChatModelEvent;
-	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.data.CItemString;
 	import com.chat.model.data.СItemMessage;
 
 	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 
 	import org.igniterealtime.xiff.core.Browser;
 	import org.igniterealtime.xiff.core.EscapedJID;
@@ -22,6 +22,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
+	import org.igniterealtime.xiff.data.time.Time;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
@@ -33,6 +34,9 @@ package com.chat.controller {
 
 		[Inject]
 		public var chatModel:ChatModel;
+
+		[Inject]
+		public var bus:IEventDispatcher;
 
 		private var _browser:Browser;
 
@@ -51,6 +55,7 @@ package com.chat.controller {
 		override protected function setupConnection():void {
 			super.setupConnection();
 			_connection.enableExtensions(RetrieveStanza);
+			_connection.enableExtensions(Time);
 		}
 
 		override protected function setupCurrentUser():void {
@@ -109,6 +114,7 @@ package com.chat.controller {
 
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
+			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
 			_browser.getServiceInfo(null, onServerInfo);
 		}
 

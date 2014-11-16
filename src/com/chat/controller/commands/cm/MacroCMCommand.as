@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 14.11.14.
  */
-package com.chat.controller.commands {
+package com.chat.controller.commands.cm {
+	import com.chat.controller.commands.*;
 	import com.adobe.utils.DictionaryUtil;
 	import com.chat.events.CommunicatorCommandEvent;
 
@@ -28,7 +29,7 @@ package com.chat.controller.commands {
 			var eventName:String = subCommands[commandName];
 			var subParams:Array = params.concat();
 			subParams.shift();
-			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, communicator, subParams));
+			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, communicator, subParams));
 		}
 		override public function get requiredParamsCount():int {
 			return 1;

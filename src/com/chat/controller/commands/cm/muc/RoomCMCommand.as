@@ -1,8 +1,8 @@
 /**
  * Created by AlexanderSla on 11.11.2014.
  */
-package com.chat.controller.commands.muc {
-	import com.chat.controller.commands.MacroCMCommand;
+package com.chat.controller.commands.cm.muc {
+	import com.chat.controller.commands.cm.MacroCMCommand;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatRoom;
 	import com.chat.model.communicators.ICommunicator;

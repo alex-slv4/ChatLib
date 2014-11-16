@@ -1,8 +1,8 @@
 /**
  * Created by kvint on 16.11.14.
  */
-package com.chat.controller.commands.message {
-	import com.chat.controller.commands.*;
+package com.chat.controller.commands.cm.message {
+	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;

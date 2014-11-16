@@ -1,7 +1,7 @@
 /**
  * Created by AlexanderSla on 11.11.2014.
  */
-package com.chat.controller.commands {
+package com.chat.controller.commands.cm {
 	public class TraceCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {

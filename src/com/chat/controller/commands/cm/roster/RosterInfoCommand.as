@@ -1,8 +1,8 @@
 /**
  * Created by kvint on 14.11.14.
  */
-package com.chat.controller.commands.roster {
-	import com.chat.controller.commands.CMCommand;
+package com.chat.controller.commands.cm.roster {
+	import com.chat.controller.commands.cm.CMCommand;
 
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 

@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 16.11.14.
  */
-package com.chat.controller.commands {
+package com.chat.controller.commands.cm {
+	import com.chat.controller.commands.*;
 	public class InfoCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {

@@ -1,10 +1,9 @@
 /**
  * Created by AlexanderSla on 11.11.2014.
  */
-package com.chat.controller.commands {
-	import com.chat.controller.ChatController;
+package com.chat.controller.commands.cm {
+	import com.chat.controller.commands.*;
 	import com.chat.events.CommunicatorCommandEvent;
-	import com.chat.model.ChatModel;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.CItemString;
 
@@ -12,19 +11,15 @@ package com.chat.controller.commands {
 
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
-	public class CMCommand implements ICommand, ICMCommand {
+	public class CMCommand extends BaseChatCommand implements ICommand, ICMCommand{
 
 		[Inject]
 		public var event:CommunicatorCommandEvent;
-		[Inject]
-		public var model:ChatModel;
-		[Inject]
-		public var controller:ChatController;
 
 		[Inject]
-		public var eventDispatcher:IEventDispatcher;
+		public var bus:IEventDispatcher;
 
-		public function execute():void {
+		override public function execute():void {
 			if (!hasErrors()) {
 				executeIfNoErrors();
 			}

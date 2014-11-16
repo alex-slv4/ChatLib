@@ -1,8 +1,8 @@
 /**
  * Created by kvint on 11.11.14.
  */
-package com.chat.controller.commands.muc {
-	import com.chat.controller.commands.CMCommand;
+package com.chat.controller.commands.cm.muc {
+	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.RoomCommunicator;
 

@@ -17,7 +17,7 @@ package com.chat.model.data {
 		override public function get time():Number {
 			if(!isNaN(_time)) return _time;
 			if(messageData.time != null) return messageData.time.time;
-			return 0;
+			return new Date().time;
 		}
 
 		override public function get from():Object {

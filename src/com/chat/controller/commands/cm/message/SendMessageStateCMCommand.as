@@ -1,8 +1,8 @@
 /**
  * Created by kvint on 15.11.14.
  */
-package com.chat.controller.commands.message {
-	import com.chat.controller.commands.*;
+package com.chat.controller.commands.cm.message {
+	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.WritableCommunicator;

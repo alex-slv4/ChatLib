@@ -127,9 +127,6 @@ package org.igniterealtime.xiff.core
 			iq.callback = callback;
 			iq.errorCallback = errorCallback;
 			var infoDiscoExtension:InfoDiscoExtension = new InfoDiscoExtension(iq.xml);
-			var _set:Set = new Set();
-			_set.max = 3;
-			infoDiscoExtension.addExtension(_set);
 			iq.addExtension(infoDiscoExtension );
 			_connection.send( iq );
 			return iq;

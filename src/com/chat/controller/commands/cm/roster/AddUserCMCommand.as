@@ -1,8 +1,9 @@
 /**
  * Created by kvint on 14.11.14.
  */
-package com.chat.controller.commands.roster {
-	import com.chat.controller.commands.*;
+package com.chat.controller.commands.cm.roster {
+	import com.chat.controller.commands.cm.CMCommand;
+
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	public class AddUserCMCommand extends CMCommand {

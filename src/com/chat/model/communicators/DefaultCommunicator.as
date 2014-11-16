@@ -21,7 +21,7 @@ package com.chat.model.communicators {
 		public var controller:ChatController;
 
 		[Inject]
-		public var eventDispatcher:IEventDispatcher;
+		public var bus:IEventDispatcher;
 
 
 		protected var _label:String;
@@ -77,7 +77,7 @@ package com.chat.model.communicators {
 			}
 		}
 		public function dispatch(eventName:String, params:Array):void {
-			eventDispatcher.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
+			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 		public function destroy():void {
 

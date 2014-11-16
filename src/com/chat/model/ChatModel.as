@@ -8,7 +8,9 @@ import com.chat.model.communicators.ICommunicatorProvider;
 import flash.events.EventDispatcher;
 import flash.utils.Dictionary;
 
-import org.igniterealtime.xiff.im.Roster;
+	import org.igniterealtime.xiff.data.time.Time;
+
+	import org.igniterealtime.xiff.im.Roster;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -25,6 +27,7 @@ import org.igniterealtime.xiff.im.Roster;
 		private var _roster:Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
 		private var _activeCommunicator:ICommunicator;
+		private var _serverTimeOffset:Number;
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
@@ -52,6 +55,17 @@ import org.igniterealtime.xiff.im.Roster;
 
 		public function get provider():ICommunicatorProvider {
 			return injector.getInstance(ICommunicatorProvider);
+		}
+
+		public function get serverTimeOffset():Number {
+			return _serverTimeOffset;
+		}
+
+		public function set serverTimeOffset(value:Number):void {
+			_serverTimeOffset = value;
+		}
+		public function get currentTime():Number {
+			return new Date().time + serverTimeOffset;
 		}
 	}
 }

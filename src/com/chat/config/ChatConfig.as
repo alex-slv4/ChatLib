@@ -2,26 +2,28 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.config {
-	import com.chat.IChat;
 	import com.chat.Chat;
+	import com.chat.IChat;
 	import com.chat.controller.ChatController;
-	import com.chat.controller.commands.ClearCMCommand;
-	import com.chat.controller.commands.HelpCMCommand;
-	import com.chat.controller.commands.InfoCMCommand;
-	import com.chat.controller.commands.message.MarkAsReadCMCommand;
-	import com.chat.controller.commands.message.OnNewMessageCMCommand;
-	import com.chat.controller.commands.message.RetrieveHistoryCMCommand;
-	import com.chat.controller.commands.message.SendMessageStateCMCommand;
-	import com.chat.controller.commands.roster.AddUserCMCommand;
-	import com.chat.controller.commands.roster.RemoveUserCMCommand;
-	import com.chat.controller.commands.roster.RosterCMCommand;
-	import com.chat.controller.commands.message.SendPrivateMessageCMCommand;
-	import com.chat.controller.commands.TraceCMCommand;
-	import com.chat.controller.commands.muc.RoomCMCommand;
-	import com.chat.controller.commands.muc.RoomInfoCMCommand;
-	import com.chat.controller.commands.muc.RoomJoinCMCommand;
-	import com.chat.controller.commands.muc.SendRoomMessageCMCommand;
-	import com.chat.controller.commands.roster.RosterInfoCommand;
+	import com.chat.controller.commands.SyncTimeWithServerCommand;
+	import com.chat.controller.commands.cm.ClearCMCommand;
+	import com.chat.controller.commands.cm.HelpCMCommand;
+	import com.chat.controller.commands.cm.InfoCMCommand;
+	import com.chat.controller.commands.cm.TraceCMCommand;
+	import com.chat.controller.commands.cm.message.MarkAsReadCMCommand;
+	import com.chat.controller.commands.cm.message.OnNewMessageCMCommand;
+	import com.chat.controller.commands.cm.message.RetrieveHistoryCMCommand;
+	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
+	import com.chat.controller.commands.cm.message.SendPrivateMessageCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomInfoCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomJoinCMCommand;
+	import com.chat.controller.commands.cm.muc.SendRoomMessageCMCommand;
+	import com.chat.controller.commands.cm.roster.AddUserCMCommand;
+	import com.chat.controller.commands.cm.roster.RemoveUserCMCommand;
+	import com.chat.controller.commands.cm.roster.RosterCMCommand;
+	import com.chat.controller.commands.cm.roster.RosterInfoCommand;
+	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.communicators.CommunicatorProvider;
@@ -61,6 +63,10 @@ package com.chat.config {
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
 		}
 		private function mapCommands():void {
+			//App commands
+			commandMap.map(ChatEvent.SYNC_TIME).toCommand(SyncTimeWithServerCommand);
+
+			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
 			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
