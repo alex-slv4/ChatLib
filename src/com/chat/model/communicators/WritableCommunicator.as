@@ -34,6 +34,7 @@ package com.chat.model.communicators {
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
 			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
 			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
+			commandsMap["/info"] = CommunicatorCommandEvent.INFO;
 		}
 
 		public function send(data:Object):int {

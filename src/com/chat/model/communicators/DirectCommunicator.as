@@ -24,14 +24,6 @@ package com.chat.model.communicators {
 			return CommunicatorType.DIRECT;
 		}
 
-		override public function push(data:ICItem):void {
-			super.push(data);
-			var messageItem:СItemMessage = data as СItemMessage;
-			if(messageItem){
-				dispatch(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED, [messageItem]);
-			}
-		}
-
 		override public function send(data:Object):int {
 			var result:int = super.send(data);
 			if (result == SUCCESS) {

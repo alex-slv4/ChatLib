@@ -9,6 +9,7 @@ import flash.events.Event;
 public class CommunicatorCommandEvent extends Event {
 
 		public static const HELP:String = "help";
+		public static const INFO:String = "info";
 		public static const PRIVATE_MESSAGE:String = "privateMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";

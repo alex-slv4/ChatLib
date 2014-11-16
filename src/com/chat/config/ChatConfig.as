@@ -7,6 +7,7 @@ package com.chat.config {
 	import com.chat.controller.ChatController;
 	import com.chat.controller.commands.ClearCMCommand;
 	import com.chat.controller.commands.HelpCMCommand;
+	import com.chat.controller.commands.InfoCMCommand;
 	import com.chat.controller.commands.message.MarkAsReadCMCommand;
 	import com.chat.controller.commands.message.OnNewMessageCMCommand;
 	import com.chat.controller.commands.message.SendMessageStateCMCommand;
@@ -77,6 +78,7 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED).toCommand(OnNewMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
+			commandMap.map(CommunicatorCommandEvent.INFO).toCommand(InfoCMCommand);
 		}
 
 		private function mapView():void {
