@@ -16,6 +16,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Presence;
 	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
@@ -23,6 +24,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.events.PresenceEvent;
 	import org.igniterealtime.xiff.util.DateTimeParser;
 
 	use namespace archive_internal;
@@ -76,6 +78,17 @@ package com.chat.controller {
 			if(message.type != null) {
 				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
 				communicator.push(new СItemMessage(event.data));
+			}
+		}
+
+
+		override protected function onPresence(event:PresenceEvent):void {
+			var presence:Presence;
+			for (var i:int = 0; i < event.data.length; i++) {
+				presence = event.data[i] as Presence;
+				if (presence.type == Presence.TYPE_SUBSCRIBE) {
+					chatModel.roster.grantSubscription(presence.from.unescaped, false);
+				}
 			}
 		}
 

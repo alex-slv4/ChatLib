@@ -10,6 +10,7 @@ package com.chat.controller.commands.roster {
 		public function RosterCMCommand() {
 			subCommands["info"] = CommunicatorCommandEvent.ROSTER_INFO;
 			subCommands["add"] = CommunicatorCommandEvent.ROSTER_ADD;
+			subCommands["remove"] = CommunicatorCommandEvent.ROSTER_REMOVE;
 		}
 	}
 }

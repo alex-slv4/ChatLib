@@ -11,6 +11,7 @@ package com.chat.config {
 	import com.chat.controller.commands.message.OnNewMessageCMCommand;
 	import com.chat.controller.commands.message.SendMessageStateCMCommand;
 	import com.chat.controller.commands.roster.AddUserCMCommand;
+	import com.chat.controller.commands.roster.RemoveUserCMCommand;
 	import com.chat.controller.commands.roster.RosterCMCommand;
 	import com.chat.controller.commands.message.SendPrivateMessageCMCommand;
 	import com.chat.controller.commands.TraceCMCommand;
@@ -70,6 +71,7 @@ package com.chat.config {
 
 			commandMap.map(CommunicatorCommandEvent.ROSTER).toCommand(RosterCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROSTER_ADD).toCommand(AddUserCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROSTER_REMOVE).toCommand(RemoveUserCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROSTER_INFO).toCommand(RosterInfoCommand);
 
 			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
