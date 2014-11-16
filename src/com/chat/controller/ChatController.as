@@ -17,7 +17,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
-	import org.igniterealtime.xiff.data.archive.RetrieveStanza;
+	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
@@ -54,7 +54,7 @@ package com.chat.controller {
 
 		override protected function setupConnection():void {
 			super.setupConnection();
-			_connection.enableExtensions(RetrieveStanza);
+			_connection.enableExtensions(Retrieve);
 			_connection.enableExtensions(Time);
 		}
 
@@ -149,7 +149,7 @@ package com.chat.controller {
 				}
 				trace(str);
 			}
-			var stanza:RetrieveStanza = new RetrieveStanza();
+			var stanza:Retrieve = new Retrieve();
 			stanza.withJID = new EscapedJID("joe@localhost");
 			test.addExtension(stanza);
 			connection.send(test);

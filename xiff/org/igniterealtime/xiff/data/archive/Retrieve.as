@@ -20,14 +20,14 @@ package org.igniterealtime.xiff.data.archive {
 	 </xs:element>
 
 	 */
-	public class RetrieveStanza extends Extension implements IArchveExtention {
+	public class Retrieve extends Extension implements IArchveExtention {
 
 		public static const ELEMENT_NAME:String = "retrieve";
 
 		public static const START:String = "start";
 		public static const WITH:String = "with";
 
-		public function RetrieveStanza(parent:XML = null) {
+		public function Retrieve(parent:XML = null) {
 			super(parent);
 		}
 		public function get start():String {

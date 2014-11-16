@@ -21,7 +21,7 @@ package org.igniterealtime.xiff.data.archive {
 	</xs:element>
 	*/
 
-	public class ListStanza extends Extension implements IArchveExtention {
+	public class List extends Extension implements IArchveExtention {
 
 		public static const ELEMENT_NAME:String = "list";
 
@@ -30,7 +30,7 @@ package org.igniterealtime.xiff.data.archive {
 		public static const START:String = "start";
 		public static const WITH:String = "with";
 
-		public function ListStanza(parent:XML = null) {
+		public function List(parent:XML = null) {
 			super(parent);
 		}
 
