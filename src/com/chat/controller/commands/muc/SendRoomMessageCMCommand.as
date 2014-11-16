@@ -3,7 +3,7 @@
  */
 package com.chat.controller.commands.muc {
 	import com.chat.controller.commands.CMCommand;
-	import com.chat.controller.commands.SendMessageStateCMCommand;
+	import com.chat.controller.commands.message.SendMessageStateCMCommand;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import flash.utils.clearTimeout;

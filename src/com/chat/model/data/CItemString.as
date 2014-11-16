@@ -2,9 +2,9 @@
  * Created by kvint on 13.11.14.
  */
 package com.chat.model.data {
-	public class CIString extends BaseCItem {
+	public class CItemString extends BaseCItem {
 
-		public function CIString(data:String) {
+		public function CItemString(data:String) {
 			super(data);
 		}
 

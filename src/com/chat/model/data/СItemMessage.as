@@ -5,9 +5,9 @@ package com.chat.model.data {
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.data.Message;
 
-	public class MessageItem extends BaseCItem {
+	public class СItemMessage extends BaseCItem {
 
-		public function MessageItem(data:Message) {
+		public function СItemMessage(data:Message) {
 			super(data);
 		}
 

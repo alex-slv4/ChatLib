@@ -1,9 +1,10 @@
 /**
  * Created by AlexanderSla on 11.11.2014.
  */
-package com.chat.controller.commands {
+package com.chat.controller.commands.message {
+	import com.chat.controller.commands.*;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.MessageItem;
+	import com.chat.model.data.СItemMessage;
 
 	import flash.utils.clearTimeout;
 
@@ -20,7 +21,7 @@ package com.chat.controller.commands {
 			message.body = params[0];
 			message.state = Message.STATE_ACTIVE;
 
-			var messageItem:MessageItem = new MessageItem(message);
+			var messageItem:СItemMessage = new СItemMessage(message);
 			directCommunicatorData.push(messageItem);
 
 			//save receipt

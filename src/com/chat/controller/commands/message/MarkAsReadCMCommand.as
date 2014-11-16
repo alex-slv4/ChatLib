@@ -1,8 +1,9 @@
 /**
  * Created by kvint on 16.11.14.
  */
-package com.chat.controller.commands {
-	import com.chat.model.data.MessageItem;
+package com.chat.controller.commands.message {
+	import com.chat.controller.commands.*;
+	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -31,7 +32,7 @@ package com.chat.controller.commands {
 			}
 		}
 
-		private function get messageItem():MessageItem {
+		private function get messageItem():СItemMessage {
 			return params[0];
 		}
 

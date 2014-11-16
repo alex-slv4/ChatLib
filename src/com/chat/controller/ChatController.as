@@ -7,8 +7,8 @@ package com.chat.controller {
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.data.CIString;
-	import com.chat.model.data.MessageItem;
+	import com.chat.model.data.CItemString;
+	import com.chat.model.data.СItemMessage;
 
 	import flash.events.Event;
 
@@ -75,7 +75,7 @@ package com.chat.controller {
 			var message:Message = event.data;
 			if(message.type != null) {
 				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-				communicator.push(new MessageItem(event.data));
+				communicator.push(new СItemMessage(event.data));
 			}
 		}
 

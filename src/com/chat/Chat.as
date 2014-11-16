@@ -1,14 +1,33 @@
-/**
- * Created by kvint on 01.11.14.
- */
-package com.chat {
+package com.chat
+{
+
 import com.chat.controller.ChatController;
 import com.chat.model.ChatModel;
 
-public interface Chat {
+public class Chat implements IChat
+{
 
-		function get model():ChatModel;
-		function get controller():ChatController;
+	[Inject]
+	public var thisController:ChatController;
 
+	[Inject]
+	public var _model:ChatModel;
+
+	private static var _instance:Chat;
+
+	static public function get instance():IChat
+	{
+		return _instance ||= new Chat();
 	}
+
+	public function get model():ChatModel
+	{
+		return _model;
+	}
+
+	public function get controller():ChatController
+	{
+		return thisController;
+	}
+}
 }

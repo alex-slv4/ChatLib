@@ -6,7 +6,7 @@ package com.chat.controller.commands {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.data.CIString;
+	import com.chat.model.data.CItemString;
 
 	import flash.events.IEventDispatcher;
 
@@ -62,7 +62,7 @@ package com.chat.controller.commands {
 
 		public function write(type:int, ...args):void {
 			var prefix:String = type == 1 ? "error" : "";
-			communicator.push(new CIString(prefix + " " + args.join(" ")));
+			communicator.push(new CItemString(prefix + " " + args.join(" ")));
 		}
 
 		public function get communicator():ICommunicator {

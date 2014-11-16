@@ -1,9 +1,10 @@
 /**
  * Created by kvint on 16.11.14.
  */
-package com.chat.controller.commands {
+package com.chat.controller.commands.message {
+	import com.chat.controller.commands.*;
 	import com.chat.events.CommunicatorEvent;
-	import com.chat.model.data.MessageItem;
+	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -24,7 +25,7 @@ package com.chat.controller.commands {
 		}
 
 		private function handleReceipt(message:Message):void {
-			var receiptMessageItem:MessageItem = model.receiptRequests[message.receiptId];
+			var receiptMessageItem:СItemMessage = model.receiptRequests[message.receiptId];
 			if (receiptMessageItem) {
 				delete model.receiptRequests[message.receiptId];
 				var message:Message = receiptMessageItem.data as Message;
@@ -34,8 +35,8 @@ package com.chat.controller.commands {
 			}
 		}
 
-		private function get messageItem():MessageItem {
-			return params[0] as MessageItem;
+		private function get messageItem():СItemMessage {
+			return params[0] as СItemMessage;
 		}
 
 		override public function get requiredParamsCount():int {

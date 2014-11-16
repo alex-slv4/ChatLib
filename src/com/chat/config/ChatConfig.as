@@ -2,17 +2,17 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.config {
+	import com.chat.IChat;
 	import com.chat.Chat;
-	import com.chat.ChatClient;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.commands.ClearCMCommand;
 	import com.chat.controller.commands.HelpCMCommand;
-	import com.chat.controller.commands.MarkAsReadCMCommand;
-	import com.chat.controller.commands.OnNewMessageCMCommand;
-	import com.chat.controller.commands.SendMessageStateCMCommand;
+	import com.chat.controller.commands.message.MarkAsReadCMCommand;
+	import com.chat.controller.commands.message.OnNewMessageCMCommand;
+	import com.chat.controller.commands.message.SendMessageStateCMCommand;
 	import com.chat.controller.commands.roster.AddUserCMCommand;
 	import com.chat.controller.commands.roster.RosterCMCommand;
-	import com.chat.controller.commands.SendPrivateMessageCMCommand;
+	import com.chat.controller.commands.message.SendPrivateMessageCMCommand;
 	import com.chat.controller.commands.TraceCMCommand;
 	import com.chat.controller.commands.muc.RoomCMCommand;
 	import com.chat.controller.commands.muc.RoomInfoCMCommand;
@@ -52,7 +52,7 @@ package com.chat.config {
 
 
 		private function mapMembership():void {
-			injector.map(Chat).toSingleton(ChatClient);
+			injector.map(IChat).toSingleton(Chat);
 			injector.map(ChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);

@@ -5,7 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.data.ICItem;
-	import com.chat.model.data.MessageItem;
+	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
@@ -26,7 +26,7 @@ package com.chat.model.communicators {
 
 		override public function push(data:ICItem):void {
 			super.push(data);
-			var messageItem:MessageItem = data as MessageItem;
+			var messageItem:СItemMessage = data as СItemMessage;
 			if(messageItem){
 				dispatch(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED, [messageItem]);
 			}
