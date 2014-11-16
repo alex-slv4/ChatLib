@@ -23,6 +23,7 @@ package com.chat.controller.commands.cm.muc {
 		private function onRoomConfigure(event:RoomEvent):void {
 			var formExtension:FormExtension = event.data as FormExtension;
 
+			//Here you can pass default client form
 			_chatRoom.room.configure(formExtension);
 
 			_chatRoom.room.changeSubject(_chatRoom.room.roomName);

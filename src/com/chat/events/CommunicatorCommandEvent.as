@@ -19,6 +19,7 @@ public class CommunicatorCommandEvent extends Event {
 		public static const ROOM_CREATE:String = "roomCreate";
 		public static const ROOM_INFO:String = "roomInfo";
 		public static const ROOM_JOIN:String = "roomJoin";
+		public static const ROOM_LEAVE:String = "roomLeave";
 		public static const ROOM_MESSAGE:String = "roomMessage";
 
 		public static const ROSTER:String = "roster";

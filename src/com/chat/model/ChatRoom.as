@@ -110,27 +110,29 @@ public class ChatRoom extends EventDispatcher
 		
 		private function removeUserByNickname( nickname:String ):ChatUser
 		{
-			var chatUser:ChatUser;
+			var chatUser:ChatUser = getUserByNickname(nickname);
 			var removed:Boolean;
-			for each( var user:ChatUser in _users.source )
-			{
-				if( user.displayName == nickname )
-				{
-					chatUser = user;
-					break;
-				}
-			}
-			
 			if( chatUser )
 			{
 				removed = _users.removeItem( chatUser );
 				if( removed ) return chatUser;
 			}
-			
+
 			return null;
 		}
-		
-		private function requestAffiliations( affiliation:String ):void
+
+		public function getUserByNickname(nickname:String):ChatUser {
+			var chatUser:ChatUser;
+			for each(var user:ChatUser in _users.source) {
+				if (user.displayName == nickname) {
+					chatUser = user;
+					break;
+				}
+			}
+			return chatUser;
+		}
+
+	private function requestAffiliations( affiliation:String ):void
 		{
 			if( _room.role ==  Room.ROLE_MODERATOR )
 			{
@@ -330,6 +332,6 @@ public class ChatRoom extends EventDispatcher
 		{
 			dispatchEvent( event );
 		}
-		
+
 	}
 }

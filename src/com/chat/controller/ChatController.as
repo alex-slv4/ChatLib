@@ -106,10 +106,7 @@ package com.chat.controller {
 					chatModel.roster.grantSubscription(presence.from.unescaped, false);
 				}
 			}
-		}
-
-		override public function dispatchEvent(event:Event):Boolean {
-			return chatModel.dispatchEvent(event);
+			super.onPresence(event);
 		}
 
 		override protected function onLogin(event:LoginEvent):void {

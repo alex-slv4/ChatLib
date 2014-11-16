@@ -19,6 +19,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.muc.RoomCreateCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomInfoCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomJoinCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomLeaveCMCommand;
 	import com.chat.controller.commands.cm.muc.SendRoomMessageCMCommand;
 	import com.chat.controller.commands.cm.roster.AddUserCMCommand;
 	import com.chat.controller.commands.cm.roster.RemoveUserCMCommand;
@@ -79,6 +80,7 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.ROOM_CREATE).toCommand(RoomCreateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_JOIN).toCommand(RoomJoinCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROOM_LEAVE).toCommand(RoomLeaveCMCommand);
 
 			commandMap.map(CommunicatorCommandEvent.ROSTER).toCommand(RosterCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROSTER_ADD).toCommand(AddUserCMCommand);
