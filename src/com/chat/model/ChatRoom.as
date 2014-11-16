@@ -302,8 +302,9 @@ public class ChatRoom extends EventDispatcher
 					return;
 				}
 			}
-			
-			chatUser.loadVCard( _chatManager.connection );
+			if(chatUser.jid){
+				chatUser.loadVCard( _chatManager.connection );
+			}
 			_users.addItem( chatUser );
 			
 			dispatchEvent( event );
