@@ -2,6 +2,7 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package com.chat.model.communicators {
+	import com.chat.controller.ChatController;
 	import com.chat.events.ChatModelEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
@@ -26,6 +27,9 @@ package com.chat.model.communicators {
 
 		[Inject]
 		public var model:ChatModel;
+
+		[Inject]
+		public var controller:ChatController;
 
 		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
@@ -52,7 +56,9 @@ package com.chat.model.communicators {
 			if(message.type == Message.TYPE_GROUPCHAT){
 				iCommunicator = _roomCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
-					throw new Error("No room for", key);
+					var chatRoom:ChatRoom = new ChatRoom();
+					chatRoom.chatManager = controller;
+					iCommunicator = getCommunicatorForRoom(chatRoom);
 				}
 			}else{
 				iCommunicator = _privateCommunications[key] as ICommunicator;
