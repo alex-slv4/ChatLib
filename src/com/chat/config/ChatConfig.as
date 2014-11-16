@@ -16,6 +16,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
 	import com.chat.controller.commands.cm.message.SendPrivateMessageCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomCreateCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomInfoCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomJoinCMCommand;
 	import com.chat.controller.commands.cm.muc.SendRoomMessageCMCommand;
@@ -75,6 +76,7 @@ package com.chat.config {
 
 			commandMap.map(CommunicatorCommandEvent.ROOM).toCommand(RoomCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_INFO).toCommand(RoomInfoCMCommand);
+			commandMap.map(CommunicatorCommandEvent.ROOM_CREATE).toCommand(RoomCreateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_JOIN).toCommand(RoomJoinCMCommand);
 

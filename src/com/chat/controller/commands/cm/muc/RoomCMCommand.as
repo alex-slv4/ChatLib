@@ -13,7 +13,7 @@ package com.chat.controller.commands.cm.muc {
 
 	public class RoomCMCommand extends MacroCMCommand {
 
-		private var _chatRoom:ChatRoom;
+		protected var _chatRoom:ChatRoom;
 
 		public function RoomCMCommand() {
 			subCommands["join"] = CommunicatorCommandEvent.ROOM_JOIN;
@@ -27,24 +27,5 @@ package com.chat.controller.commands.cm.muc {
 			}
 			super.execute();
 		}
-
-		/*_chatRoom = new ChatRoom();
-		 _chatRoom.chatManager = chatController;
-		 _chatRoom.create(roomName);
-		 _chatRoom.addEventListener(RoomEvent.CONFIGURE_ROOM, onRoomConfigure);
-		 _chatRoom.addEventListener(RoomEvent.CONFIGURE_ROOM_COMPLETE, onRoomConfigureComplete);*/
-		private function onRoomConfigure(event:RoomEvent):void {
-			var formExtension:FormExtension = event.data as FormExtension;
-
-			_chatRoom.room.configure(formExtension);
-
-			_chatRoom.room.changeSubject(_chatRoom.room.roomName);
-		}
-
-		private function onRoomConfigureComplete(event:RoomEvent):void {
-			var iCommunicator:ICommunicator = model.provider.getCommunicator(_chatRoom);
-//			iCommunicator.activate();
-		}
-
 	}
 }
