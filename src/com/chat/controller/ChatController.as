@@ -45,7 +45,14 @@ package com.chat.controller {
 			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, communicatorEventHandler);
 
 			_browser = new Browser(connection);
+
 		}
+
+		override protected function setupConnection():void {
+			super.setupConnection();
+			_connection.enableExtensions(RetrieveStanza);
+		}
+
 		override protected function setupCurrentUser():void {
 			_currentUser = new ChatUser(_connection.jid);
 			chatModel.currentUser = _currentUser;
@@ -77,7 +84,11 @@ package com.chat.controller {
 			var message:Message = event.data;
 			if(message.type != null) {
 				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
-				communicator.push(new СItemMessage(event.data));
+				if(message.body == null){
+//					if(message.state) communicator.push(new CItemString(message.state));
+				}else{
+					communicator.push(new СItemMessage(message));
+				}
 			}
 		}
 
@@ -114,7 +125,7 @@ package com.chat.controller {
 		}
 
 		public function test():void {
-			_connection.enableExtensions(RetrieveStanza);
+
 			var test:IQ = new IQ(null, IQ.TYPE_GET);
 			test.callback = function (iq:IQ):void {
 				var chatNS:Namespace = new Namespace(null, archive_internal);

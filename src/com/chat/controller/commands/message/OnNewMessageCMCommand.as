@@ -11,6 +11,9 @@ package com.chat.controller.commands.message {
 	public class OnNewMessageCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {
+
+			if(messageItem.isRead) return;
+
 			var message:Message = messageItem.data as Message;
 
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage

@@ -10,6 +10,7 @@ package com.chat.config {
 	import com.chat.controller.commands.InfoCMCommand;
 	import com.chat.controller.commands.message.MarkAsReadCMCommand;
 	import com.chat.controller.commands.message.OnNewMessageCMCommand;
+	import com.chat.controller.commands.message.RetrieveHistoryCMCommand;
 	import com.chat.controller.commands.message.SendMessageStateCMCommand;
 	import com.chat.controller.commands.roster.AddUserCMCommand;
 	import com.chat.controller.commands.roster.RemoveUserCMCommand;
@@ -60,6 +61,7 @@ package com.chat.config {
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
 		}
 		private function mapCommands():void {
+			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
 			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);

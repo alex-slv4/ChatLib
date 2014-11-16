@@ -13,6 +13,7 @@ public class CommunicatorCommandEvent extends Event {
 		public static const PRIVATE_MESSAGE:String = "privateMessage";
 		public static const TRACE:String = "trace";
 		public static const CLEAR:String = "clear";
+		public static const HISTORY:String = "retrieveHistory";
 
 		public static const ROOM:String = "room";
 		public static const ROOM_CREATE:String = "roomCreate";
