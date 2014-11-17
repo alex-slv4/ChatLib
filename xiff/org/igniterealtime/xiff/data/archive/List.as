@@ -4,7 +4,6 @@
 package org.igniterealtime.xiff.data.archive {
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.Extension;
-	import org.igniterealtime.xiff.data.IExtension;
 
 	/**
 	  <xs:element name='list'>
@@ -29,10 +28,6 @@ package org.igniterealtime.xiff.data.archive {
 		public static const EXACTMATCH:String = "exactmatch";
 		public static const START:String = "start";
 		public static const WITH:String = "with";
-
-		public function List(parent:XML = null) {
-			super(parent);
-		}
 
 		public function getNS():String {
 			return archive_internal;

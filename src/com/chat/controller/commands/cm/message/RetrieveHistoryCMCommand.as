@@ -5,6 +5,7 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.СItemMessage;
+	import com.chat.utils.RSMStepper;
 
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.IExtension;
@@ -14,43 +15,42 @@ package com.chat.controller.commands.cm.message {
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
-	import org.igniterealtime.xiff.data.rsm.Set;
+	import org.igniterealtime.xiff.data.rsm.RSMSet;
+	import org.igniterealtime.xiff.data.rsm.rsm_internal;
 	import org.igniterealtime.xiff.util.DateTimeParser;
 
 	use namespace archive_internal;
 
 	public class RetrieveHistoryCMCommand extends CMCommand {
 
+		private static var rsmStepper:RSMStepper = new RSMStepper();
 
-		/*override protected function executeIfNoErrors():void {
+		override protected function executeIfNoErrors():void {
 			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			listIQ.callback = iqCallback;
 			listIQ.errorCallback = iqErrorCallback;
 
 			var stanza:List = new List();
-			if (params.length > 0) {
-				var restrictions:Set = new Set();
-				restrictions.max = params[0];
-				restrictions.before = "";
-				stanza.addExtension(restrictions)
-			}
+//			if (params.length > 0) {
+//				var restrictions:RSMSet = new RSMSet();
+//				restrictions.max = params[0];
+//				restrictions.after = "176";
+//			}
+			var step:int = params.length > 0 ? params[0] : 1;
+			stanza.addExtension(rsmStepper.getNext(step));
 			stanza.withJID = directCommunicator.participant.escaped;
-//			var startDate:Date = new Date(model.currentTime);
-//			startDate.date -= 1;
-//			stanza.start = "2014-11-15T21:41:58.827Z"; //DateTimeParser.dateTime2string(startDate);
-//			listIQ.addExtension(stanza);
+			listIQ.addExtension(stanza);
 			controller.connection.send(listIQ);
 		}
 		private function iqCallback(iq:IQ):void {
-			var archive_ns:Namespace = new Namespace(null, archive_internal);
-			var historyList:List = new List();
-			historyList.xml = iq.xml.archive_ns::list[0];
+			var historyList:List = iq.getExtension(List.ELEMENT_NAME) as List;
+			rsmStepper.current = historyList.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
 			for (var i:int = 0; i < historyList.chats.length; i++) {
 				var chat:ChatStanza = historyList.chats[i];
 				print(chat.start, chat.withJID);
 			}
-		}*/
-		override protected function executeIfNoErrors():void {
+		}
+		/*override protected function executeIfNoErrors():void {
 			var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			retrieveIQ.callback = iqCallback;
 			retrieveIQ.errorCallback = iqErrorCallback;
@@ -89,7 +89,7 @@ package com.chat.controller.commands.cm.message {
 				itemMessage.isRead = true;
 				directCommunicator.push(itemMessage);
 			}
-		}
+		}*/
 		private function iqErrorCallback(iq:IQ):void {
 			error(iq.toString());
 		}

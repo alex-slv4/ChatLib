@@ -30,7 +30,6 @@ package org.igniterealtime.xiff.core
 	import org.igniterealtime.xiff.data.browse.BrowseExtension;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.data.disco.ItemDiscoExtension;
-	import org.igniterealtime.xiff.data.rsm.Set;
 
 	/**
 	 * XEP-0030: Service Discovery

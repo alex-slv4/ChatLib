@@ -31,17 +31,17 @@ package org.igniterealtime.xiff.data.rsm {
 	 	</xs:element>
 	 */
 
-	public class Set extends Extension implements IExtension {
+	public class RSMSet extends Extension implements IExtension {
 
 		public static const ELEMENT_NAME:String = "set";
-		public static const NS:String = "http://jabber.org/protocol/rsm";
 
-		public static const MAX:String = "max";
-		public static const LAST:String = "last";
-		public static const INDEX:String = "index";
-		public static const COUNT:String = "count";
-		public static const BEFORE:String = "before";
-		public static const AFTER:String = "after";
+		private static const FIRST:String = "first";
+		private static const MAX:String = "max";
+		private static const LAST:String = "last";
+		private static const INDEX:String = "index";
+		private static const COUNT:String = "count";
+		private static const BEFORE:String = "before";
+		private static const AFTER:String = "after";
 
 		public function get max():int {
 			return getField(MAX) as int;
@@ -60,7 +60,7 @@ package org.igniterealtime.xiff.data.rsm {
 		}
 
 		public function get index():int {
-			return getField(INDEX) as int;
+			return int(getField(INDEX));
 		}
 
 		public function set index(value:int):void {
@@ -68,7 +68,7 @@ package org.igniterealtime.xiff.data.rsm {
 		}
 
 		public function get count():int {
-			return getField(COUNT) as int;
+			return int(getField(COUNT));
 		}
 
 		public function set count(value:int):void {
@@ -91,31 +91,28 @@ package org.igniterealtime.xiff.data.rsm {
 			setField(AFTER, value);
 		}
 
-		public function get first():First {
-			return null;;
+		public function get first():String {
+			return getField(FIRST);;
 		}
 
-		public function set first(value:First):void {
-
+		public function set first(value:String):void {
+			setField(FIRST, value);
 		}
 
+		public function get firstIndex():int {
+			return int(getChildAttribute(FIRST, "index"));
+		}
+
+		public function set firstIndex(value:int):void {
+			setChildAttribute(FIRST, "index", value.toString());
+		}
 
 		public function getNS():String {
-			return NS;
+			return rsm_internal;
 		}
 
 		public function getElementName():String {
 			return ELEMENT_NAME;
 		}
-	}
-}
-
-import org.igniterealtime.xiff.data.INodeProxy;
-import org.igniterealtime.xiff.data.XMLStanza;
-
-class First extends XMLStanza implements INodeProxy {
-
-	public function First(parent:XML) {
-
 	}
 }

@@ -17,11 +17,13 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
 	import org.igniterealtime.xiff.data.disco.DiscoExtension;
 	import org.igniterealtime.xiff.data.disco.DiscoFeature;
 	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
+	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.data.time.Time;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -56,6 +58,8 @@ package com.chat.controller {
 			super.setupConnection();
 			_connection.enableExtensions(Retrieve);
 			_connection.enableExtensions(Time);
+			_connection.enableExtensions(RSMSet);
+			_connection.enableExtensions(List);
 		}
 
 		override protected function setupCurrentUser():void {
