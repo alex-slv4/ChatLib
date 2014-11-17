@@ -11,13 +11,13 @@ package org.igniterealtime.xiff.data.archive {
 	 <xs:element name='chat'>
 		 <xs:complexType>
 			 <xs:choice minOccurs='0' maxOccurs='unbounded'>
-			 <xs:element name='from' type='messageType'/>
-			 <xs:element name='next' type='linkType'/>
-			 <xs:element ref='note'/>
-			 <xs:element name='previous' type='linkType'/>
-			 <xs:element name='to' type='messageType'/>
-			 <xs:any processContents='lax' namespace='##other'/>
-		 </xs:choice>
+				 <xs:element name='from' type='messageType'/>
+				 <xs:element name='next' type='linkType'/>
+				 <xs:element ref='note'/>
+				 <xs:element name='previous' type='linkType'/>
+				 <xs:element name='to' type='messageType'/>
+				 <xs:any processContents='lax' namespace='##other'/>
+		 	 </xs:choice>
 			 <xs:attribute name='start' type='xs:dateTime' use='required'/>
 			 <xs:attribute name='subject' type='xs:string' use='optional'/>
 			 <xs:attribute name='thread' use='optional' type='xs:string'/>

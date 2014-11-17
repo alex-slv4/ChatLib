@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.model.HistoryProvider;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.СItemMessage;
 	import com.chat.utils.RSMStepper;
@@ -18,14 +19,30 @@ package com.chat.controller.commands.cm.message {
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.data.rsm.rsm_internal;
 	import org.igniterealtime.xiff.util.DateTimeParser;
+	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.framework.api.IInjector;
 
 	use namespace archive_internal;
 
 	public class RetrieveHistoryCMCommand extends CMCommand {
 
-		private static var rsmStepper:RSMStepper = new RSMStepper();
+		[Inject]
+		public var infector:IInjector;
+
+		public static var historyProvider:HistoryProvider;
+
+//		private static var rsmStepper:RSMStepper = new RSMStepper();
 
 		override protected function executeIfNoErrors():void {
+			if(historyProvider == null){
+				historyProvider = new HistoryProvider(directCommunicator);
+				infector.injectInto(historyProvider);
+			}
+			historyProvider.getNext();
+		}
+
+		/*override protected function executeIfNoErrors():void {
 			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			listIQ.callback = iqCallback;
 			listIQ.errorCallback = iqErrorCallback;
@@ -49,7 +66,7 @@ package com.chat.controller.commands.cm.message {
 				var chat:ChatStanza = historyList.chats[i];
 				print(chat.start, chat.withJID);
 			}
-		}
+		}*/
 		/*override protected function executeIfNoErrors():void {
 			var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			retrieveIQ.callback = iqCallback;

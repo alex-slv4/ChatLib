@@ -17,6 +17,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
@@ -60,6 +61,7 @@ package com.chat.controller {
 			_connection.enableExtensions(Time);
 			_connection.enableExtensions(RSMSet);
 			_connection.enableExtensions(List);
+			_connection.enableExtensions(ChatStanza);
 		}
 
 		override protected function setupCurrentUser():void {

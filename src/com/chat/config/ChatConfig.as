@@ -28,6 +28,8 @@ package com.chat.config {
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
+	import com.chat.model.HistoryProvider;
+	import com.chat.model.IHistoryProvider;
 	import com.chat.model.communicators.CommunicatorProvider;
 	import com.chat.model.communicators.ICommunicatorProvider;
 
@@ -63,6 +65,7 @@ package com.chat.config {
 			injector.map(ChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
+			injector.map(IHistoryProvider).toSingleton(HistoryProvider);
 		}
 		private function mapCommands():void {
 			//App commands

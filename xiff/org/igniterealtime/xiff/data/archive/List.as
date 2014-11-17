@@ -36,9 +36,9 @@ package org.igniterealtime.xiff.data.archive {
 		public function getElementName():String {
 			return ELEMENT_NAME;
 		}
-		public function get chats():Array
+		public function get chats():Vector.<ChatStanza>
 		{
-			var list:Array = [];
+			var list:Vector.<ChatStanza> = new Vector.<ChatStanza>();
 			for each( var child:XML in xml.children() )
 			{
 				if ( child.localName() == ChatStanza.ELEMENT_NAME )
@@ -50,7 +50,7 @@ package org.igniterealtime.xiff.data.archive {
 			}
 			return list;
 		}
-		public function set chats( value:Array ):void
+		public function set chats( value:Vector.<ChatStanza> ):void
 		{
 			removeFields(ChatStanza.ELEMENT_NAME);
 
@@ -59,7 +59,7 @@ package org.igniterealtime.xiff.data.archive {
 				var len:uint = value.length;
 				for (var i:uint = 0; i < len; ++i)
 				{
-					var item:ChatStanza = value[i] as ChatStanza;
+					var item:ChatStanza = value[i];
 					xml.appendChild( item.xml );
 				}
 			}

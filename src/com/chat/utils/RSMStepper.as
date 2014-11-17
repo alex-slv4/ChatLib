@@ -16,6 +16,11 @@ package com.chat.utils {
 		public function set current(current:RSMSet):void{
 			_current = current;
 		}
+
+		public function get current():RSMSet {
+			return _current;
+		}
+
 		public function get next():RSMSet {
 			return getNext(_stepSize);
 		}
@@ -50,5 +55,6 @@ package com.chat.utils {
 			result.max = count;
 			return result;
 		}
+
 	}
 }
