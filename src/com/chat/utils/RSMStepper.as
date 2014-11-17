@@ -47,7 +47,7 @@ package com.chat.utils {
 				}
 			}
 			result.before = _current.first;
-			result.max = _stepSize;
+			result.max = count;
 			return result;
 		}
 	}
