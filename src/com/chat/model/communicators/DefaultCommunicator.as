@@ -80,6 +80,10 @@ package com.chat.model.communicators {
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 		public function destroy():void {
+			bus = null;
+			model = null;
+			controller = null;
+			_items = null;
 		}
 	}
 }
