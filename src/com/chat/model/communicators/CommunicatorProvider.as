@@ -89,10 +89,10 @@ package com.chat.model.communicators {
 		private function addCommunicator(iCommunicator:ICommunicator):void {
 			_privateCommunications[iCommunicator.uid] = iCommunicator;
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
-			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
+//			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
 				injector.injectInto(iCommunicator);
 				iCommunicator.active = true;
-			}
+//			}
 		}
 		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
 			var key:String = chatRoom.room.roomJID.bareJID;
@@ -117,8 +117,8 @@ package com.chat.model.communicators {
 			return iCommunicator;
 		}
 
-		public function getAll():Vector.<ICommunicatorBase> {
-			var result:Vector.<ICommunicatorBase> = new <ICommunicatorBase>[];
+		public function getAll():Vector.<ICommunicator> {
+			var result:Vector.<ICommunicator> = new <ICommunicator>[];
 			for each (var communicator:ICommunicator in _privateCommunications) {
 				result.push(communicator);
 			}

@@ -73,7 +73,6 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 			}
 		}
 		public function dispatch(eventName:String, params:Array):void {
-			Assert.isTrue(bus != null, ":)");
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 		public function get active():Boolean {

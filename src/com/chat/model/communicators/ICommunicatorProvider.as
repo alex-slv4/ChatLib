@@ -8,6 +8,6 @@ package com.chat.model.communicators {
 
 		function getCommunicator(data:Object)				:ICommunicator;
 
-		function getAll()									:Vector.<ICommunicatorBase>;
+		function getAll()									:Vector.<ICommunicator>;
 	}
 }
