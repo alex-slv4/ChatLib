@@ -283,7 +283,6 @@ public class ChatRoom extends EventDispatcher
 		private function onUserDeparture( event:RoomEvent ):void
 		{
 			removeUserByNickname( event.nickname );
-			
 			dispatchEvent( event );
 		}
 		

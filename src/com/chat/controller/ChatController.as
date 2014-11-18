@@ -130,7 +130,7 @@ package com.chat.controller {
 				}
 			}
 			//TODO: add normal reaction
-			throw new Error("Server not configured");
+//			throw new Error("Server not configured");
 		}
 
 		public function test():void {
