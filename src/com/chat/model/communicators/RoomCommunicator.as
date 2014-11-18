@@ -5,7 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatRoom;
 
-	public class RoomCommunicator extends WritableCommunicator {
+	public class RoomCommunicator extends WritableCommunicator implements UIDCommunicator {
 
 		private var _chatRoom:ChatRoom;
 
@@ -37,6 +37,10 @@ package com.chat.model.communicators {
 		override public function destroy():void {
 			_chatRoom = null;
 			super.destroy();
+		}
+
+		public function get uid():String {
+			return chatRoom.room.roomJID.bareJID;
 		}
 	}
 }
