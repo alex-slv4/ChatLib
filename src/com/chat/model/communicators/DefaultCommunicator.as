@@ -3,6 +3,7 @@
  */
 package com.chat.model.communicators {
 	import com.chat.controller.ChatController;
+	import com.chat.events.ChatModelEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
@@ -26,6 +27,7 @@ package com.chat.model.communicators {
 
 		private var _count:int = 0;
 		protected var _items:Vector.<ICItem> = new <ICItem>[];
+		private var _active:Boolean;
 
 		public function DefaultCommunicator() {
 		}
@@ -70,6 +72,17 @@ package com.chat.model.communicators {
 		}
 		public function dispatch(eventName:String, params:Array):void {
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
+		}
+		public function get active():Boolean {
+			return _active;
+		}
+
+		public function set active(value:Boolean):void {
+			if(value != _active){
+				_active = value;
+				var eventName:String = _active ? ChatModelEvent.COMMUNICATOR_ACTIVATED : ChatModelEvent.COMMUNICATOR_DEACTIVATED;
+				model.dispatchEvent(new ChatModelEvent(eventName, this));
+			}
 		}
 		public function destroy():void {
 			clear();

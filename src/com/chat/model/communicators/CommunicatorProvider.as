@@ -60,7 +60,6 @@ package com.chat.model.communicators {
 					constructFunc = getCommunicatorForRoom;
 			}
 			var iCommunicator:UIDCommunicator = constructFunc(data);
-			injector.injectInto(iCommunicator);
 			return iCommunicator;
 		}
 
@@ -90,7 +89,8 @@ package com.chat.model.communicators {
 			_privateCommunications[iCommunicator.uid] = iCommunicator;
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
-				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+				injector.injectInto(iCommunicator);
+				iCommunicator.active = true;
 			}
 		}
 		private function getCommunicatorForRoom(chatRoom:ChatRoom):UIDCommunicator {
@@ -101,7 +101,8 @@ package com.chat.model.communicators {
 				_roomCommunications[iCommunicator.uid] = iCommunicator;
 				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 			}
-			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, iCommunicator));
+			injector.injectInto(iCommunicator);
+			iCommunicator.active = true;
 			return iCommunicator;
 		}
 		private function getCommunicatorForRoster(item:RosterItemVO):UIDCommunicator {

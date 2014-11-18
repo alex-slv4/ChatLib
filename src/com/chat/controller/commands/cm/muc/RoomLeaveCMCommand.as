@@ -11,7 +11,8 @@ package com.chat.controller.commands.cm.muc {
 			print("leave");
 			if(roomCommunicator){
 				roomCommunicator.chatRoom.leave(false);
-				model.provider.destroyCommunicator(roomCommunicator);
+				roomCommunicator.active = false;
+				//model.provider.destroyCommunicator(roomCommunicator);
 			}
 		}
 		private function get roomCommunicator():RoomCommunicator {

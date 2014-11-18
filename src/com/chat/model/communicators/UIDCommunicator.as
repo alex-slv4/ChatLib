@@ -9,6 +9,5 @@ package com.chat.model.communicators {
 		function get type():int;
 
 		function get name():String;
-
 	}
 }

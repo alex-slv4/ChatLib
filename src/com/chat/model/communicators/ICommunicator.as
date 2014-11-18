@@ -19,6 +19,10 @@ package com.chat.model.communicators {
 
 		function get unreadCount():int;
 
+		function set active(value:Boolean):void;
+
+		function get active():Boolean;
+
 		function get items():Vector.<ICItem>;
 
 		function read(data:ICItem):void;
@@ -28,5 +32,7 @@ package com.chat.model.communicators {
 		function clear():void;
 
 		function destroy():void;
+
 	}
+
 }

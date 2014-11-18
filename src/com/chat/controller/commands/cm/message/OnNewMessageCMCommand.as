@@ -25,6 +25,7 @@ package com.chat.controller.commands.cm.message {
 			} else {
 				communicator.unreadCount++;
 			}
+			communicator.active = true;
 		}
 
 		private function handleReceipt(message:Message):void {
