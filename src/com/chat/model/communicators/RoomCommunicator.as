@@ -33,5 +33,10 @@ package com.chat.model.communicators {
 		public function get chatRoom():ChatRoom {
 			return _chatRoom;
 		}
+
+		override public function destroy():void {
+			_chatRoom = null;
+			super.destroy();
+		}
 	}
 }

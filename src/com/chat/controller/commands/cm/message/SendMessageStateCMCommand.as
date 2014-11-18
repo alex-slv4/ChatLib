@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.events.ChatModelEvent;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.WritableCommunicator;
@@ -20,12 +21,15 @@ package com.chat.controller.commands.cm.message {
 
 		override protected function executeIfNoErrors():void {
 			var state:String = params[0];
-			sendState(state);
+			if(communicator) {
+				sendState(state);
+			}
 		}
 
 		private function sendState(state:String):void {
 
 			clearTimeout(STATE_TIMER_ID);
+			if(communicator == null) return;
 
 			var message:Message = new Message();
 			message.state = state;
@@ -41,7 +45,9 @@ package com.chat.controller.commands.cm.message {
 
 			if(state == Message.STATE_COMPOSING) {
 				STATE_TIMER_ID = setTimeout(function():void{
-					writableCommunicator.state = Message.STATE_PAUSED;
+					if(writableCommunicator){
+						writableCommunicator.state = Message.STATE_PAUSED;
+					}
 				}, PAUSED_DELAY);
 			}
 			controller.connection.send(message);

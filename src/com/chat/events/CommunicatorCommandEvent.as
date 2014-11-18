@@ -30,6 +30,7 @@ public class CommunicatorCommandEvent extends Event {
 		public static const SEND_MESSAGE_STATE:String = "sendMessageState";
 		public static const MARK_AS_RECEIVED:String = "markMessageAsReceived";
 		public static const ON_MESSAGE_RECEIVED:String = "onMessageReceived";
+		public static const TEST:String = "test";
 
 		private var _communicator:ICommunicator;
 		private var _params:Array;

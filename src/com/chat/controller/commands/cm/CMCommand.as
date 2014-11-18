@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm {
 	import com.chat.controller.commands.*;
+	import com.chat.events.ChatModelEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.CItemString;
@@ -18,10 +19,30 @@ package com.chat.controller.commands.cm {
 
 		[Inject]
 		public var bus:IEventDispatcher;
+		private var _communicator:ICommunicator;
 
 		override public function execute():void {
+			_communicator = event.communicator;
+			setUp();
+
 			if (!hasErrors()) {
 				executeIfNoErrors();
+			}
+
+			tearDown();
+		}
+
+
+		private function setUp():void {
+			model.addEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
+		}
+		private function tearDown():void {
+			model.removeEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
+		}
+
+		protected function onCommunicatorDestroyed(e:ChatModelEvent):void {
+			if(e.data === _communicator){
+				_communicator = null;
 			}
 		}
 
@@ -61,7 +82,7 @@ package com.chat.controller.commands.cm {
 		}
 
 		public function get communicator():ICommunicator {
-			return event.communicator;
+			return _communicator;
 		}
 
 		public function get params():Array {

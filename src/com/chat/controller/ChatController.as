@@ -49,7 +49,7 @@ package com.chat.controller {
 
 			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
 			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_REMOVED, communicatorEventHandler);
+			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, communicatorEventHandler);
 
 			_browser = new Browser(connection);
 
@@ -74,7 +74,7 @@ package com.chat.controller {
 			switch (event.type){
 				case ChatModelEvent.COMMUNICATOR_ADDED:
 					break;
-				case ChatModelEvent.COMMUNICATOR_REMOVED:
+				case ChatModelEvent.COMMUNICATOR_DESTROYED:
 					break;
 				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
 					chatModel.activeCommunicator = communicator;

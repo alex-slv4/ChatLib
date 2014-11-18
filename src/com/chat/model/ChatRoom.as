@@ -122,17 +122,15 @@ public class ChatRoom extends EventDispatcher
 		}
 
 		public function getUserByNickname(nickname:String):ChatUser {
-			var chatUser:ChatUser;
 			for each(var user:ChatUser in _users.source) {
 				if (user.displayName == nickname) {
-					chatUser = user;
-					break;
+					return user;
 				}
 			}
-			return chatUser;
+			return null;
 		}
 
-	private function requestAffiliations( affiliation:String ):void
+		private function requestAffiliations( affiliation:String ):void
 		{
 			if( _room.role ==  Room.ROLE_MODERATOR )
 			{

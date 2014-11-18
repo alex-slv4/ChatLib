@@ -31,6 +31,22 @@ package com.chat.model.communicators {
 		[Inject]
 		public var controller:ChatController;
 
+		public function destroyCommunicator(communicator:ICommunicator):void {
+			var key:String;
+			for (key in _privateCommunications) {
+				if(_privateCommunications[key] == communicator){
+					delete _privateCommunications[key];
+				}
+			}
+			for (key in _roomCommunications) {
+				if(_roomCommunications[key] == communicator){
+					delete _roomCommunications[key];
+				}
+			}
+			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_DESTROYED, communicator));
+
+			communicator.destroy();
+		}
 		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
 			switch (data.constructor){

@@ -18,6 +18,7 @@ package com.chat.controller.commands.cm.muc {
 		public function RoomCMCommand() {
 			subCommands["join"] = CommunicatorCommandEvent.ROOM_JOIN;
 			subCommands["create"] = CommunicatorCommandEvent.ROOM_CREATE;
+			subCommands["leave"] = CommunicatorCommandEvent.ROOM_LEAVE;
 		}
 
 
