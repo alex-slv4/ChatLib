@@ -2,7 +2,7 @@
  * Created by AlexanderSla on 11.11.2014.
  */
 package com.chat.events {
-import com.chat.model.communicators.ICommunicator;
+import com.chat.model.communicators.ICommunicatorBase;
 
 import flash.events.Event;
 
@@ -32,16 +32,16 @@ public class CommunicatorCommandEvent extends Event {
 		public static const ON_MESSAGE_RECEIVED:String = "onMessageReceived";
 		public static const TEST:String = "test";
 
-		private var _communicator:ICommunicator;
+		private var _communicator:ICommunicatorBase;
 		private var _params:Array;
 
-		public function CommunicatorCommandEvent(type:String, communicator:ICommunicator, params:Array) {
+		public function CommunicatorCommandEvent(type:String, communicator:ICommunicatorBase, params:Array) {
 			super(type, false, false);
 			_params = params;
 			_communicator = communicator;
 		}
 
-		public function get communicator():ICommunicator {
+		public function get communicator():ICommunicatorBase {
 			return _communicator;
 		}
 

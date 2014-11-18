@@ -5,7 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.ICItem;
 
-	public class LogCommunicator extends DefaultCommunicator implements UIDCommunicator {
+	public class LogCommunicator extends DefaultCommunicator implements ICommunicator {
 
 		public function get type():int {
 			return CommunicatorType.LOG;

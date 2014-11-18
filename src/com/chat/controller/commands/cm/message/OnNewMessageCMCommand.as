@@ -4,7 +4,8 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.events.CommunicatorEvent;
-	import com.chat.model.data.СItemMessage;
+import com.chat.model.communicators.ICommunicator;
+import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -23,9 +24,9 @@ package com.chat.controller.commands.cm.message {
 			if (message.from.equals(model.currentUser.jid.escaped, true)) {
 				//do nothing
 			} else {
-				communicator.unreadCount++;
+//				communicator.unreadCount++;
 			}
-			communicator.active = true;
+			(communicator as ICommunicator).active = true;
 		}
 
 		private function handleReceipt(message:Message):void {

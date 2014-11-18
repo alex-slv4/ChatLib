@@ -3,7 +3,7 @@
  */
 package com.chat.controller.commands.cm.muc {
 	import com.chat.model.ChatRoom;
-	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 
 	import org.igniterealtime.xiff.data.forms.FormExtension;
 	import org.igniterealtime.xiff.events.RoomEvent;
@@ -34,7 +34,7 @@ package com.chat.controller.commands.cm.muc {
 			_chatRoom.removeEventListener(RoomEvent.CONFIGURE_ROOM, onRoomConfigure);
 			_chatRoom.removeEventListener(RoomEvent.CONFIGURE_ROOM_COMPLETE, onRoomConfigureComplete);
 
-			var iCommunicator:ICommunicator = model.provider.getCommunicator(_chatRoom);
+			var iCommunicator:ICommunicatorBase = model.provider.getCommunicator(_chatRoom);
 			//iCommunicator.activate();
 		}
 	}

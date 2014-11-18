@@ -5,7 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.ICItem;
 
-	public class GlobalCommunicator extends DefaultCommunicator implements UIDCommunicator{
+	public class GlobalCommunicator extends DefaultCommunicator implements ICommunicator{
 
 		public function get type():int {
 			return CommunicatorType.GLOBAL;

@@ -16,7 +16,7 @@ package com.chat.controller.commands.cm.message {
 				//do nothing
 			}else{
 				if(!messageItem.isRead){
-					communicator.unreadCount--;
+//					communicator.unreadCount--;
 					messageItem.isRead = true;
 				}
 			}

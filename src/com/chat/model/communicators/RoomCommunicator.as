@@ -5,7 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatRoom;
 
-	public class RoomCommunicator extends WritableCommunicator implements UIDCommunicator {
+	public class RoomCommunicator extends WritableCommunicator implements ICommunicator {
 
 		private var _chatRoom:ChatRoom;
 

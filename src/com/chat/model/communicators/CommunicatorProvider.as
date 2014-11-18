@@ -31,7 +31,7 @@ package com.chat.model.communicators {
 		[Inject]
 		public var controller:ChatController;
 
-		public function destroyCommunicator(communicator:UIDCommunicator):void {
+		public function destroyCommunicator(communicator:ICommunicator):void {
 			var key:String;
 			for (key in _privateCommunications) {
 				if(_privateCommunications[key] == communicator){
@@ -45,9 +45,10 @@ package com.chat.model.communicators {
 			}
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_DESTROYED, communicator));
 
+			communicator.active = false;
 			communicator.destroy();
 		}
-		public function getCommunicator(data:Object):UIDCommunicator {
+		public function getCommunicator(data:Object):ICommunicator {
 			var constructFunc:Function;
 			switch (data.constructor){
 				case RosterItemVO:
@@ -59,24 +60,24 @@ package com.chat.model.communicators {
 				case ChatRoom:
 					constructFunc = getCommunicatorForRoom;
 			}
-			var iCommunicator:UIDCommunicator = constructFunc(data);
+			var iCommunicator:ICommunicator = constructFunc(data);
 			return iCommunicator;
 		}
 
-		private function getCommunicatorForMessage(message:Message):UIDCommunicator {
+		private function getCommunicatorForMessage(message:Message):ICommunicator {
 			var isCurrentUserMessage:Boolean = message.from.equals(model.currentUser.jid.escaped, true);
 			var keyJID:EscapedJID = isCurrentUserMessage ? message.to : message.from;
-			var iCommunicator:UIDCommunicator;
+			var iCommunicator:ICommunicator;
 			var key:String = keyJID.bareJID;
 			if(message.type == Message.TYPE_GROUPCHAT){
-				iCommunicator = _roomCommunications[key] as UIDCommunicator;
+				iCommunicator = _roomCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
 					var chatRoom:ChatRoom = new ChatRoom();
 					chatRoom.join(keyJID.unescaped);
 					iCommunicator = getCommunicatorForRoom(chatRoom);
 				}
 			}else{
-				iCommunicator = _privateCommunications[key] as UIDCommunicator;
+				iCommunicator = _privateCommunications[key] as ICommunicator;
 				if(iCommunicator == null){
 					iCommunicator = new DirectCommunicator(keyJID.unescaped, model.currentUser);
 					addCommunicator(iCommunicator);
@@ -85,7 +86,7 @@ package com.chat.model.communicators {
 			return iCommunicator;
 		}
 
-		private function addCommunicator(iCommunicator:UIDCommunicator):void {
+		private function addCommunicator(iCommunicator:ICommunicator):void {
 			_privateCommunications[iCommunicator.uid] = iCommunicator;
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
@@ -93,9 +94,9 @@ package com.chat.model.communicators {
 				iCommunicator.active = true;
 			}
 		}
-		private function getCommunicatorForRoom(chatRoom:ChatRoom):UIDCommunicator {
+		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
 			var key:String = chatRoom.room.roomJID.bareJID;
-			var iCommunicator:UIDCommunicator = _roomCommunications[key] as UIDCommunicator;
+			var iCommunicator:ICommunicator = _roomCommunications[key] as ICommunicator;
 			if(iCommunicator == null){
 				iCommunicator = new RoomCommunicator(chatRoom);
 				_roomCommunications[iCommunicator.uid] = iCommunicator;
@@ -105,10 +106,10 @@ package com.chat.model.communicators {
 			iCommunicator.active = true;
 			return iCommunicator;
 		}
-		private function getCommunicatorForRoster(item:RosterItemVO):UIDCommunicator {
+		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {
 			var keyJID:UnescapedJID = item.jid;
 			var key:String = keyJID.bareJID;
-			var iCommunicator:UIDCommunicator = _privateCommunications[key] as UIDCommunicator;
+			var iCommunicator:ICommunicator = _privateCommunications[key] as ICommunicator;
 			if(iCommunicator == null){
 				iCommunicator = new DirectCommunicator(keyJID, model.currentUser);
 				addCommunicator(iCommunicator);
@@ -116,9 +117,9 @@ package com.chat.model.communicators {
 			return iCommunicator;
 		}
 
-		public function getAll():Vector.<ICommunicator> {
-			var result:Vector.<ICommunicator> = new <ICommunicator>[];
-			for each (var communicator:UIDCommunicator in _privateCommunications) {
+		public function getAll():Vector.<ICommunicatorBase> {
+			var result:Vector.<ICommunicatorBase> = new <ICommunicatorBase>[];
+			for each (var communicator:ICommunicator in _privateCommunications) {
 				result.push(communicator);
 			}
 			for each (communicator in _roomCommunications) {

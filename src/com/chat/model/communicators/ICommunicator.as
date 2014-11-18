@@ -1,19 +1,8 @@
 /**
- * Created by kvint on 02.11.14.
+ * Created by kvint on 18.11.14.
  */
 package com.chat.model.communicators {
-	import com.chat.model.data.ICItem;
-
-	import flash.events.IEventDispatcher;
-
-	[Event(name="onUnreadUpdated", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemAdded", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemUpdated", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemSent", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemRequested", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onChanged", type="com.chat.events.CommunicatorEvent")]
-
-	public interface ICommunicator extends IEventDispatcher {
+	public interface ICommunicator extends ICommunicatorBase {
 
 		function set unreadCount(value:int):void;
 
@@ -23,16 +12,10 @@ package com.chat.model.communicators {
 
 		function get active():Boolean;
 
-		function get items():Vector.<ICItem>;
+		function get uid():String;
 
-		function read(data:ICItem):void;
+		function get type():int;
 
-		function push(data:ICItem):void;
-
-		function clear():void;
-
-		function destroy():void;
-
+		function get name():String;
 	}
-
 }

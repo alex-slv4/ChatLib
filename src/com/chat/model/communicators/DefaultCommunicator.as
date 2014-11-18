@@ -13,7 +13,9 @@ package com.chat.model.communicators {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 
-	public class DefaultCommunicator extends EventDispatcher implements ICommunicator {
+import org.as3commons.lang.Assert;
+
+public class DefaultCommunicator extends EventDispatcher implements ICommunicatorBase {
 
 		[Inject]
 		public var model:ChatModel;
@@ -71,6 +73,7 @@ package com.chat.model.communicators {
 			}
 		}
 		public function dispatch(eventName:String, params:Array):void {
+			Assert.isTrue(bus != null, ":)");
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 		public function get active():Boolean {

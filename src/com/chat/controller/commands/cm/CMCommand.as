@@ -5,7 +5,7 @@ package com.chat.controller.commands.cm {
 	import com.chat.controller.commands.*;
 	import com.chat.events.ChatModelEvent;
 	import com.chat.events.CommunicatorCommandEvent;
-	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.data.CItemString;
 
 	import flash.events.IEventDispatcher;
@@ -19,7 +19,7 @@ package com.chat.controller.commands.cm {
 
 		[Inject]
 		public var bus:IEventDispatcher;
-		private var _communicator:ICommunicator;
+		private var _communicator:ICommunicatorBase;
 
 		override public function execute():void {
 			_communicator = event.communicator;
@@ -81,7 +81,7 @@ package com.chat.controller.commands.cm {
 			communicator.push(new CItemString(prefix + " " + args.join(" ")));
 		}
 
-		public function get communicator():ICommunicator {
+		public function get communicator():ICommunicatorBase {
 			return _communicator;
 		}
 

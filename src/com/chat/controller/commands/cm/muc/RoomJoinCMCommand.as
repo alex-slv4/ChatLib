@@ -5,7 +5,7 @@ package com.chat.controller.commands.cm.muc {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatRoom;
-	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;

@@ -6,7 +6,7 @@ package com.chat.controller {
 	import com.chat.events.ChatModelEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
-	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.data.СItemMessage;
 
 	import flash.events.Event;
@@ -70,7 +70,7 @@ package com.chat.controller {
 		}
 
 		private function communicatorEventHandler(event:ChatModelEvent):void {
-			var communicator:ICommunicator = event.data as ICommunicator;
+			var communicator:ICommunicatorBase = event.data as ICommunicatorBase;
 			switch (event.type){
 				case ChatModelEvent.COMMUNICATOR_ADDED:
 					break;
@@ -94,7 +94,7 @@ package com.chat.controller {
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data;
 			if(message.type != null) {
-				var communicator:ICommunicator = chatModel.provider.getCommunicator(message);
+				var communicator:ICommunicatorBase = chatModel.provider.getCommunicator(message);
 				if(message.body == null){
 //					if(message.state) communicator.push(new CItemString(message.state));
 				}else{
@@ -162,7 +162,7 @@ package com.chat.controller {
 			return startDate.toString();
 		}
 
-		public function activateCommunicator(communicator:ICommunicator):void {
+		public function activateCommunicator(communicator:ICommunicatorBase):void {
 			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicator));
 		}
 		public function destroy():void {
