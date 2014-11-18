@@ -22,11 +22,11 @@ package com.chat.model.communicators {
 			return result;
 		}
 
-		override public function get type():int {
+		public function get type():int {
 			return CommunicatorType.MUC;
 		}
 
-		override public function get label():String {
+		public function get name():String {
 			return _chatRoom.room.roomName;
 		}
 

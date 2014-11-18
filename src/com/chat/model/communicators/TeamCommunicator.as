@@ -5,13 +5,21 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.ICItem;
 
-	public class TeamCommunicator extends DefaultCommunicator {
+	public class TeamCommunicator extends DefaultCommunicator implements UIDCommunicator {
 		public function TeamCommunicator() {
-			_label = "Team";
 		}
 
-		override public function get type():int {
+		public function get type():int {
 			return CommunicatorType.TEAM;
+		}
+
+		public function get uid():String {
+			return "";
+		}
+
+
+		public function get name():String {
+			return "Team";
 		}
 
 		public function add(data:ICItem):void {

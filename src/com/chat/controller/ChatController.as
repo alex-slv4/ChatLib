@@ -77,7 +77,7 @@ package com.chat.controller {
 				case ChatModelEvent.COMMUNICATOR_DESTROYED:
 					break;
 				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
-					chatModel.activeCommunicator = communicator;
+					//chatModel.activeCommunicator = communicator;
 					break;
 			}
 		}

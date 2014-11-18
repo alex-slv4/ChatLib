@@ -24,18 +24,10 @@ package com.chat.model.communicators {
 		public var bus:IEventDispatcher;
 
 
-		protected var _label:String;
 		private var _count:int = 0;
 		protected var _items:Vector.<ICItem> = new <ICItem>[];
 
 		public function DefaultCommunicator() {
-		}
-
-		public function get type():int {
-			return -1;
-		}
-		public function get label():String {
-			return _label ? _label : toString();
 		}
 
 		public function set unreadCount(value:int):void {
@@ -54,7 +46,7 @@ package com.chat.model.communicators {
 		public function clear():void {
 			_items = new <ICItem>[];
 			_count = 0;
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.REPLACED, this));
+			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.CHANGED, this));
 		}
 
 		override public function toString():String {
@@ -80,6 +72,7 @@ package com.chat.model.communicators {
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
 		public function destroy():void {
+			clear();
 			bus = null;
 			model = null;
 			controller = null;

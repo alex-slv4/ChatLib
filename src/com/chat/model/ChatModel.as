@@ -26,7 +26,6 @@ import flash.utils.Dictionary;
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
 		public var receiptRequests:Dictionary = new Dictionary();
-		private var _activeCommunicator:ICommunicator;
 		private var _serverTimeOffset:Number;
 
 		public function get currentUser():ChatUser {
@@ -43,14 +42,6 @@ import flash.utils.Dictionary;
 
 		public function set roster(value:Roster):void {
 			_roster = value;
-		}
-
-		public function get activeCommunicator():ICommunicator {
-			return _activeCommunicator;
-		}
-
-		public function set activeCommunicator(value:ICommunicator):void {
-			_activeCommunicator = value;
 		}
 
 		public function get provider():ICommunicatorProvider {

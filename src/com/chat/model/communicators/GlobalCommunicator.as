@@ -5,13 +5,19 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.ICItem;
 
-	public class GlobalCommunicator extends DefaultCommunicator {
-		public function GlobalCommunicator() {
-			_label = "Global";
+	public class GlobalCommunicator extends DefaultCommunicator implements UIDCommunicator{
+
+		public function get type():int {
+			return CommunicatorType.GLOBAL;
 		}
 
-		override public function get type():int {
-			return CommunicatorType.GLOBAL;
+
+		public function get name():String {
+			return "";
+		}
+
+		public function get uid():String {
+			return "";
 		}
 
 		public function add(data:ICItem):void {

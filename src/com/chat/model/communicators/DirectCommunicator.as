@@ -9,7 +9,7 @@ package com.chat.model.communicators {
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
-	public class DirectCommunicator extends WritableCommunicator implements UIDCommunicator{
+	public class DirectCommunicator extends WritableCommunicator implements UIDCommunicator {
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;
@@ -17,10 +17,9 @@ package com.chat.model.communicators {
 		public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
 			_participant = to;
 			_chatUser = currentUser;
-			_label = _participant.node;
 		}
 
-		override public function get type():int {
+		public function get type():int {
 			return CommunicatorType.DIRECT;
 		}
 
@@ -40,6 +39,10 @@ package com.chat.model.communicators {
 			return _chatUser;
 		}
 
+
+		public function get name():String {
+			return _participant.node;
+		}
 
 		public function get uid():String {
 			return _participant.toString();

@@ -11,19 +11,15 @@ package com.chat.model.communicators {
 	[Event(name="onItemUpdated", type="com.chat.events.CommunicatorEvent")]
 	[Event(name="onItemSent", type="com.chat.events.CommunicatorEvent")]
 	[Event(name="onItemRequested", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onReplaced", type="com.chat.events.CommunicatorEvent")]
+	[Event(name="onChanged", type="com.chat.events.CommunicatorEvent")]
 
 	public interface ICommunicator extends IEventDispatcher {
-
-		function get type():int;
-
-		function get label():String;
-
-		function get items():Vector.<ICItem>;
 
 		function set unreadCount(value:int):void;
 
 		function get unreadCount():int;
+
+		function get items():Vector.<ICItem>;
 
 		function read(data:ICItem):void;
 

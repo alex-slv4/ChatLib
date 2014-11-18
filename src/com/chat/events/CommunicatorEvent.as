@@ -9,7 +9,7 @@ package com.chat.events {
 		public static const ITEM_RECEIPT_REPLIED:String = "onItemReceiptReplied";
 		public static const ITEM_SENT:String = "onItemSent";
 		public static const ITEM_UPDATED:String = "onItemUpdated";
-		public static const REPLACED:String = "onReplaced";
+		public static const CHANGED:String = "onChanged";
 
 		public function CommunicatorEvent(type:String, data:Object) {
 			super(type, data, false, false);
