@@ -87,6 +87,7 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 			}
 		}
 		public function destroy():void {
+			active = false;
 			clear();
 			bus = null;
 			model = null;

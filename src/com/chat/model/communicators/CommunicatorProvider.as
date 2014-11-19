@@ -6,6 +6,7 @@ package com.chat.model.communicators {
 	import com.chat.events.ChatModelEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
+	import com.chat.model.communicators.factory.ICreator;
 
 	import flash.utils.Dictionary;
 
@@ -19,8 +20,7 @@ package com.chat.model.communicators {
 
 	public class CommunicatorProvider implements ICommunicatorProvider {
 
-		private var _privateCommunications:Dictionary = new Dictionary();
-		private var _roomCommunications:Dictionary = new Dictionary();
+		private var hash:Dictionary = new Dictionary();
 
 		[Inject]
 		public var injector:IInjector;
@@ -31,37 +31,23 @@ package com.chat.model.communicators {
 		[Inject]
 		public var controller:ChatController;
 
-		public function destroyCommunicator(communicator:ICommunicator):void {
-			var key:String;
-			for (key in _privateCommunications) {
-				if(_privateCommunications[key] == communicator){
-					delete _privateCommunications[key];
-				}
-			}
-			for (key in _roomCommunications) {
-				if(_roomCommunications[key] == communicator){
-					delete _roomCommunications[key];
-				}
-			}
-			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_DESTROYED, communicator));
+		public var creatorsMap:Dictionary = new Dictionary();
 
-			communicator.active = false;
+		public function destroyCommunicator(communicator:ICommunicator):void {
+			delete hash[communicator.uid];
+			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_DESTROYED, communicator));
 			communicator.destroy();
 		}
 		public function getCommunicator(data:Object):ICommunicator {
-			var constructFunc:Function;
-			switch (data.constructor){
-				case RosterItemVO:
-					constructFunc = getCommunicatorForRoster;
-					break;
-				case Message:
-					constructFunc = getCommunicatorForMessage;
-					break;
-				case ChatRoom:
-					constructFunc = getCommunicatorForRoom;
+			var creator:ICreator = creatorsMap[data.constructor];
+			var communicator:ICommunicator = hash[creator.key];
+			if(communicator == null){
+				var communicator:ICommunicator = creator.create();
+				hash[creator.key] = communicator;
+				return communicator;
 			}
-			var iCommunicator:ICommunicator = constructFunc(data);
-			return iCommunicator;
+			injector.injectInto(communicator);
+			return communicator;
 		}
 
 		private function getCommunicatorForMessage(message:Message):ICommunicator {
@@ -70,14 +56,14 @@ package com.chat.model.communicators {
 			var iCommunicator:ICommunicator;
 			var key:String = keyJID.bareJID;
 			if(message.type == Message.TYPE_GROUPCHAT){
-				iCommunicator = _roomCommunications[key] as ICommunicator;
+				iCommunicator = hash[key] as ICommunicator;
 				if(iCommunicator == null){
 					var chatRoom:ChatRoom = new ChatRoom();
 					chatRoom.join(keyJID.unescaped);
 					iCommunicator = getCommunicatorForRoom(chatRoom);
 				}
 			}else{
-				iCommunicator = _privateCommunications[key] as ICommunicator;
+				iCommunicator = hash[key] as ICommunicator;
 				if(iCommunicator == null){
 					iCommunicator = new DirectCommunicator(keyJID.unescaped, model.currentUser);
 					addCommunicator(iCommunicator);
@@ -87,19 +73,19 @@ package com.chat.model.communicators {
 		}
 
 		private function addCommunicator(iCommunicator:ICommunicator):void {
-			_privateCommunications[iCommunicator.uid] = iCommunicator;
+			hash[iCommunicator.uid] = iCommunicator;
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
-//			if (DictionaryUtils.getValues(_privateCommunications).length == 1) {
+//			if (DictionaryUtils.getValues(hash).length == 1) {
 				injector.injectInto(iCommunicator);
 				iCommunicator.active = true;
 //			}
 		}
 		private function getCommunicatorForRoom(chatRoom:ChatRoom):ICommunicator {
 			var key:String = chatRoom.room.roomJID.bareJID;
-			var iCommunicator:ICommunicator = _roomCommunications[key] as ICommunicator;
+			var iCommunicator:ICommunicator = hash[key] as ICommunicator;
 			if(iCommunicator == null){
 				iCommunicator = new RoomCommunicator(chatRoom);
-				_roomCommunications[iCommunicator.uid] = iCommunicator;
+				hash[iCommunicator.uid] = iCommunicator;
 				model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ADDED, iCommunicator));
 			}
 			injector.injectInto(iCommunicator);
@@ -109,7 +95,7 @@ package com.chat.model.communicators {
 		private function getCommunicatorForRoster(item:RosterItemVO):ICommunicator {
 			var keyJID:UnescapedJID = item.jid;
 			var key:String = keyJID.bareJID;
-			var iCommunicator:ICommunicator = _privateCommunications[key] as ICommunicator;
+			var iCommunicator:ICommunicator = hash[key] as ICommunicator;
 			if(iCommunicator == null){
 				iCommunicator = new DirectCommunicator(keyJID, model.currentUser);
 				addCommunicator(iCommunicator);
@@ -119,10 +105,7 @@ package com.chat.model.communicators {
 
 		public function getAll():Vector.<ICommunicator> {
 			var result:Vector.<ICommunicator> = new <ICommunicator>[];
-			for each (var communicator:ICommunicator in _privateCommunications) {
-				result.push(communicator);
-			}
-			for each (communicator in _roomCommunications) {
+			for each (var communicator:ICommunicator in hash) {
 				result.push(communicator);
 			}
 			return result;
