@@ -25,6 +25,7 @@ package com.chat.model.communicators {
 
 		function destroy():void;
 
+		function toString():String;
 	}
 
 }

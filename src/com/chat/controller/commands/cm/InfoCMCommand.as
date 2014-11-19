@@ -2,11 +2,10 @@
  * Created by kvint on 16.11.14.
  */
 package com.chat.controller.commands.cm {
-	import com.chat.controller.commands.*;
 	public class InfoCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {
-			print(communicator);
+			print(communicator.toString());
 			print("Current user:", model.currentUser.jid);
 		}
 	}

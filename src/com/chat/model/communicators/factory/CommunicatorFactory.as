@@ -57,6 +57,7 @@ package com.chat.model.communicators.factory {
 			Assert.notNull(creatorClass, "Creator class for " + data.constructor + " doesn't exist");
 
 			var creator:ICreator = new creatorClass(data);
+			injector.injectInto(creator);
 			Assert.notNull(creator.uid, "Creator uid not implemented");
 
 			var communicator:ICommunicator = hash[creator.uid];
@@ -64,7 +65,6 @@ package com.chat.model.communicators.factory {
 				var communicator:ICommunicator = creator.create();
 				communicator.uid = creator.uid;
 				hash[creator.uid] = communicator;
-				return communicator;
 			}
 			injector.injectInto(communicator);
 			return communicator;

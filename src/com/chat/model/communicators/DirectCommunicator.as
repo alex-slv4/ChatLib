@@ -44,5 +44,9 @@ package com.chat.model.communicators {
 			return _participant.node;
 		}
 
+
+		override public function toString():String {
+			return "[Direct " + _chatUser.jid.toString() + " / " + _participant + "]";
+		}
 	}
 }
