@@ -38,9 +38,5 @@ package com.chat.model.communicators {
 			_chatRoom = null;
 			super.destroy();
 		}
-
-		public function get uid():String {
-			return chatRoom.room.roomJID.bareJID;
-		}
 	}
 }

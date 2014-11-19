@@ -34,7 +34,7 @@ package com.chat.controller.commands.cm.muc {
 			_chatRoom.removeEventListener(RoomEvent.CONFIGURE_ROOM, onRoomConfigure);
 			_chatRoom.removeEventListener(RoomEvent.CONFIGURE_ROOM_COMPLETE, onRoomConfigureComplete);
 
-			var iCommunicator:ICommunicatorBase = model.provider.getCommunicator(_chatRoom);
+			var iCommunicator:ICommunicatorBase = model.communicators.getCommunicator(_chatRoom);
 			//iCommunicator.activate();
 		}
 	}

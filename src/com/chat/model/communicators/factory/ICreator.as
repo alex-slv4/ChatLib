@@ -5,7 +5,7 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.communicators.ICommunicator;
 
 	public interface ICreator {
-		function get key():String;
+		function get uid():String;
 		function create():ICommunicator;
 	}
 }

@@ -94,7 +94,7 @@ package com.chat.controller {
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data;
 			if(message.type != null) {
-				var communicator:ICommunicatorBase = chatModel.provider.getCommunicator(message);
+				var communicator:ICommunicatorBase = chatModel.communicators.getCommunicator(message);
 				if(message.body == null){
 //					if(message.state) communicator.push(new CItemString(message.state));
 				}else{

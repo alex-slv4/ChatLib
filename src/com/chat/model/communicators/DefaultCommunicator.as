@@ -15,7 +15,7 @@ package com.chat.model.communicators {
 
 import org.as3commons.lang.Assert;
 
-public class DefaultCommunicator extends EventDispatcher implements ICommunicatorBase {
+	public class DefaultCommunicator extends EventDispatcher implements ICommunicatorBase {
 
 		[Inject]
 		public var model:ChatModel;
@@ -27,6 +27,7 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 		public var bus:IEventDispatcher;
 
 
+		private var _uid:String;
 		private var _count:int = 0;
 		protected var _items:Vector.<ICItem> = new <ICItem>[];
 		private var _active:Boolean;
@@ -86,6 +87,14 @@ public class DefaultCommunicator extends EventDispatcher implements ICommunicato
 				model.dispatchEvent(new ChatModelEvent(eventName, this));
 			}
 		}
+		public function get uid():String {
+			return _uid;
+		}
+
+		public function set uid(value:String):void {
+			_uid = value;
+		}
+
 		public function destroy():void {
 			active = false;
 			clear();

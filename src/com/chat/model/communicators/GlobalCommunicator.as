@@ -16,10 +16,6 @@ package com.chat.model.communicators {
 			return "";
 		}
 
-		public function get uid():String {
-			return "";
-		}
-
 		public function add(data:ICItem):void {
 			_items.push(data);
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));

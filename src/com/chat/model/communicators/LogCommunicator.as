@@ -16,10 +16,6 @@ package com.chat.model.communicators {
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
-		public function get uid():String {
-			return "";
-		}
-
 		public function get name():String {
 			return "";
 		}

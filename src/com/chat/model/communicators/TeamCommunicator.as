@@ -13,11 +13,6 @@ package com.chat.model.communicators {
 			return CommunicatorType.TEAM;
 		}
 
-		public function get uid():String {
-			return "";
-		}
-
-
 		public function get name():String {
 			return "Team";
 		}

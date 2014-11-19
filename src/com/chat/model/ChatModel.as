@@ -44,7 +44,7 @@ import flash.utils.Dictionary;
 			_roster = value;
 		}
 
-		public function get provider():ICommunicatorProvider {
+		public function get communicators():ICommunicatorProvider {
 			return injector.getInstance(ICommunicatorProvider);
 		}
 

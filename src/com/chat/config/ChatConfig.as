@@ -31,7 +31,7 @@ package com.chat.config {
 	import com.chat.model.ChatModel;
 	import com.chat.model.HistoryProvider;
 	import com.chat.model.IHistoryProvider;
-	import com.chat.model.communicators.CommunicatorProvider;
+	import com.chat.model.communicators.factory.CommunicatorFactory;
 	import com.chat.model.communicators.ICommunicatorProvider;
 
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
@@ -65,7 +65,7 @@ package com.chat.config {
 			injector.map(IChat).toSingleton(Chat);
 			injector.map(ChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
-			injector.map(ICommunicatorProvider).toSingleton(CommunicatorProvider);
+			injector.map(ICommunicatorProvider).toSingleton(CommunicatorFactory);
 			injector.map(IHistoryProvider).toSingleton(HistoryProvider);
 		}
 		private function mapCommands():void {

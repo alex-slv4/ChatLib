@@ -44,8 +44,5 @@ package com.chat.model.communicators {
 			return _participant.node;
 		}
 
-		public function get uid():String {
-			return _participant.toString();
-		}
 	}
 }

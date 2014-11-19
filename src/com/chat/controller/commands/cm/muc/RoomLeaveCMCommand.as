@@ -12,7 +12,7 @@ package com.chat.controller.commands.cm.muc {
 			if(roomCommunicator){
 				roomCommunicator.chatRoom.leave(false);
 				roomCommunicator.active = false;
-				//model.provider.destroyCommunicator(roomCommunicator);
+				//model.communicators.destroyCommunicator(roomCommunicator);
 			}
 		}
 		private function get roomCommunicator():RoomCommunicator {
