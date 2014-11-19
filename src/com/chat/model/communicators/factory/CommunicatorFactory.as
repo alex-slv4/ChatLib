@@ -46,19 +46,20 @@ package com.chat.model.communicators.factory {
 			creatorsMap[RosterItemVO] = RosterItemCreator;
 		}
 
-		public function destroyCommunicator(communicator:ICommunicator):void {
+		public function dispose(communicator:ICommunicator):void {
 			delete hash[communicator.uid];
 			model.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_DESTROYED, communicator));
 			communicator.destroy();
 		}
-		public function getCommunicator(data:Object):ICommunicator {
+		public function getFor(data:Object):ICommunicator {
+			if(data == null) return null;
 
 			var creatorClass:Class = creatorsMap[data.constructor];
-			Assert.notNull(creatorClass, "Creator class for " + data.constructor + " doesn't exist");
+			if(creatorClass == null) return null;
 
 			var creator:ICreator = new creatorClass(data);
+			if(creator.uid == null) return null;
 			injector.injectInto(creator);
-			Assert.notNull(creator.uid, "Creator uid not implemented");
 
 			var communicator:ICommunicator = hash[creator.uid];
 			if(communicator == null){

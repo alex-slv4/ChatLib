@@ -4,13 +4,12 @@
 package com.chat.controller.commands.cm {
 	import com.chat.model.communicators.ICommunicator;
 
-	public class TestCMCommand extends CMCommand {
+	public class CloseCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {
 			if(communicator is ICommunicator){
-				model.communicators.destroyCommunicator(communicator as ICommunicator);
+				model.communicators.dispose(communicator as ICommunicator);
 			}
-
 		}
 	}
 }

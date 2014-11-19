@@ -25,6 +25,8 @@
  */
 package org.igniterealtime.xiff.data
 {
+	import com.hurlant.util.asn1.parser.nulll;
+
 	/**
 	 * This is a base class for all classes that encapsulate XML stanza data. It provides
 	 * a set of methods that faciliate easy manipulation of XML data.
@@ -162,6 +164,11 @@ package org.igniterealtime.xiff.data
 		 */
 		public function getAttribute( name:String ):String
 		{
+			if( !xml.hasOwnProperty("@"+name) )
+			{
+				return null;
+			}
+
 			if ( xml.@[name] )
 			{
 				return xml.@[name];
@@ -175,7 +182,7 @@ package org.igniterealtime.xiff.data
 			
 			return null;
 		}
-		
+
 		/**
 		 * Convinience method for setting a value to a element in the XML.
 		 * @param	name

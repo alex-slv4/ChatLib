@@ -29,7 +29,7 @@ package com.chat.model.communicators {
 		 */
 
 		public function WritableCommunicator() {
-			commandsMap["/test"] = CommunicatorCommandEvent.TEST;
+			commandsMap["/close"] = CommunicatorCommandEvent.CLOSE;
 			commandsMap["/roster"] = CommunicatorCommandEvent.ROSTER;
 			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;

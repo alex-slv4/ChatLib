@@ -37,7 +37,7 @@ import org.igniterealtime.xiff.util.Zlib;
 public class BaseChatController extends EventDispatcher {
 		private const KEEP_ALIVE_TIME:int = 30000;
 		[Bindable]
-		public static var serverName:String = "jabber.ru";
+		public static var serverName:String = "localhost";
 		[Bindable]
 		public static var serverPort:int = 5222;
 		[Bindable]

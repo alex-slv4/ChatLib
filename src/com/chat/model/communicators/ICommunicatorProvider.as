@@ -4,9 +4,9 @@
 package com.chat.model.communicators {
 	public interface ICommunicatorProvider {
 
-		function destroyCommunicator(communicator:ICommunicator):void;
+		function dispose(communicator:ICommunicator):void;
 
-		function getCommunicator(data:Object)				:ICommunicator;
+		function getFor(data:Object)				:ICommunicator;
 
 		function getAll()									:Vector.<ICommunicator>;
 	}

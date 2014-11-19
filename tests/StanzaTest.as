@@ -5,6 +5,7 @@ package {
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertNull;
+	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 
 	public class StanzaTest {
@@ -33,6 +34,14 @@ package {
 			_rsm.first = null;
 
 			assertNull(_rsm.first);
+		}
+
+		[Test]
+		public function testMessage():void {
+			var msg:Message = new Message();
+			assertNull(msg.from);
+			assertNull(msg.body);
+			assertNull(msg.to);
 		}
 	}
 }

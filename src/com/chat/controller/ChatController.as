@@ -15,8 +15,10 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.core.Browser;
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.IQ;
+	import org.igniterealtime.xiff.data.IXMPPStanza;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.data.XMLStanza;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
@@ -94,7 +96,7 @@ package com.chat.controller {
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data;
 			if(message.type != null) {
-				var communicator:ICommunicatorBase = chatModel.communicators.getCommunicator(message);
+				var communicator:ICommunicatorBase = chatModel.communicators.getFor(message);
 				if(message.body == null){
 //					if(message.state) communicator.push(new CItemString(message.state));
 				}else{
@@ -110,6 +112,11 @@ package com.chat.controller {
 				presence = event.data[i] as Presence;
 				if (presence.type == Presence.TYPE_SUBSCRIBE) {
 					chatModel.roster.grantSubscription(presence.from.unescaped, false);
+				}
+
+				if (presence.type == Presence.TYPE_PROBE) {
+					var reply:IXMPPStanza = new Presence();
+					connection.send(reply);
 				}
 			}
 			super.onPresence(event);

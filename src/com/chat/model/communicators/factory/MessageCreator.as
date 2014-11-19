@@ -18,16 +18,14 @@ package com.chat.model.communicators.factory {
 		public var model:ChatModel;
 
 		private var _msg:Message;
-		private var _from:UnescapedJID;
 
 		public function MessageCreator(msg:Message) {
 			_msg = msg;
-			var isCurrentUserMessage:Boolean = _msg.from.equals(model.currentUser.jid.escaped, true);
-			_from = isCurrentUserMessage ? _msg.to.unescaped : _msg.from.unescaped;
+
 		}
 
 		public function get uid():String {
-			return _from ? _from.toString() : null;
+			return from ? from.toString() : null;
 		}
 
 		public function create():ICommunicator {
@@ -42,12 +40,18 @@ package com.chat.model.communicators.factory {
 
 		private function createRoom():ICommunicator {
 			var chatRoom:ChatRoom = new ChatRoom();
-			chatRoom.join(_from);
+			chatRoom.join(from);
 			return new RoomCommunicator(chatRoom)
 		}
 
 		private function createDirect():ICommunicator {
-			return new DirectCommunicator(_from, model.currentUser);
+			return new DirectCommunicator(from, model.currentUser);
+		}
+
+		public function get from():UnescapedJID {
+			if(_msg.from == null) return null;
+			var isCurrentUserMessage:Boolean = _msg.from.equals(model.currentUser.jid.escaped, true);
+			return isCurrentUserMessage ? _msg.to.unescaped : _msg.from.unescaped;
 		}
 	}
 }

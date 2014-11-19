@@ -9,7 +9,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.ClearCMCommand;
 	import com.chat.controller.commands.cm.HelpCMCommand;
 	import com.chat.controller.commands.cm.InfoCMCommand;
-	import com.chat.controller.commands.cm.TestCMCommand;
+	import com.chat.controller.commands.cm.CloseCMCommand;
 	import com.chat.controller.commands.cm.TraceCMCommand;
 	import com.chat.controller.commands.cm.message.MarkAsReadCMCommand;
 	import com.chat.controller.commands.cm.message.OnNewMessageCMCommand;
@@ -95,7 +95,7 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED).toCommand(OnNewMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
 			commandMap.map(CommunicatorCommandEvent.INFO).toCommand(InfoCMCommand);
-			commandMap.map(CommunicatorCommandEvent.TEST).toCommand(TestCMCommand);
+			commandMap.map(CommunicatorCommandEvent.CLOSE).toCommand(CloseCMCommand);
 		}
 
 		private function mapView():void {
