@@ -3,9 +3,10 @@
  */
 package com.chat.controller.commands.cm {
 	import com.chat.controller.commands.*;
-	import com.chat.events.ChatModelEvent;
+	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.communicators.ICommunicatorBase;
+	import com.chat.model.communicators.ICommunicatorFactory;
 	import com.chat.model.data.CItemString;
 
 	import flash.events.IEventDispatcher;
@@ -16,6 +17,8 @@ package com.chat.controller.commands.cm {
 
 		[Inject]
 		public var event:CommunicatorCommandEvent;
+		[Inject]
+		public var communicators:ICommunicatorFactory;
 
 		[Inject]
 		public var bus:IEventDispatcher;
@@ -34,13 +37,13 @@ package com.chat.controller.commands.cm {
 
 
 		private function setUp():void {
-			model.addEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
+			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 		private function tearDown():void {
-			model.removeEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
+			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 
-		protected function onCommunicatorDestroyed(e:ChatModelEvent):void {
+		protected function onCommunicatorDestroyed(e:CommunicatorFactoryEvent):void {
 			if(e.data === _communicator){
 				_communicator = null;
 			}

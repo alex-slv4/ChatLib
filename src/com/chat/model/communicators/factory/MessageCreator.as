@@ -4,6 +4,7 @@
 package com.chat.model.communicators.factory {
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
+	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
@@ -15,13 +16,12 @@ package com.chat.model.communicators.factory {
 	public class MessageCreator implements ICreator {
 
 		[Inject]
-		public var model:ChatModel;
+		public var model:IChatModel;
 
 		private var _msg:Message;
 
 		public function MessageCreator(msg:Message) {
 			_msg = msg;
-
 		}
 
 		public function get uid():String {
@@ -49,6 +49,7 @@ package com.chat.model.communicators.factory {
 		}
 
 		public function get from():UnescapedJID {
+			if(_msg == null) return null;
 			if(_msg.from == null) return null;
 			var isCurrentUserMessage:Boolean = _msg.from.equals(model.currentUser.jid.escaped, true);
 			return isCurrentUserMessage ? _msg.to.unescaped : _msg.from.unescaped;

@@ -3,7 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
-	import com.chat.events.ChatModelEvent;
+	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.WritableCommunicator;

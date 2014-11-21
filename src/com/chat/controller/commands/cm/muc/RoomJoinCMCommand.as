@@ -23,7 +23,7 @@ package com.chat.controller.commands.cm.muc {
 			_chatRoom.chatManager = controller;
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
 			_chatRoom.join(roomJID);
-			_roomCommunicator = model.communicators.getFor(_chatRoom) as RoomCommunicator;
+			_roomCommunicator = communicators.getFor(_chatRoom) as RoomCommunicator;
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {

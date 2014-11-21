@@ -8,7 +8,7 @@ package com.chat.controller.commands.cm {
 
 		override protected function executeIfNoErrors():void {
 			if(communicator is ICommunicator){
-				model.communicators.dispose(communicator as ICommunicator);
+				communicators.dispose(communicator as ICommunicator);
 			}
 		}
 	}

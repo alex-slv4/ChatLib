@@ -2,12 +2,12 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat {
-import com.chat.controller.ChatController;
-import com.chat.model.ChatModel;
+	import com.chat.controller.ChatController;
+	import com.chat.model.IChatModel;
 
-public interface IChat {
+	public interface IChat {
 
-		function get model():ChatModel;
+		function get model():IChatModel;
 		function get controller():ChatController;
 
 	}

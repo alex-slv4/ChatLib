@@ -2,30 +2,26 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.model {
-import com.chat.model.communicators.ICommunicatorBase;
-import com.chat.model.communicators.ICommunicatorProvider;
+	import com.chat.model.communicators.ICommunicatorFactory;
 
-import flash.events.EventDispatcher;
-import flash.utils.Dictionary;
-
-	import org.igniterealtime.xiff.data.time.Time;
+	import flash.events.EventDispatcher;
+	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.im.Roster;
 
 	import robotlegs.bender.framework.api.IInjector;
 
-	[Event(name="onCommunicatorAdded", type="com.chat.events.ChatModelEvent")]
-	[Event(name="onCommunicatorRemoved", type="com.chat.events.ChatModelEvent")]
-	[Event(name="onCommunicatorActivated", type="com.chat.events.ChatModelEvent")]
-
-	public class ChatModel extends EventDispatcher {
+	public class ChatModel extends EventDispatcher implements IChatModel {
 
 		[Inject]
 		public var injector:IInjector;
 
+		[Inject]
+		public var _communicators:ICommunicatorFactory;
+
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
-		public var receiptRequests:Dictionary = new Dictionary();
+		private var _receiptRequests:Dictionary = new Dictionary();
 		private var _serverTimeOffset:Number;
 
 		public function get currentUser():ChatUser {
@@ -44,19 +40,23 @@ import flash.utils.Dictionary;
 			_roster = value;
 		}
 
-		public function get communicators():ICommunicatorProvider {
-			return injector.getInstance(ICommunicatorProvider);
-		}
-
-		public function get serverTimeOffset():Number {
+		public function get serverTimeOffset():int {
 			return _serverTimeOffset;
 		}
 
-		public function set serverTimeOffset(value:Number):void {
+		public function set serverTimeOffset(value:int):void {
 			_serverTimeOffset = value;
 		}
 		public function get currentTime():Number {
 			return new Date().time + serverTimeOffset;
+		}
+
+		public function get communicators():ICommunicatorFactory {
+			return _communicators;
+		}
+
+		public function get receiptRequests():Dictionary {
+			return _receiptRequests;
 		}
 	}
 }

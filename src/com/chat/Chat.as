@@ -1,17 +1,17 @@
 package com.chat
 {
 
-import com.chat.controller.ChatController;
-import com.chat.model.ChatModel;
+	import com.chat.controller.ChatController;
+	import com.chat.model.IChatModel;
 
-public class Chat implements IChat
+	public class Chat implements IChat
 {
 
 	[Inject]
 	public var thisController:ChatController;
 
 	[Inject]
-	public var _model:ChatModel;
+	public var _model:IChatModel;
 
 	private static var _instance:Chat;
 
@@ -20,7 +20,7 @@ public class Chat implements IChat
 		return _instance ||= new Chat();
 	}
 
-	public function get model():ChatModel
+	public function get model():IChatModel
 	{
 		return _model;
 	}

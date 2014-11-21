@@ -3,10 +3,12 @@
  */
 package com.chat.controller {
 	import com.chat.events.ChatEvent;
-	import com.chat.events.ChatModelEvent;
+	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
+	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.ICommunicatorBase;
+	import com.chat.model.communicators.ICommunicatorFactory;
 	import com.chat.model.data.СItemMessage;
 
 	import flash.events.Event;
@@ -38,7 +40,9 @@ package com.chat.controller {
 	public class ChatController extends BaseChatController {
 
 		[Inject]
-		public var chatModel:ChatModel;
+		public var chatModel:IChatModel;
+		[Inject]
+		public var communicators:ICommunicatorFactory;
 
 		[Inject]
 		public var bus:IEventDispatcher;
@@ -49,9 +53,9 @@ package com.chat.controller {
 		override public function init():void {
 			super.init();
 
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
-			chatModel.addEventListener(ChatModelEvent.COMMUNICATOR_DESTROYED, communicatorEventHandler);
+			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
+			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
+			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicatorEventHandler);
 
 			_browser = new Browser(connection);
 
@@ -71,14 +75,14 @@ package com.chat.controller {
 			chatModel.currentUser = _currentUser;
 		}
 
-		private function communicatorEventHandler(event:ChatModelEvent):void {
+		private function communicatorEventHandler(event:CommunicatorFactoryEvent):void {
 			var communicator:ICommunicatorBase = event.data as ICommunicatorBase;
 			switch (event.type){
-				case ChatModelEvent.COMMUNICATOR_ADDED:
+				case CommunicatorFactoryEvent.COMMUNICATOR_ADDED:
 					break;
-				case ChatModelEvent.COMMUNICATOR_DESTROYED:
+				case CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED:
 					break;
-				case ChatModelEvent.COMMUNICATOR_ACTIVATED:
+				case CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED:
 					//chatModel.activeCommunicator = communicator;
 					break;
 			}
@@ -96,7 +100,7 @@ package com.chat.controller {
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data;
 			if(message.type != null) {
-				var communicator:ICommunicatorBase = chatModel.communicators.getFor(message);
+				var communicator:ICommunicatorBase = communicators.getFor(message);
 				if(message.body == null){
 //					if(message.state) communicator.push(new CItemString(message.state));
 				}else{
@@ -169,9 +173,6 @@ package com.chat.controller {
 			return startDate.toString();
 		}
 
-		public function activateCommunicator(communicator:ICommunicatorBase):void {
-			chatModel.dispatchEvent(new ChatModelEvent(ChatModelEvent.COMMUNICATOR_ACTIVATED, communicator));
-		}
 		public function destroy():void {
 			//TODO: destroy
 		}

@@ -3,6 +3,7 @@
  */
 package com.chat.model.communicators.factory {
 	import com.chat.model.ChatModel;
+	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
 
@@ -11,7 +12,7 @@ package com.chat.model.communicators.factory {
 	public class RosterItemCreator implements ICreator {
 
 		[Inject]
-		public var model:ChatModel;
+		public var model:IChatModel;
 
 		private var _rosterItem:RosterItemVO;
 

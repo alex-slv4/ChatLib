@@ -3,10 +3,11 @@
  */
 package com.chat.model.communicators {
 	import com.chat.controller.ChatController;
-	import com.chat.events.ChatModelEvent;
+	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
+	import com.chat.model.IChatModel;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
 
@@ -18,10 +19,13 @@ import org.as3commons.lang.Assert;
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicatorBase {
 
 		[Inject]
-		public var model:ChatModel;
+		public var model:IChatModel;
 
 		[Inject]
 		public var controller:ChatController;
+
+		[Inject]
+		public var communicators:ICommunicatorFactory;
 
 		[Inject]
 		public var bus:IEventDispatcher;
@@ -83,8 +87,8 @@ import org.as3commons.lang.Assert;
 		public function set active(value:Boolean):void {
 			if(value != _active){
 				_active = value;
-				var eventName:String = _active ? ChatModelEvent.COMMUNICATOR_ACTIVATED : ChatModelEvent.COMMUNICATOR_DEACTIVATED;
-				model.dispatchEvent(new ChatModelEvent(eventName, this));
+				var eventName:String = _active ? CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED : CommunicatorFactoryEvent.COMMUNICATOR_DEACTIVATED;
+				communicators.dispatchEvent(new CommunicatorFactoryEvent(eventName, this));
 			}
 		}
 		public function get uid():String {
@@ -101,6 +105,7 @@ import org.as3commons.lang.Assert;
 			bus = null;
 			model = null;
 			controller = null;
+			_uid = null;
 			_items = null;
 		}
 	}
