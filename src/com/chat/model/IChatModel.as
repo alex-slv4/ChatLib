@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
+	import com.chat.model.presences.IPresences;
 
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
@@ -21,6 +22,7 @@ package com.chat.model {
 		function set serverTimeOffset(value:int):void;
 
 		function get communicators():ICommunicatorFactory;
+		function get presences():IPresences;
 
 		function get receiptRequests():Dictionary;
 	}

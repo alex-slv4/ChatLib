@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
+	import com.chat.model.presences.IPresences;
 
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
@@ -18,6 +19,9 @@ package com.chat.model {
 
 		[Inject]
 		public var _communicators:ICommunicatorFactory;
+
+		[Inject]
+		public var _presences:IPresences;
 
 		private var _currentUser:ChatUser;
 		private var _roster:Roster;
@@ -53,6 +57,10 @@ package com.chat.model {
 
 		public function get communicators():ICommunicatorFactory {
 			return _communicators;
+		}
+
+		public function get presences():IPresences {
+			return _presences;
 		}
 
 		public function get receiptRequests():Dictionary {

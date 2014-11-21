@@ -10,6 +10,7 @@ package com.chat.controller {
 	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.СItemMessage;
+	import com.chat.model.presences.IPresencesHandler;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -41,11 +42,15 @@ package com.chat.controller {
 
 		[Inject]
 		public var chatModel:IChatModel;
+
 		[Inject]
 		public var communicators:ICommunicatorFactory;
 
 		[Inject]
 		public var bus:IEventDispatcher;
+
+		[Inject]
+		public var presences:IPresencesHandler;
 
 		private var _browser:Browser;
 
@@ -122,6 +127,7 @@ package com.chat.controller {
 					var reply:IXMPPStanza = new Presence();
 					connection.send(reply);
 				}
+				presences.handlePresence(presence);
 			}
 			super.onPresence(event);
 		}
