@@ -33,7 +33,7 @@ package com.chat.config {
 	import com.chat.model.IChatModel;
 	import com.chat.model.IHistoryProvider;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
-	import com.chat.model.communicators.ICommunicatorFactory;
+	import com.chat.model.communicators.factory.ICommunicatorFactory;
 
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;

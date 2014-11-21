@@ -21,12 +21,11 @@ package com.chat.controller.commands.cm.muc {
 			subCommands["leave"] = CommunicatorCommandEvent.ROOM_LEAVE;
 		}
 
-
-		override public function execute():void {
+		override protected function setUp():void {
+			super.setUp();
 			if(communicator is RoomCommunicator){
 				subCommands["info"] = CommunicatorCommandEvent.ROOM_INFO;
 			}
-			super.execute();
 		}
 	}
 }

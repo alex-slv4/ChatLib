@@ -38,5 +38,9 @@ package com.chat.model.communicators {
 			_chatRoom = null;
 			super.destroy();
 		}
+
+		override public function toString():String {
+			return "[Room " + _chatRoom.room.roomJID + "]";
+		}
 	}
 }

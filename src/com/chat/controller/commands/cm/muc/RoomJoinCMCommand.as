@@ -27,8 +27,8 @@ package com.chat.controller.commands.cm.muc {
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {
-			_roomCommunicator;
 			//Room joined
+			_roomCommunicator.active = true;
 		}
 
 		override public function get requiredParamsCount():int {

@@ -21,12 +21,18 @@ import com.chat.model.data.СItemMessage;
 				handleReceipt(message);
 			}
 
+			if(castedCommunicator == null) return;
+
 			if (message.from.equals(model.currentUser.jid.escaped, true)) {
 				//do nothing
 			} else {
-//				communicator.unreadCount++;
+				castedCommunicator.unreadCount++;
 			}
-			(communicator as ICommunicator).active = true;
+			castedCommunicator.active = true;
+		}
+
+		public function get castedCommunicator():ICommunicator {
+			return communicator as ICommunicator;
 		}
 
 		private function handleReceipt(message:Message):void {

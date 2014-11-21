@@ -5,15 +5,16 @@ package com.chat.controller.commands.cm {
 	import com.chat.controller.commands.*;
 	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.events.CommunicatorCommandEvent;
+	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.ICommunicatorBase;
-	import com.chat.model.communicators.ICommunicatorFactory;
+	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.CItemString;
 
 	import flash.events.IEventDispatcher;
 
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
-	public class CMCommand extends BaseChatCommand implements ICommand, ICMCommand{
+	public class CMCommand extends BaseChatCommand implements ICommand, ICMCommand {
 
 		[Inject]
 		public var event:CommunicatorCommandEvent;
@@ -36,10 +37,10 @@ package com.chat.controller.commands.cm {
 		}
 
 
-		private function setUp():void {
+		protected function setUp():void {
 			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
-		private function tearDown():void {
+		protected function tearDown():void {
 			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 

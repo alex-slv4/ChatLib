@@ -2,7 +2,7 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.model {
-	import com.chat.model.communicators.ICommunicatorFactory;
+	import com.chat.model.communicators.factory.ICommunicatorFactory;
 
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;

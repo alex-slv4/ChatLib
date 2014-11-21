@@ -41,8 +41,12 @@ package com.chat.controller.commands.cm {
 			if (keys.indexOf(subCommandName) != -1) {
 				runSubCommand(subCommandName);
 			} else {
-				error(this, "failed");
+				onSubCommandNotFound(subCommandName);
 			}
+		}
+
+		protected function onSubCommandNotFound(subCommandName:String):void {
+			error(this, subCommandName, "not found");
 		}
 	}
 }

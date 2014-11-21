@@ -8,6 +8,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.ChatModel;
 	import com.chat.model.IChatModel;
+	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
 

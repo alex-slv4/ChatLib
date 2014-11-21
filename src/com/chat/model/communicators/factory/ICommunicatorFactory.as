@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 07.11.14.
  */
-package com.chat.model.communicators {
+package com.chat.model.communicators.factory {
+	import com.chat.model.communicators.*;
 	import flash.events.IEventDispatcher;
 
 	public interface ICommunicatorFactory extends IEventDispatcher{
