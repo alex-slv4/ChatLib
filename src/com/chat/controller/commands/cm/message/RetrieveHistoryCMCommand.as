@@ -7,12 +7,10 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.history.ConversationsProvider;
-	import com.chat.model.history.DirectListProvider;
 
 	import flash.utils.setTimeout;
 
 	import org.igniterealtime.xiff.data.IQ;
-	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
 
 	import robotlegs.bender.framework.api.IInjector;
@@ -23,21 +21,16 @@ package com.chat.controller.commands.cm.message {
 
 		[Inject]
 		public var injector:IInjector;
-		private static var listProvider:ConversationsProvider;
 
 		override protected function executeIfNoErrors():void {
-			if(listProvider == null){
-				listProvider = new ConversationsProvider(directCommunicator.participant, directCommunicator.chatUser.jid);
-				injector.injectInto(listProvider);
-			}
-			listProvider.getNext(onHistoryLoaded);
+			directCommunicator.history.fetchNext(onHistoryLoaded);
 		}
 
 		private function onHistoryLoaded(items:Vector.<ICItem>):void {
 			for (var i:int = 0; i < items.length; i++) {
 				directCommunicator.push(items[i]);
 			}
-			setTimeout(listProvider.getNext, 10, arguments.callee);
+			setTimeout(directCommunicator.history.fetchNext, 10, arguments.callee);
 		}
 
 		private function get castedCommunicator():ICommunicator {

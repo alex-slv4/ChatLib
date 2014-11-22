@@ -29,9 +29,7 @@ package com.chat.config {
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
-	import com.chat.model.history.HistoryProvider;
 	import com.chat.model.IChatModel;
-	import com.chat.model.history.IHistoryProvider;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
@@ -41,7 +39,6 @@ package com.chat.config {
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.framework.api.IConfig;
-	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IInjector;
 
 	public class ChatConfig implements IConfig {
@@ -67,7 +64,6 @@ package com.chat.config {
 			injector.map(IChatModel).toSingleton(ChatModel);
 			injector.map(ChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
-			injector.map(IHistoryProvider).toSingleton(HistoryProvider);
 
 			var presences:Presences = new Presences();
 			injector.map(IPresences).toValue(presences);

@@ -51,5 +51,12 @@ package com.chat.utils {
 			return result;
 		}
 
+		public function get stepSize():int {
+			return _stepSize;
+		}
+
+		public function set stepSize(value:int):void {
+			_stepSize = value;
+		}
 	}
 }

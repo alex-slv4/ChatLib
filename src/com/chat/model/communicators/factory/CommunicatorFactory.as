@@ -54,7 +54,7 @@ package com.chat.model.communicators.factory {
 
 			var communicator:ICommunicator = hash[creator.uid];
 			if(communicator == null){
-				var communicator:ICommunicator = creator.create();
+				communicator = creator.create();
 				communicator.uid = creator.uid;
 				hash[creator.uid] = communicator;
 				injector.injectInto(communicator);

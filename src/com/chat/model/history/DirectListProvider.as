@@ -19,7 +19,7 @@ package com.chat.model.history {
 		private var _participant:UnescapedJID;
 		private var _chatIndex:int;
 		private var _list:List;
-		private var _chatStepper:RSMStepper = new RSMStepper(5);
+		private var _chatStepper:RSMStepper = new RSMStepper(20);
 		private var _end:Boolean;
 		private var _callBack:Function;
 
@@ -42,14 +42,13 @@ package com.chat.model.history {
 		}
 
 		private function loadNext():void {
-			var rsmSet:RSMSet = _chatStepper.previous;
 			var listStanza:List = new List();
 			listStanza.withJID = _participant.escaped;
 			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			listIQ.callback = listCallback;
 			listIQ.errorCallback = listErrorCallback;
 			listIQ.addExtension(listStanza);
-			listStanza.addExtension(rsmSet);
+			listStanza.addExtension(_chatStepper.previous);
 
 			controller.connection.send(listIQ);
 		}

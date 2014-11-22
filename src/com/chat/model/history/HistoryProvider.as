@@ -23,8 +23,8 @@ package com.chat.model.history {
 			_withJID = _communicator.participant;
 		}
 
-		public function fetchNext(max:int):void {
 
+		public function fetchNext(callBack:Function):void {
 		}
 
 		/*public function getNext():void {

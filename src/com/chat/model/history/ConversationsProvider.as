@@ -3,7 +3,6 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.ChatController;
-	import com.chat.model.data.CItemString;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
 	import com.chat.utils.RSMStepper;
@@ -17,7 +16,7 @@ package com.chat.model.history {
 
 	import robotlegs.bender.framework.api.IInjector;
 
-	public class ConversationsProvider {
+	public class ConversationsProvider implements IHistoryProvider {
 
 		[Inject]
 		public var controller:ChatController;
@@ -28,7 +27,7 @@ package com.chat.model.history {
 		private var _me:UnescapedJID;
 		private var _participant:UnescapedJID;
 		private var _chats:Vector.<ChatStanza>;
-		private var _conversationStepper:RSMStepper = new RSMStepper(5);
+		private var _conversationStepper:RSMStepper = new RSMStepper(50);
 		private var _currentChat:ChatStanza;
 		private var _currentConversationIndex:int;
 		private var _callBack:Function;
@@ -38,7 +37,8 @@ package com.chat.model.history {
 			_participant = participant;
 		}
 
-		public function getNext(callBack:Function):void {
+
+		public function fetchNext(callBack:Function):void {
 			if(_callBack != null) return;
 
 			_callBack = callBack;
@@ -59,7 +59,8 @@ package com.chat.model.history {
 		private function loadNextConversations():void {
 
 			var retrieveStanza:Retrieve = new Retrieve();
-			retrieveStanza.addExtension(_conversationStepper.previous);
+			var previous:RSMSet = _conversationStepper.previous;
+			retrieveStanza.addExtension(previous);
 			retrieveStanza.withJID = _participant.escaped;
 			retrieveStanza.start = _currentChat.start;
 
@@ -128,6 +129,7 @@ package com.chat.model.history {
 			var rsm:RSMSet = _conversationStepper.getInitial();
 			var retrieveStanza:Retrieve = new Retrieve();
 			retrieveStanza.addExtension(rsm);
+			retrieveStanza.start = _currentChat.start;
 			retrieveStanza.withJID = _participant.escaped;
 
 			var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);

@@ -4,6 +4,7 @@
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
+	import com.chat.model.history.ConversationsProvider;
 	import com.chat.model.history.HistoryProvider;
 	import com.chat.model.history.IHistoryProvider;
 	import com.chat.model.data.ICItem;
@@ -11,11 +12,16 @@ package com.chat.model.communicators {
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
+	import robotlegs.bender.framework.api.IInjector;
+
 	public class DirectCommunicator extends WritableCommunicator implements ICommunicator {
+
+		[Inject]
+		public var injector:IInjector;
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;
-		private var _history:HistoryProvider;
+		private var _history:IHistoryProvider;
 
 		public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
 			_participant = to;
@@ -53,8 +59,18 @@ package com.chat.model.communicators {
 		}
 
 		public function get history():IHistoryProvider {
-			return _history ||= new HistoryProvider(this);
+			if(_history == null) {
+				_history = new ConversationsProvider(_participant, _chatUser.jid);
+				injector.injectInto(_history);
+			}
+			return _history;
 		}
+
+		override public function clear():void {
+			_history = null;
+			super.clear();
+		}
+
 		override public function destroy():void {
 			_participant = null;
 			_chatUser = null;
