@@ -107,7 +107,7 @@ package com.chat.controller {
 			if(message.type != null) {
 				var communicator:ICommunicatorBase = communicators.getFor(message);
 				if(message.body == null){
-//					if(message.state) communicator.push(new CItemString(message.state));
+//					if(message.online) communicator.push(new CItemString(message.online));
 				}else{
 					communicator.push(new СItemMessage(message));
 				}

@@ -7,6 +7,6 @@ package com.chat.model.presences {
 		function set uid(value:String):void;
 		function get uid():String;
 
-		function set state(value:String):void;
+		function set online(value:Boolean):void;
 	}
 }

@@ -12,7 +12,7 @@ package com.chat.controller.commands.cm.roster {
 			print(this);
 			for (var i:int = 0; i < model.roster.length; i++) {
 				var itemAt:RosterItemVO = model.roster.getItemAt(i);
-				print(itemAt.nickname, "|", itemAt.subscribeType);
+				print(itemAt.nickname, itemAt.jid.toString(), "|", itemAt.subscribeType);
 			}
 		}
 	}
