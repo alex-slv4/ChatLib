@@ -101,7 +101,6 @@ import org.as3commons.lang.Assert;
 		}
 
 		public function destroy():void {
-			active = false;
 			clear();
 			bus = null;
 			model = null;

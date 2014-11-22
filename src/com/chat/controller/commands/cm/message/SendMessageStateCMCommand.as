@@ -26,6 +26,10 @@ package com.chat.controller.commands.cm.message {
 			}
 		}
 
+		override protected function tearDown():void {
+
+		}
+
 		private function sendState(state:String):void {
 
 			clearTimeout(STATE_TIMER_ID);
@@ -38,7 +42,7 @@ package com.chat.controller.commands.cm.message {
 			if(directCommunicator){
 				message.to = directCommunicator.participant.escaped;
 				message.type = Message.TYPE_CHAT;
-			}else if (roomCommunicator){
+			}else if (roomCommunicator && roomCommunicator.chatRoom.room.roomJID){
 				message.to = roomCommunicator.chatRoom.room.roomJID.escaped;
 				message.type = Message.TYPE_GROUPCHAT;
 			}
@@ -64,5 +68,6 @@ package com.chat.controller.commands.cm.message {
 		private function get directCommunicator():DirectCommunicator {
 			return communicator as DirectCommunicator;
 		}
+
 	}
 }

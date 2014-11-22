@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
@@ -16,7 +17,7 @@ package com.chat.controller.commands.cm.message {
 				//do nothing
 			}else{
 				if(!messageItem.isRead){
-//					communicator.unreadCount--;
+					castedCommunicator.unreadCount--;
 					messageItem.isRead = true;
 				}
 			}
@@ -31,7 +32,9 @@ package com.chat.controller.commands.cm.message {
 				controller.connection.send(ackMessage);
 			}
 		}
-
+		public function get castedCommunicator():ICommunicator {
+			return communicator as ICommunicator;
+		}
 		private function get messageItem():СItemMessage {
 			return params[0];
 		}

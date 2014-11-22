@@ -48,5 +48,11 @@ package com.chat.model.communicators {
 		override public function toString():String {
 			return "[Direct " + _chatUser.jid.toString() + " / " + _participant + "]";
 		}
+
+		override public function destroy():void {
+			_participant = null;
+			_chatUser = null;
+			super.destroy();
+		}
 	}
 }

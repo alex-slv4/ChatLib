@@ -38,6 +38,7 @@ package com.chat.model.communicators.factory {
 			if(communicator.uid != null){
 				delete hash[communicator.uid];
 				dispatchEvent(new CommunicatorFactoryEvent(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicator));
+				communicator.active = false;
 				communicator.destroy();
 			}
 		}

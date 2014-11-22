@@ -25,7 +25,7 @@ package com.chat.model.communicators.factory {
 		}
 
 		public function get uid():String {
-			return from ? from.toString() : null;
+			return from ? from.bareJID.toString() : null;
 		}
 
 		public function create():ICommunicator {
@@ -51,6 +51,7 @@ package com.chat.model.communicators.factory {
 		public function get from():UnescapedJID {
 			if(_msg == null) return null;
 			if(_msg.from == null) return null;
+			if(_msg.to == null) return null;
 			var isCurrentUserMessage:Boolean = _msg.from.equals(model.currentUser.jid.escaped, true);
 			return isCurrentUserMessage ? _msg.to.unescaped : _msg.from.unescaped;
 		}
