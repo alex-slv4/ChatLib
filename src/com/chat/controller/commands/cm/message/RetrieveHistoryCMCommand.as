@@ -3,23 +3,17 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
-	import com.chat.model.HistoryProvider;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.СItemMessage;
-	import com.chat.utils.RSMStepper;
+	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.data.ICItem;
+	import com.chat.model.history.ConversationsProvider;
+	import com.chat.model.history.DirectListProvider;
 
-	import org.igniterealtime.xiff.core.EscapedJID;
-	import org.igniterealtime.xiff.data.IExtension;
+	import flash.utils.setTimeout;
+
 	import org.igniterealtime.xiff.data.IQ;
-	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
-	import org.igniterealtime.xiff.data.archive.List;
-	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
-	import org.igniterealtime.xiff.data.rsm.RSMSet;
-	import org.igniterealtime.xiff.data.rsm.rsm_internal;
-	import org.igniterealtime.xiff.util.DateTimeParser;
-	import org.swiftsuspenders.Injector;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -28,20 +22,27 @@ package com.chat.controller.commands.cm.message {
 	public class RetrieveHistoryCMCommand extends CMCommand {
 
 		[Inject]
-		public var infector:IInjector;
-
-		public static var historyProvider:HistoryProvider;
-
-//		private static var rsmStepper:RSMStepper = new RSMStepper();
+		public var injector:IInjector;
+		private static var listProvider:ConversationsProvider;
 
 		override protected function executeIfNoErrors():void {
-			if(historyProvider == null){
-				historyProvider = new HistoryProvider(directCommunicator);
-				infector.injectInto(historyProvider);
+			if(listProvider == null){
+				listProvider = new ConversationsProvider(directCommunicator.participant, directCommunicator.chatUser.jid);
+				injector.injectInto(listProvider);
 			}
-			historyProvider.getNext();
+			listProvider.getNext(onHistoryLoaded);
 		}
 
+		private function onHistoryLoaded(items:Vector.<ICItem>):void {
+			for (var i:int = 0; i < items.length; i++) {
+				directCommunicator.push(items[i]);
+			}
+			setTimeout(listProvider.getNext, 10, arguments.callee);
+		}
+
+		private function get castedCommunicator():ICommunicator {
+			return communicator as ICommunicator;
+		}
 		/*override protected function executeIfNoErrors():void {
 			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
 			listIQ.callback = iqCallback;

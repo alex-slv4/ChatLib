@@ -44,7 +44,7 @@ package org.igniterealtime.xiff.data.rsm {
 		private static const AFTER:String = "after";
 
 		public function get max():int {
-			return getField(MAX) as int;
+			return int(getField(MAX));
 		}
 
 		public function set max(value:int):void {

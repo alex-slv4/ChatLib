@@ -29,9 +29,9 @@ package com.chat.config {
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatModel;
-	import com.chat.model.HistoryProvider;
+	import com.chat.model.history.HistoryProvider;
 	import com.chat.model.IChatModel;
-	import com.chat.model.IHistoryProvider;
+	import com.chat.model.history.IHistoryProvider;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;

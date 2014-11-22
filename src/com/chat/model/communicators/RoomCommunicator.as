@@ -4,6 +4,7 @@
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatRoom;
+	import com.chat.model.history.IHistoryProvider;
 
 	public class RoomCommunicator extends WritableCommunicator implements ICommunicator {
 
@@ -37,6 +38,10 @@ package com.chat.model.communicators {
 		override public function destroy():void {
 			_chatRoom = null;
 			super.destroy();
+		}
+
+		public function get history():IHistoryProvider {
+			return null;
 		}
 
 		override public function toString():String {

@@ -4,6 +4,8 @@
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
+	import com.chat.model.history.HistoryProvider;
+	import com.chat.model.history.IHistoryProvider;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
 
@@ -13,6 +15,7 @@ package com.chat.model.communicators {
 
 		private var _chatUser:ChatUser;
 		private var _participant:UnescapedJID;
+		private var _history:HistoryProvider;
 
 		public function DirectCommunicator(to:UnescapedJID, currentUser:ChatUser) {
 			_participant = to;
@@ -49,6 +52,9 @@ package com.chat.model.communicators {
 			return "[Direct " + _chatUser.jid.toString() + " / " + _participant + "]";
 		}
 
+		public function get history():IHistoryProvider {
+			return _history ||= new HistoryProvider(this);
+		}
 		override public function destroy():void {
 			_participant = null;
 			_chatUser = null;

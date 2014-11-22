@@ -28,30 +28,25 @@ package com.chat.utils {
 			return getPrevious(_stepSize);
 		}
 
-		public function getNext(count:int):RSMSet {
+		public function getInitial():RSMSet {
 			var result:RSMSet = new RSMSet();
-			result.max = count;
-			if(_current) {
-				if(_current.last){
-					result.after = _current.last;
-				}else{
-					//There is no last, it's blank page
-					return null;
-				}
-			}
+			result.max = 1; //It has to be zero here, but openfire...
+			result.before = "";
 			return result;
 		}
-		public function getPrevious(count:int):RSMSet {
+		protected function getNext(count:int):RSMSet {
 			var result:RSMSet = new RSMSet();
 			if(_current) {
-				if(_current.first){
-					result.before = _current.first;
-				}else{
-					//There is no last, it's blank page
-					return null;
-				}
+				result.index = Math.min(_current.firstIndex+1, _current.count);
 			}
-			result.before = _current.first;
+			result.max = count;
+			return result;
+		}
+		protected function getPrevious(count:int):RSMSet {
+			var result:RSMSet = new RSMSet();
+			if(_current) {
+				result.index = Math.max(_current.firstIndex-count, 0);
+			}
 			result.max = count;
 			return result;
 		}

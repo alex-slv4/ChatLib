@@ -30,6 +30,8 @@ package {
 			assertEquals(_rsm.index, 0);
 			assertEquals(_rsm.count, 11);
 			assertEquals(_rsm.first, "179");
+			_rsm.max = 10;
+			assertEquals(_rsm.max, 10);
 
 			_rsm.first = null;
 

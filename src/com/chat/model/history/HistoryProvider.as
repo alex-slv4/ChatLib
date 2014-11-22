@@ -1,25 +1,12 @@
 /**
  * Created by kvint on 18.11.14.
  */
-package com.chat.model {
+package com.chat.model.history {
 	import com.chat.controller.ChatController;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.CItemString;
-	import com.chat.model.data.СItemMessage;
-	import com.chat.utils.RSMStepper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
-
-	import org.igniterealtime.xiff.data.IQ;
-
-	import org.igniterealtime.xiff.data.Message;
-	import org.igniterealtime.xiff.data.archive.ChatStanza;
-
-	import org.igniterealtime.xiff.data.archive.List;
-	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
-
-	import org.igniterealtime.xiff.data.rsm.RSMSet;
 
 	use namespace archive_internal;
 
@@ -27,14 +14,6 @@ package com.chat.model {
 
 		[Inject]
 		public var controller:ChatController;
-
-		private var _list:List;
-		private var _conversations:Vector.<Message> = new Vector.<Message>();
-		private var _chatIndex:int;
-
-		private var _chatStepper:RSMStepper = new RSMStepper(2);
-		private var _conversationStepper:RSMStepper = new RSMStepper(100);
-
 		private var _withJID:UnescapedJID;
 		private var _communicator:DirectCommunicator;
 
@@ -44,7 +23,11 @@ package com.chat.model {
 			_withJID = _communicator.participant;
 		}
 
-		public function getNext():void {
+		public function fetchNext(max:int):void {
+
+		}
+
+		/*public function getNext():void {
 			if(	_list == null || !getNextConversations()){
 				getNextChats();
 			}
@@ -135,6 +118,6 @@ package com.chat.model {
 
 		private function retrieveErrorCallback(iq:IQ):void {
 			iq;
-		}
+		}*/
 	}
 }
