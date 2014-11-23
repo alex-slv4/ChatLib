@@ -23,7 +23,7 @@ package com.chat.controller.commands.cm.roster {
 			}finally{
 
 				var rosterItem:RosterItemVO = RosterItemVO.get(bodyJID);
-				controller.removeBuddy(rosterItem);
+				model.roster.removeContact(rosterItem);
 				print(bodyName, "removed");
 			}
 		}

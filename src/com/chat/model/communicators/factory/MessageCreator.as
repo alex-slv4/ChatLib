@@ -2,7 +2,6 @@
  * Created by kvint on 19.11.14.
  */
 package com.chat.model.communicators.factory {
-	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
@@ -10,13 +9,17 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
-
 	import org.igniterealtime.xiff.data.Message;
+
+	import robotlegs.bender.framework.api.IInjector;
 
 	public class MessageCreator implements ICreator {
 
 		[Inject]
 		public var model:IChatModel;
+
+		[Inject]
+		public var injector:IInjector;
 
 		private var _msg:Message;
 
@@ -40,6 +43,7 @@ package com.chat.model.communicators.factory {
 
 		private function createRoom():ICommunicator {
 			var chatRoom:ChatRoom = new ChatRoom();
+			injector.injectInto(chatRoom);
 			chatRoom.join(from);
 			return new RoomCommunicator(chatRoom)
 		}

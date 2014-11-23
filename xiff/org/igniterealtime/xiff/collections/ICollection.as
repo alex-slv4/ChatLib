@@ -30,7 +30,9 @@ package org.igniterealtime.xiff.collections
 	public interface ICollection extends IEventDispatcher
 	{
 		function get length():int;
-		
+
+		function get source():Array;
+
 		function getItemAt( index:int ):*;
 		
 		function setItemAt( item:*, index:int ):*;

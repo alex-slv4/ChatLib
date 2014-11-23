@@ -29,7 +29,7 @@ package com.chat.controller.commands.cm.message {
 			model.receiptRequests[message.id] = messageItem;
 
 			//send data
-			controller.connection.send(message);
+			controller.send(message);
 
 			//clear receipt
 			message.receipt = null;

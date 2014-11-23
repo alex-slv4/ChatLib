@@ -2,8 +2,7 @@
  * Created by kvint on 16.11.14.
  */
 package com.chat.controller.commands {
-	import com.chat.controller.ChatController;
-	import com.chat.model.ChatModel;
+	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
 
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
@@ -12,7 +11,7 @@ package com.chat.controller.commands {
 		[Inject]
 		public var model:IChatModel;
 		[Inject]
-		public var controller:ChatController;
+		public var controller:IChatController;
 
 		public function execute():void {
 		}

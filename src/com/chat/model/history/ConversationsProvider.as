@@ -2,7 +2,7 @@
  * Created by kvint on 22.11.14.
  */
 package com.chat.model.history {
-	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
 	import com.chat.utils.RSMStepper;
@@ -19,7 +19,7 @@ package com.chat.model.history {
 	public class ConversationsProvider implements IHistoryProvider {
 
 		[Inject]
-		public var controller:ChatController;
+		public var controller:IChatController;
 
 		[Inject]
 		public var injector:IInjector;
@@ -69,7 +69,7 @@ package com.chat.model.history {
 			retrieveIQ.errorCallback = conversationErrorCallback;
 			retrieveIQ.addExtension(retrieveStanza);
 
-			controller.connection.send(retrieveIQ);
+			controller.send(retrieveIQ);
 		}
 
 		private function conversationCallback(iq:IQ):void {
@@ -137,7 +137,7 @@ package com.chat.model.history {
 			retrieveIQ.errorCallback = conversationSizeErrorCallback;
 			retrieveIQ.addExtension(retrieveStanza);
 
-			controller.connection.send(retrieveIQ);
+			controller.send(retrieveIQ);
 		}
 
 		public function conversationSizeCallback(iq:IQ):void {

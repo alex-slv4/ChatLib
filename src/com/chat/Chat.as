@@ -1,33 +1,31 @@
-package com.chat
-{
+package com.chat {
 
-	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
 
-	public class Chat implements IChat
-{
+	public class Chat implements IChat {
 
-	[Inject]
-	public var thisController:ChatController;
+		private var _controller:IChatController;
+		private var _model:IChatModel;
 
-	[Inject]
-	public var _model:IChatModel;
 
-	private static var _instance:Chat;
+		public function get model():IChatModel {
+			return _model;
+		}
 
-	static public function get instance():IChat
-	{
-		return _instance ||= new Chat();
+		[Inject]
+		public function set model(value:IChatModel):void {
+			_model = value;
+		}
+
+		public function get controller():IChatController {
+			return _controller;
+		}
+
+		[Inject]
+		public function set controller(value:IChatController):void {
+			_controller = value;
+		}
+
 	}
-
-	public function get model():IChatModel
-	{
-		return _model;
-	}
-
-	public function get controller():ChatController
-	{
-		return thisController;
-	}
-}
 }

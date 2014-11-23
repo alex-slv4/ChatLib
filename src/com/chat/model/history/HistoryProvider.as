@@ -2,7 +2,7 @@
  * Created by kvint on 18.11.14.
  */
 package com.chat.model.history {
-	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.model.communicators.DirectCommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -13,7 +13,7 @@ package com.chat.model.history {
 	public class HistoryProvider implements IHistoryProvider{
 
 		[Inject]
-		public var controller:ChatController;
+		public var controller:IChatController;
 		private var _withJID:UnescapedJID;
 		private var _communicator:DirectCommunicator;
 

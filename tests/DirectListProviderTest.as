@@ -5,6 +5,7 @@ package {
 	import com.chat.Chat;
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.model.ChatModel;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
@@ -38,7 +39,7 @@ package {
 
 			injector.map(IChat).toSingleton(Chat);
 			injector.map(IChatModel).toSingleton(ChatModel);
-			injector.map(ChatController).toSingleton(ChatController);
+			injector.map(IChatController).toSingleton(ChatController);
 
 
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
@@ -48,7 +49,7 @@ package {
 			injector.map(IPresencesHandler).toValue(presences);
 			var jid1:UnescapedJID = new UnescapedJID("external@localhost");
 			var jid2:UnescapedJID = new UnescapedJID("bob@localhost");
-			directlist = new DirectListProvider(jid1, jid2);
+			directlist = new DirectListProvider(jid1);
 			injector.injectInto(directlist);
 		}
 

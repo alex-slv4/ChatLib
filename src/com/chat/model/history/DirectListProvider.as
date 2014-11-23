@@ -2,7 +2,7 @@
  * Created by kvint on 22.11.14.
  */
 package com.chat.model.history {
-	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.utils.RSMStepper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -14,7 +14,7 @@ package com.chat.model.history {
 	public class DirectListProvider {
 
 		[Inject]
-		public var controller:ChatController;
+		public var controller:IChatController;
 
 		private var _participant:UnescapedJID;
 		private var _chatIndex:int;
@@ -50,7 +50,7 @@ package com.chat.model.history {
 			listIQ.addExtension(listStanza);
 			listStanza.addExtension(_chatStepper.previous);
 
-			controller.connection.send(listIQ);
+			controller.send(listIQ);
 		}
 
 		private function listCallback(iq:IQ):void {
@@ -80,7 +80,7 @@ package com.chat.model.history {
 			listIQ.addExtension(listStanza);
 			listStanza.addExtension(rsmSet);
 
-			controller.connection.send(listIQ);
+			controller.send(listIQ);
 		}
 
 		private function listSizeCallback(iq:IQ):void {

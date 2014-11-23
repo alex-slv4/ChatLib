@@ -2,11 +2,10 @@
  * Created by kvint on 02.11.14.
  */
 package com.chat.model.communicators {
-	import com.chat.controller.ChatController;
-	import com.chat.events.CommunicatorFactoryEvent;
+	import com.chat.controller.IChatController;
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.events.CommunicatorEvent;
-	import com.chat.model.ChatModel;
+	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.ICItem;
@@ -15,15 +14,13 @@ package com.chat.model.communicators {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 
-import org.as3commons.lang.Assert;
-
 	public class DefaultCommunicator extends EventDispatcher implements ICommunicatorBase {
 
 		[Inject]
 		public var model:IChatModel;
 
 		[Inject]
-		public var controller:ChatController;
+		public var controller:IChatController;
 
 		[Inject]
 		public var communicators:ICommunicatorFactory;
@@ -66,7 +63,7 @@ import org.as3commons.lang.Assert;
 		public function push(data:ICItem):void {
 			_items.push(data);
 			var messageItem:СItemMessage = data as СItemMessage;
-			if(messageItem){
+			if (messageItem) {
 				dispatch(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED, [messageItem]);
 			}
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
@@ -74,24 +71,27 @@ import org.as3commons.lang.Assert;
 
 		public function read(data:ICItem):void {
 			var messageItem:СItemMessage = data as СItemMessage;
-			if(messageItem){
+			if (messageItem) {
 				dispatch(CommunicatorCommandEvent.MARK_AS_RECEIVED, [messageItem]);
 			}
 		}
+
 		public function dispatch(eventName:String, params:Array):void {
 			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
 		}
+
 		public function get active():Boolean {
 			return _active;
 		}
 
 		public function set active(value:Boolean):void {
-			if(value != _active){
+			if (value != _active) {
 				_active = value;
 				var eventName:String = _active ? CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED : CommunicatorFactoryEvent.COMMUNICATOR_DEACTIVATED;
 				communicators.dispatchEvent(new CommunicatorFactoryEvent(eventName, this));
 			}
 		}
+
 		public function get uid():String {
 			return _uid;
 		}

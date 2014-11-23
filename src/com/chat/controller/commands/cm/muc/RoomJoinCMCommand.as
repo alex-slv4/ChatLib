@@ -4,31 +4,36 @@
 package com.chat.controller.commands.cm.muc {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.events.CommunicatorEvent;
+	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
+	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.events.RoomEvent;
 
+	import robotlegs.bender.framework.api.IInjector;
+
 	public class RoomJoinCMCommand extends CMCommand {
 
+		[Inject]
+		public var injector:IInjector;
+
 		private var _chatRoom:ChatRoom;
-		private var _roomCommunicator:RoomCommunicator;
 
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0];
-			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + controller.conferenceServer);
+			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + model.conferenceServer);
 			_chatRoom = new ChatRoom();
-			_chatRoom.chatManager = controller;
+			injector.injectInto(_chatRoom);
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
 			_chatRoom.join(roomJID);
-			_roomCommunicator = communicators.getFor(_chatRoom) as RoomCommunicator;
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {
 			//Room joined
-			_roomCommunicator.active = true;
+			communicators.getFor(_chatRoom).active = true;
 		}
 
 		override public function get requiredParamsCount():int {

@@ -15,7 +15,7 @@ package com.chat.controller.commands {
 			iq.callback = iqCallback;
 			iq.errorCallback = iqErrorCallback;
 
-			controller.connection.send(iq);
+			controller.send(iq);
 		}
 
 		private function iqCallback(iq:IQ):void {

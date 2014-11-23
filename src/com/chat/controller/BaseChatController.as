@@ -13,7 +13,8 @@ import org.igniterealtime.xiff.auth.Plain;
 import org.igniterealtime.xiff.collections.ArrayCollection;
 import org.igniterealtime.xiff.collections.events.CollectionEvent;
 import org.igniterealtime.xiff.conference.InviteListener;
-import org.igniterealtime.xiff.core.InBandRegistrator;
+	import org.igniterealtime.xiff.core.IXMPPConnection;
+	import org.igniterealtime.xiff.core.InBandRegistrator;
 import org.igniterealtime.xiff.core.UnescapedJID;
 import org.igniterealtime.xiff.core.XMPPTLSConnection;
 import org.igniterealtime.xiff.data.Message;
@@ -31,7 +32,8 @@ import org.igniterealtime.xiff.events.RegistrationFieldsEvent;
 import org.igniterealtime.xiff.events.RegistrationSuccessEvent;
 import org.igniterealtime.xiff.events.RosterEvent;
 import org.igniterealtime.xiff.events.XIFFErrorEvent;
-import org.igniterealtime.xiff.im.Roster;
+	import org.igniterealtime.xiff.im.IRoster;
+	import org.igniterealtime.xiff.im.Roster;
 import org.igniterealtime.xiff.util.Zlib;
 
 public class BaseChatController extends EventDispatcher {
@@ -91,26 +93,14 @@ public class BaseChatController extends EventDispatcher {
 			return _inbandRegister;
 		}
 
-		protected var _roster:Roster;
-
-		public function get roster():Roster {
-			return _roster;
+		public function get roster():IRoster {
+			return null;
 		}
 
 		protected var _chatUserRoster:ArrayCollection;
 
 		public function get chatUserRoster():ArrayCollection {
 			return _chatUserRoster;
-		}
-
-		protected var _currentUser:ChatUser;
-
-		public function get currentUser():ChatUser {
-			return _currentUser;
-		}
-
-		public function get conferenceServer():String {
-			return "conference." + _connection.domain;
 		}
 
 		public function connect(username:String, password:String):void {
@@ -130,7 +120,7 @@ public class BaseChatController extends EventDispatcher {
 
 		public function disconnect():void {
 			connection.disconnect();
-			_roster.removeAll();
+			roster.removeAll();
 			setupCurrentUser();
 		}
 
@@ -152,76 +142,67 @@ public class BaseChatController extends EventDispatcher {
 			registrationData.password = password;
 		}
 
-		public function addBuddy(jid:UnescapedJID):void {
-			roster.addContact(jid, jid.toString(), "Buddies", true);
-		}
-
-		public function removeBuddy(rosterItem:RosterItemVO):void {
-			roster.removeContact(rosterItem);
-		}
-
 		public function updateGroup(rosterItem:RosterItemVO, groupName:String):void {
 			roster.updateContactGroups(rosterItem, [ groupName ]);
 		}
 
 		protected function setupConnection():void {
 			_connection = new XMPPTLSConnection();
-			_connection.compressor = new Zlib();
+			connection.compressor = new Zlib();
 			var config:TLSConfig = new TLSConfig(TLSEngine.CLIENT);
 			config.ignoreCommonNameMismatch = true;
-			_connection.config = config;
+			connection.config = config;
 			addConnectionListeners();
 		}
 
 		protected function addConnectionListeners():void {
-			_connection.addEventListener(ConnectionSuccessEvent.CONNECT_SUCCESS, onConnectSuccess);
-			_connection.addEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
-			_connection.addEventListener(LoginEvent.LOGIN, onLogin);
-			_connection.addEventListener(XIFFErrorEvent.XIFF_ERROR, onXIFFError);
-			_connection.addEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
-			_connection.addEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
-			_connection.addEventListener(PresenceEvent.PRESENCE, onPresence);
-			_connection.addEventListener(MessageEvent.MESSAGE, onMessageCome);
+			connection.addEventListener(ConnectionSuccessEvent.CONNECT_SUCCESS, onConnectSuccess);
+			connection.addEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
+			connection.addEventListener(LoginEvent.LOGIN, onLogin);
+			connection.addEventListener(XIFFErrorEvent.XIFF_ERROR, onXIFFError);
+			connection.addEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
+			connection.addEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
+			connection.addEventListener(PresenceEvent.PRESENCE, onPresence);
+			connection.addEventListener(MessageEvent.MESSAGE, onMessageCome);
 		}
 
 		protected function removeConnectionListeners():void {
-			_connection.removeEventListener(ConnectionSuccessEvent.CONNECT_SUCCESS, onConnectSuccess);
-			_connection.removeEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
-			_connection.removeEventListener(LoginEvent.LOGIN, onLogin);
-			_connection.removeEventListener(XIFFErrorEvent.XIFF_ERROR, onXIFFError);
-			_connection.removeEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
-			_connection.removeEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
-			_connection.removeEventListener(PresenceEvent.PRESENCE, onPresence);
-			_connection.removeEventListener(MessageEvent.MESSAGE, onMessageCome);
+			connection.removeEventListener(ConnectionSuccessEvent.CONNECT_SUCCESS, onConnectSuccess);
+			connection.removeEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
+			connection.removeEventListener(LoginEvent.LOGIN, onLogin);
+			connection.removeEventListener(XIFFErrorEvent.XIFF_ERROR, onXIFFError);
+			connection.removeEventListener(OutgoingDataEvent.OUTGOING_DATA, onOutgoingData);
+			connection.removeEventListener(IncomingDataEvent.INCOMING_DATA, onIncomingData);
+			connection.removeEventListener(PresenceEvent.PRESENCE, onPresence);
+			connection.removeEventListener(MessageEvent.MESSAGE, onMessageCome);
 		}
 
 		protected function setupInviteListener():void {
 			_inviteListener = new InviteListener();
 			_inviteListener.addEventListener(InviteEvent.INVITED, onInvited);
-			_inviteListener.connection = _connection;
+			_inviteListener.connection = this.connection;
 		}
 
 		protected function setupInBandRegistrator():void {
 			_inbandRegister = new InBandRegistrator();
 			_inbandRegister.addEventListener(RegistrationFieldsEvent.REG_FIELDS, onRegistrationFields);
 			_inbandRegister.addEventListener(RegistrationSuccessEvent.REGISTRATION_SUCCESS, onRegistrationSuccess);
-			_inbandRegister.connection = _connection;
+			_inbandRegister.connection = this.connection;
 		}
 
 		protected function setupRoster():void {
-			_roster = new Roster();
-			_roster.addEventListener(RosterEvent.ROSTER_LOADED, onRosterLoaded);
-			_roster.addEventListener(RosterEvent.SUBSCRIPTION_DENIAL, onSubscriptionDenial);
-			_roster.addEventListener(RosterEvent.SUBSCRIPTION_REQUEST, onSubscriptionRequest);
-			_roster.addEventListener(RosterEvent.SUBSCRIPTION_REVOCATION, onSubscriptionRevocation);
-			_roster.addEventListener(RosterEvent.USER_ADDED, onUserAdded);
-			_roster.addEventListener(RosterEvent.USER_AVAILABLE, onUserAvailable);
-			_roster.addEventListener(RosterEvent.USER_PRESENCE_UPDATED, onUserPresenceUpdated);
-			_roster.addEventListener(RosterEvent.USER_REMOVED, onUserRemoved);
-			_roster.addEventListener(RosterEvent.USER_SUBSCRIPTION_UPDATED, onUserSubscriptionUpdated);
-			_roster.addEventListener(RosterEvent.USER_UNAVAILABLE, onUserUnavailable);
-			_roster.addEventListener(CollectionEvent.COLLECTION_CHANGE, onRosterChange);
-			_roster.connection = _connection;
+			roster.addEventListener(RosterEvent.ROSTER_LOADED, onRosterLoaded);
+			roster.addEventListener(RosterEvent.SUBSCRIPTION_DENIAL, onSubscriptionDenial);
+			roster.addEventListener(RosterEvent.SUBSCRIPTION_REQUEST, onSubscriptionRequest);
+			roster.addEventListener(RosterEvent.SUBSCRIPTION_REVOCATION, onSubscriptionRevocation);
+			roster.addEventListener(RosterEvent.USER_ADDED, onUserAdded);
+			roster.addEventListener(RosterEvent.USER_AVAILABLE, onUserAvailable);
+			roster.addEventListener(RosterEvent.USER_PRESENCE_UPDATED, onUserPresenceUpdated);
+			roster.addEventListener(RosterEvent.USER_REMOVED, onUserRemoved);
+			roster.addEventListener(RosterEvent.USER_SUBSCRIPTION_UPDATED, onUserSubscriptionUpdated);
+			roster.addEventListener(RosterEvent.USER_UNAVAILABLE, onUserUnavailable);
+			roster.addEventListener(CollectionEvent.COLLECTION_CHANGE, onRosterChange);
+			roster.connection = this.connection;
 
 			_chatUserRoster = new ArrayCollection();
 		}
@@ -230,13 +211,12 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		protected function setupCurrentUser():void {
-			_currentUser = new ChatUser(_connection.jid);
 		}
 
 		protected function registerSASLMechanisms():void {
 			// By default only ANONYMOUS and DIGEST-MD5 enabled.
-			_connection.enableSASLMechanism(External.MECHANISM, External);
-			_connection.enableSASLMechanism(Plain.MECHANISM, Plain);
+			connection.enableSASLMechanism(External.MECHANISM, External);
+			connection.enableSASLMechanism(Plain.MECHANISM, Plain);
 			//_connection.enableSASLMechanism( XGoogleToken.MECHANISM, XGoogleToken );
 		}
 
@@ -254,10 +234,11 @@ public class BaseChatController extends EventDispatcher {
 
 		protected function updateChatUserRoster():void {
 			var users:Array = [];
-			for each(var rosterItem:RosterItemVO in _roster.source) {
+			for (var i:int = 0; i < roster.length; i++) {
+				var rosterItem:RosterItemVO = roster.getItemAt(i);
 				var chatUser:ChatUser = new ChatUser(rosterItem.jid);
 				chatUser.rosterItem = rosterItem;
-				chatUser.loadVCard(_connection);
+				chatUser.loadVCard(connection);
 				users.push(chatUser);
 			}
 			_chatUserRoster.source = users;
@@ -275,14 +256,13 @@ public class BaseChatController extends EventDispatcher {
 		protected function onDisconnect(event:DisconnectionEvent):void {
 			cleanup();
 			setupConnection();
-			_roster.connection = _connection;
+			roster.connection = this.connection;
 
 			dispatchEvent(event);
 		}
 
 		protected function onLogin(event:LoginEvent):void {
 			setupCurrentUser();
-			_currentUser.loadVCard(_connection);
 			keepAliveTimer.start();
 			dispatchEvent(event);
 		}
@@ -306,7 +286,7 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		protected function onRegistrationSuccess(event:RegistrationSuccessEvent):void {
-			_connection.disconnect();
+			connection.disconnect();
 			dispatchEvent(event);
 		}
 
@@ -357,8 +337,8 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		protected function onSubscriptionRequest(event:RosterEvent):void {
-			if (_roster.contains(RosterItemVO.get(event.jid, false))) {
-				_roster.grantSubscription(event.jid, true);
+			if (roster.contains(RosterItemVO.get(event.jid, false))) {
+				roster.grantSubscription(event.jid, true);
 			}
 
 			dispatchEvent(event);

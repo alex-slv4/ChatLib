@@ -4,7 +4,6 @@
 package com.chat.controller {
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorFactoryEvent;
-	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.ICommunicatorBase;
@@ -21,7 +20,6 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.IXMPPStanza;
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
-	import org.igniterealtime.xiff.data.XMLStanza;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
@@ -34,14 +32,16 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
+	import org.igniterealtime.xiff.im.IRoster;
+	import org.igniterealtime.xiff.im.Roster;
 	import org.igniterealtime.xiff.util.DateTimeParser;
 
 	use namespace archive_internal;
 
-	public class ChatController extends BaseChatController {
+	public class ChatController extends BaseChatController implements IChatController {
 
 		[Inject]
-		public var chatModel:IChatModel;
+		public var model:IChatModel;
 
 		[Inject]
 		public var communicators:ICommunicatorFactory;
@@ -68,16 +68,16 @@ package com.chat.controller {
 
 		override protected function setupConnection():void {
 			super.setupConnection();
-			_connection.enableExtensions(Retrieve);
-			_connection.enableExtensions(Time);
-			_connection.enableExtensions(RSMSet);
-			_connection.enableExtensions(List);
-			_connection.enableExtensions(ChatStanza);
+			model.connection = this.connection;
+			connection.enableExtensions(Retrieve);
+			connection.enableExtensions(Time);
+			connection.enableExtensions(RSMSet);
+			connection.enableExtensions(List);
+			connection.enableExtensions(ChatStanza);
 		}
 
 		override protected function setupCurrentUser():void {
-			_currentUser = new ChatUser(_connection.jid);
-			chatModel.currentUser = _currentUser;
+			model.currentUser = new ChatUser(_connection.jid);
 		}
 
 		private function communicatorEventHandler(event:CommunicatorFactoryEvent):void {
@@ -94,8 +94,13 @@ package com.chat.controller {
 		}
 
 		override protected function setupRoster():void {
+			model.roster = new Roster();
 			super.setupRoster();
-			chatModel.roster = _roster;
+		}
+
+
+		override public function get roster():IRoster {
+			return model.roster;
 		}
 
 		public function sendRoomMessage(message:Message):void {
@@ -115,12 +120,16 @@ package com.chat.controller {
 		}
 
 
+		public function send(stanza:IXMPPStanza):void {
+			connection.send(stanza);
+		}
+
 		override protected function onPresence(event:PresenceEvent):void {
 			var presence:Presence;
 			for (var i:int = 0; i < event.data.length; i++) {
 				presence = event.data[i] as Presence;
 				if (presence.type == Presence.TYPE_SUBSCRIBE) {
-					chatModel.roster.grantSubscription(presence.from.unescaped, false);
+					model.roster.grantSubscription(presence.from.unescaped, false);
 				}
 
 				if (presence.type == Presence.TYPE_PROBE) {
@@ -134,6 +143,7 @@ package com.chat.controller {
 
 		override protected function onLogin(event:LoginEvent):void {
 			super.onLogin(event);
+			model.currentUser.loadVCard(_connection);
 			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
 			_browser.getServiceInfo(null, onServerInfo);
 		}
@@ -163,7 +173,7 @@ package com.chat.controller {
 					if(tag.localName() == "from"){
 						str += formatDate(startDate) + " " + chat.attribute("with") + ": " + tag.body;
 					}else{
-						str += formatDate(startDate) + " " + chatModel.currentUser.jid + ": " + tag.body;
+						str += formatDate(startDate) + " " + model.currentUser.jid + ": " + tag.body;
 					}
 					str += "\n";
 				}

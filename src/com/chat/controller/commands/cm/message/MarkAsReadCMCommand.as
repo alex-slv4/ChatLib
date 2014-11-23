@@ -29,7 +29,7 @@ package com.chat.controller.commands.cm.message {
 				ackMessage.receipt = Message.RECEIPT_RECEIVED;
 				ackMessage.receiptId = message.id;
 
-				controller.connection.send(ackMessage);
+				controller.send(ackMessage);
 			}
 		}
 		public function get castedCommunicator():ICommunicator {

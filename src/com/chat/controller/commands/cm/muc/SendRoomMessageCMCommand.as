@@ -23,7 +23,7 @@ package com.chat.controller.commands.cm.muc {
 
 			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
 
-			controller.sendRoomMessage(message);
+			controller.send(message);
 		}
 
 		private function get roomCommunicator():RoomCommunicator {

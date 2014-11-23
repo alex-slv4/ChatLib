@@ -10,7 +10,8 @@ package com.chat.controller.commands.cm.roster {
 
 		override protected function executeIfNoErrors():void {
 			var bodyName:String = params[0];
-			controller.addBuddy(new UnescapedJID(bodyName));
+			var bodyJID:UnescapedJID = new UnescapedJID(bodyName);
+			model.roster.addContact(bodyJID, bodyJID.toString(), "Buddies", true);
 		}
 
 		override public function get requiredParamsCount():int {

@@ -8,6 +8,12 @@ package com.chat.model {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
+	import org.igniterealtime.xiff.core.IXMPPConnection;
+
+	import org.igniterealtime.xiff.core.XMPPTLSConnection;
+
+	import org.igniterealtime.xiff.im.IRoster;
+
 	import org.igniterealtime.xiff.im.Roster;
 
 	import robotlegs.bender.framework.api.IInjector;
@@ -23,8 +29,10 @@ package com.chat.model {
 		[Inject]
 		public var _presences:IPresences;
 
+		private var _connection:IXMPPConnection;
+
 		private var _currentUser:ChatUser;
-		private var _roster:Roster;
+		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
 		private var _serverTimeOffset:Number;
 
@@ -36,11 +44,11 @@ package com.chat.model {
 			_currentUser = value;
 		}
 
-		public function get roster():Roster {
+		public function get roster():IRoster {
 			return _roster;
 		}
 
-		public function set roster(value:Roster):void {
+		public function set roster(value:IRoster):void {
 			_roster = value;
 		}
 
@@ -65,6 +73,18 @@ package com.chat.model {
 
 		public function get receiptRequests():Dictionary {
 			return _receiptRequests;
+		}
+
+		public function get connection():IXMPPConnection {
+			return _connection;
+		}
+
+		public function set connection(value:IXMPPConnection):void {
+			_connection = value;
+		}
+
+		public function get conferenceServer():String {
+			return "conference." + _connection.domain;;
 		}
 	}
 }

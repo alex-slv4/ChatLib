@@ -5,6 +5,7 @@ package com.chat.config {
 	import com.chat.Chat;
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
+	import com.chat.controller.IChatController;
 	import com.chat.controller.commands.SyncTimeWithServerCommand;
 	import com.chat.controller.commands.cm.ClearCMCommand;
 	import com.chat.controller.commands.cm.HelpCMCommand;
@@ -62,7 +63,7 @@ package com.chat.config {
 		private function mapMembership():void {
 			injector.map(IChat).toSingleton(Chat);
 			injector.map(IChatModel).toSingleton(ChatModel);
-			injector.map(ChatController).toSingleton(ChatController);
+			injector.map(IChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
 
 			var presences:Presences = new Presences();

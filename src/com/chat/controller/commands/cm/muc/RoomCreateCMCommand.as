@@ -9,12 +9,18 @@ package com.chat.controller.commands.cm.muc {
 	import org.igniterealtime.xiff.data.forms.FormExtension;
 	import org.igniterealtime.xiff.events.RoomEvent;
 
+	import robotlegs.bender.framework.api.IInjector;
+
 	public class RoomCreateCMCommand extends RoomCMCommand {
+
+		[Inject]
+		public var injector:IInjector;
 
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0]
 			_chatRoom = new ChatRoom();
-			_chatRoom.chatManager = controller;
+			injector.injectInto(_chatRoom);
+
 			_chatRoom.create(roomName);
 			_chatRoom.addEventListener(RoomEvent.CONFIGURE_ROOM, onRoomConfigure);
 			_chatRoom.addEventListener(RoomEvent.CONFIGURE_ROOM_COMPLETE, onRoomConfigureComplete);

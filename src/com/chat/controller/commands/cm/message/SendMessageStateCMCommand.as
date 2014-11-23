@@ -54,7 +54,7 @@ package com.chat.controller.commands.cm.message {
 					}
 				}, PAUSED_DELAY);
 			}
-			controller.connection.send(message);
+			controller.send(message);
 		}
 
 		private function get writableCommunicator():WritableCommunicator {

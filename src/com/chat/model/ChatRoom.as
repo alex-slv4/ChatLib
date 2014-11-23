@@ -1,22 +1,25 @@
 package com.chat.model
 {
 
-import com.chat.controller.BaseChatController;
+	import com.chat.controller.IChatController;
 
-import flash.events.EventDispatcher;
+	import flash.events.EventDispatcher;
 
-import org.igniterealtime.xiff.collections.ArrayCollection;
-import org.igniterealtime.xiff.conference.IRoomOccupant;
-import org.igniterealtime.xiff.conference.Room;
-import org.igniterealtime.xiff.core.UnescapedJID;
-import org.igniterealtime.xiff.data.muc.MUCItem;
-import org.igniterealtime.xiff.events.PresenceEvent;
-import org.igniterealtime.xiff.events.RoomEvent;
-import org.igniterealtime.xiff.events.XIFFErrorEvent;
+	import org.igniterealtime.xiff.collections.ArrayCollection;
+	import org.igniterealtime.xiff.conference.IRoomOccupant;
+	import org.igniterealtime.xiff.conference.Room;
+	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.muc.MUCItem;
+	import org.igniterealtime.xiff.events.RoomEvent;
+	import org.igniterealtime.xiff.events.XIFFErrorEvent;
 
-public class ChatRoom extends EventDispatcher
+	public class ChatRoom extends EventDispatcher
 	{
-		private var _chatManager:BaseChatController;
+		[Inject]
+		public var model:IChatModel;
+		[Inject]
+		public var controller:IChatController;
+
 		private var _room:Room;
 		private var _users:ArrayCollection;
 		private var _owners:ArrayCollection;
@@ -35,15 +38,7 @@ public class ChatRoom extends EventDispatcher
 			_moderators = new ArrayCollection();
 			_outcasts = new ArrayCollection();
 		}
-		
-		public function get chatManager():BaseChatController { return _chatManager; }
-		public function set chatManager( value:BaseChatController):void
-		{
-			if( _chatManager ) _chatManager.removeEventListener( PresenceEvent.PRESENCE, onPresence );
-			_chatManager = value;
-			if( _chatManager ) _chatManager.addEventListener( PresenceEvent.PRESENCE, onPresence );
-		}
-		
+
 		public function get room():Room { return _room; }
 		
 		public function get users():ArrayCollection { return _users; }
@@ -58,23 +53,19 @@ public class ChatRoom extends EventDispatcher
 		
 		public function create( roomName:String ):void
 		{
-			if( !_chatManager ) return;
-			
-			_room.nickname = _chatManager.currentUser.displayName;
-			_room.roomJID = new UnescapedJID( roomName + "@" + _chatManager.conferenceServer );
+			_room.nickname = model.currentUser.displayName;
+			_room.roomJID = new UnescapedJID( roomName + "@" + model.conferenceServer );
 			_room.roomName = roomName;
-			_room.connection = _chatManager.connection;
+			_room.connection = model.connection;
 			
 			_room.join( true );
 		}
 		
 		public function join( roomJID:UnescapedJID ):void
 		{
-			if( !_chatManager ) return;
-			
-			_room.nickname = _chatManager.currentUser.displayName;
+			_room.nickname = model.currentUser.displayName;
 			_room.roomJID = roomJID;
-			_room.connection = _chatManager.connection;
+			_room.connection = model.connection;
 			
 			_room.join();
 		}
@@ -88,7 +79,7 @@ public class ChatRoom extends EventDispatcher
 			_outcasts.removeAll();
 			_room.leave();
 			_room = new Room();
-			if( disconnect && _chatManager ) _chatManager.disconnect();
+			if( disconnect ) controller.disconnect();
 		}
 		
 		public function destroy( reason:String, alternateJID:UnescapedJID=null, callback:Function=null, disconnect:Boolean=false ):void
@@ -100,7 +91,7 @@ public class ChatRoom extends EventDispatcher
 			_outcasts.removeAll();
 			_room.destroy( reason, alternateJID, callback );
 			_room = new Room();
-			if( disconnect && _chatManager ) _chatManager.disconnect();
+			if( disconnect ) controller.disconnect();
 		}
 		
 		public function sendMessage( body:String ):void
@@ -213,7 +204,7 @@ public class ChatRoom extends EventDispatcher
 			{
 				var chatUser:ChatUser = new ChatUser( muc.jid.unescaped );
 				chatUser.displayName = muc.nick;
-				chatUser.loadVCard( _chatManager.connection );
+				chatUser.loadVCard( model.connection );
 				
 				if( muc.affiliation == Room.AFFILIATION_OWNER )
 				{
@@ -302,7 +293,7 @@ public class ChatRoom extends EventDispatcher
 				}
 			}
 			if(chatUser.jid){
-				chatUser.loadVCard( _chatManager.connection );
+				chatUser.loadVCard( model.connection );
 			}
 			_users.addItem( chatUser );
 			
@@ -325,10 +316,5 @@ public class ChatRoom extends EventDispatcher
 			dispatchEvent( event );
 		}
 		
-		private function onPresence( event:PresenceEvent ):void
-		{
-			dispatchEvent( event );
-		}
-
 	}
 }
