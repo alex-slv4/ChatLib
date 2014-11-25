@@ -1,42 +1,40 @@
 package com.chat.controller {
-import com.chat.model.ChatUser;
-import com.hurlant.crypto.tls.TLSConfig;
-import com.hurlant.crypto.tls.TLSEngine;
+	import com.chat.model.ChatUser;
+	import com.hurlant.crypto.tls.TLSConfig;
+	import com.hurlant.crypto.tls.TLSEngine;
 
-import flash.events.EventDispatcher;
-import flash.events.TimerEvent;
-import flash.system.Security;
-import flash.utils.Timer;
+	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.system.Security;
+	import flash.utils.Timer;
 
-import org.igniterealtime.xiff.auth.External;
-import org.igniterealtime.xiff.auth.Plain;
-import org.igniterealtime.xiff.collections.ArrayCollection;
-import org.igniterealtime.xiff.collections.events.CollectionEvent;
-import org.igniterealtime.xiff.conference.InviteListener;
-	import org.igniterealtime.xiff.core.IXMPPConnection;
+	import org.igniterealtime.xiff.auth.External;
+	import org.igniterealtime.xiff.auth.Plain;
+	import org.igniterealtime.xiff.collections.ArrayCollection;
+	import org.igniterealtime.xiff.collections.events.CollectionEvent;
+	import org.igniterealtime.xiff.conference.InviteListener;
 	import org.igniterealtime.xiff.core.InBandRegistrator;
-import org.igniterealtime.xiff.core.UnescapedJID;
-import org.igniterealtime.xiff.core.XMPPTLSConnection;
-import org.igniterealtime.xiff.data.Message;
-import org.igniterealtime.xiff.data.Presence;
-import org.igniterealtime.xiff.data.im.RosterItemVO;
-import org.igniterealtime.xiff.events.ConnectionSuccessEvent;
-import org.igniterealtime.xiff.events.DisconnectionEvent;
-import org.igniterealtime.xiff.events.IncomingDataEvent;
-import org.igniterealtime.xiff.events.InviteEvent;
-import org.igniterealtime.xiff.events.LoginEvent;
-import org.igniterealtime.xiff.events.MessageEvent;
-import org.igniterealtime.xiff.events.OutgoingDataEvent;
-import org.igniterealtime.xiff.events.PresenceEvent;
-import org.igniterealtime.xiff.events.RegistrationFieldsEvent;
-import org.igniterealtime.xiff.events.RegistrationSuccessEvent;
-import org.igniterealtime.xiff.events.RosterEvent;
-import org.igniterealtime.xiff.events.XIFFErrorEvent;
+	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.core.XMPPTLSConnection;
+	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.data.im.RosterItemVO;
+	import org.igniterealtime.xiff.events.ConnectionSuccessEvent;
+	import org.igniterealtime.xiff.events.DisconnectionEvent;
+	import org.igniterealtime.xiff.events.IncomingDataEvent;
+	import org.igniterealtime.xiff.events.InviteEvent;
+	import org.igniterealtime.xiff.events.LoginEvent;
+	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.events.OutgoingDataEvent;
+	import org.igniterealtime.xiff.events.PresenceEvent;
+	import org.igniterealtime.xiff.events.RegistrationFieldsEvent;
+	import org.igniterealtime.xiff.events.RegistrationSuccessEvent;
+	import org.igniterealtime.xiff.events.RosterEvent;
+	import org.igniterealtime.xiff.events.XIFFErrorEvent;
 	import org.igniterealtime.xiff.im.IRoster;
-	import org.igniterealtime.xiff.im.Roster;
-import org.igniterealtime.xiff.util.Zlib;
+	import org.igniterealtime.xiff.util.Zlib;
 
-public class BaseChatController extends EventDispatcher {
+	public class BaseChatController {
 		private const KEEP_ALIVE_TIME:int = 30000;
 		[Bindable]
 		public static var serverName:String = "localhost";
@@ -54,7 +52,7 @@ public class BaseChatController extends EventDispatcher {
 			var pattern:RegExp = /(\w|[_.\-])+@(localhost$|((\w|-)+\.)+\w{2,4}$){1}/;
 			var result:Object = pattern.exec(jid.toString());
 
-			if (result) {
+			if(result) {
 				value = true;
 			}
 			return value;
@@ -104,9 +102,9 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		public function connect(username:String, password:String):void {
-			var domainIndex:int = username.lastIndexOf( "@" );
-			var _username:String = domainIndex > -1 ? username.substring( 0, domainIndex ) : username;
-			var domain:String = domainIndex > -1 ? username.substring( domainIndex + 1 ) : null;
+			var domainIndex:int = username.lastIndexOf("@");
+			var _username:String = domainIndex > -1 ? username.substring(0, domainIndex) : username;
+			var domain:String = domainIndex > -1 ? username.substring(domainIndex + 1) : null;
 			Security.loadPolicyFile("xmlsocket://" + BaseChatController.serverName + ":" + BaseChatController.serverPort);
 			registerUser = false;
 			connection.tls = BaseChatController.useTls;
@@ -143,7 +141,7 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		public function updateGroup(rosterItem:RosterItemVO, groupName:String):void {
-			roster.updateContactGroups(rosterItem, [ groupName ]);
+			roster.updateContactGroups(rosterItem, [groupName]);
 		}
 
 		protected function setupConnection():void {
@@ -234,7 +232,7 @@ public class BaseChatController extends EventDispatcher {
 
 		protected function updateChatUserRoster():void {
 			var users:Array = [];
-			for (var i:int = 0; i < roster.length; i++) {
+			for(var i:int = 0; i < roster.length; i++) {
 				var rosterItem:RosterItemVO = roster.getItemAt(i);
 				var chatUser:ChatUser = new ChatUser(rosterItem.jid);
 				chatUser.rosterItem = rosterItem;
@@ -246,11 +244,11 @@ public class BaseChatController extends EventDispatcher {
 
 
 		protected function onConnectSuccess(event:ConnectionSuccessEvent):void {
-			if (registerUser) {
+			if(registerUser) {
 				_inbandRegister.sendRegistrationFields(registrationData, null);
 			}
 
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onDisconnect(event:DisconnectionEvent):void {
@@ -258,42 +256,42 @@ public class BaseChatController extends EventDispatcher {
 			setupConnection();
 			roster.connection = this.connection;
 
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onLogin(event:LoginEvent):void {
 			setupCurrentUser();
 			keepAliveTimer.start();
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onXIFFError(event:XIFFErrorEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onOutgoingData(event:OutgoingDataEvent):void {
 			trace("sent\n", event.data)
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onIncomingData(event:IncomingDataEvent):void {
 			trace("come\n", event.data)
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onRegistrationFields(event:RegistrationFieldsEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onRegistrationSuccess(event:RegistrationSuccessEvent):void {
 			connection.disconnect();
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onPresence(event:PresenceEvent):void {
-			var presence:Presence = event.data[ 0 ] as Presence;
+			var presence:Presence = event.data[0] as Presence;
 
-			if (presence.type == Presence.TYPE_ERROR) {
+			if(presence.type == Presence.TYPE_ERROR) {
 				var xiffErrorEvent:XIFFErrorEvent = new XIFFErrorEvent();
 				xiffErrorEvent.errorCode = presence.errorCode;
 				xiffErrorEvent.errorCondition = presence.errorCondition;
@@ -302,14 +300,14 @@ public class BaseChatController extends EventDispatcher {
 				onXIFFError(xiffErrorEvent);
 			}
 			else {
-				dispatchEvent(event);
+				dispatch(event);
 			}
 		}
 
 		protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data as Message;
 
-			if (message.type == Message.TYPE_ERROR) {
+			if(message.type == Message.TYPE_ERROR) {
 				var xiffErrorEvent:XIFFErrorEvent = new XIFFErrorEvent();
 				xiffErrorEvent.errorCode = message.errorCode;
 				xiffErrorEvent.errorCondition = message.errorCondition;
@@ -318,58 +316,58 @@ public class BaseChatController extends EventDispatcher {
 				onXIFFError(xiffErrorEvent);
 			}
 			else {
-				dispatchEvent(event);
+				dispatch(event);
 			}
 		}
 
 		protected function onInvited(event:InviteEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onRosterLoaded(event:RosterEvent):void {
 			updateChatUserRoster();
 
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onSubscriptionDenial(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onSubscriptionRequest(event:RosterEvent):void {
-			if (roster.contains(RosterItemVO.get(event.jid, false))) {
+			if(roster.contains(RosterItemVO.get(event.jid, false))) {
 				roster.grantSubscription(event.jid, true);
 			}
 
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onSubscriptionRevocation(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserAdded(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserAvailable(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserPresenceUpdated(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserRemoved(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserSubscriptionUpdated(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onUserUnavailable(event:RosterEvent):void {
-			dispatchEvent(event);
+			dispatch(event);
 		}
 
 		protected function onRosterChange(event:CollectionEvent):void {
@@ -377,9 +375,13 @@ public class BaseChatController extends EventDispatcher {
 		}
 
 		protected function onKeepAliveTimer(event:TimerEvent):void {
-			if (connection.loggedIn) {
+			if(connection.loggedIn) {
 				connection.sendKeepAlive();
 			}
+		}
+
+		protected function dispatch(e:Event):void {
+
 		}
 
 	}

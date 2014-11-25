@@ -103,10 +103,6 @@ package com.chat.controller {
 			return model.roster;
 		}
 
-		public function sendRoomMessage(message:Message):void {
-			connection.send(message);
-		}
-
 		override protected function onMessageCome(event:MessageEvent):void {
 			var message:Message = event.data;
 			if(message.type != null) {
@@ -187,6 +183,10 @@ package com.chat.controller {
 
 		private function formatDate(startDate:Date):String {
 			return startDate.toString();
+		}
+
+		override protected function dispatch(e:Event):void {
+			bus.dispatchEvent(e);
 		}
 
 		public function destroy():void {
