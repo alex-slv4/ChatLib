@@ -289,19 +289,7 @@ package com.chat.controller {
 		}
 
 		protected function onPresence(event:PresenceEvent):void {
-			var presence:Presence = event.data[0] as Presence;
-
-			if(presence.type == Presence.TYPE_ERROR) {
-				var xiffErrorEvent:XIFFErrorEvent = new XIFFErrorEvent();
-				xiffErrorEvent.errorCode = presence.errorCode;
-				xiffErrorEvent.errorCondition = presence.errorCondition;
-				xiffErrorEvent.errorMessage = presence.errorMessage;
-				xiffErrorEvent.errorType = presence.errorType;
-				onXIFFError(xiffErrorEvent);
-			}
-			else {
-				dispatch(event);
-			}
+			dispatch(event);
 		}
 
 		protected function onMessageCome(event:MessageEvent):void {
