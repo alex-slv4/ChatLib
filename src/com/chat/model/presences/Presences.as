@@ -2,6 +2,8 @@
  * Created by AlexanderSla on 21.11.2014.
  */
 package com.chat.model.presences {
+	import com.chat.model.config.PresenceStatuses;
+
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.data.IPresence;
@@ -35,8 +37,8 @@ package com.chat.model.presences {
 		public function subscribe(status:IPresenceStatus):void {
 			if(_statuses.indexOf(status) == -1){
 				_statuses.push(status);
-				updatePresenceStatus(status);
 			}
+			updatePresenceStatus(status);
 		}
 
 		public function unsubscribe(status:IPresenceStatus):void {
@@ -51,7 +53,7 @@ package com.chat.model.presences {
 		}
 
 		private function storePresence(presence:IPresence, uid:String):void {
-			if(presence.type == Presence.TYPE_UNAVAILABLE || presence.type == Presence.TYPE_UNSUBSCRIBED){
+			if(presence.type == Presence.TYPE_UNSUBSCRIBED){
 				delete _presences[uid];
 			}else{
 				_presences[uid] = presence;
@@ -71,7 +73,29 @@ package com.chat.model.presences {
 		}
 
 		private function updatePresenceStatus(presencable:IPresenceStatus):void {
-			presencable.online = getByUID(presencable.uid) != null;
+			var presence:IPresence = getByUID(presencable.uid);
+			if(presence){
+				if(presence.type == Presence.TYPE_UNAVAILABLE){
+					presencable.showStatus = PresenceStatuses.OFFLINE;
+				}else{
+					if (presence.show == null) {
+						presencable.showStatus = PresenceStatuses.ONLINE;
+					}else{
+						switch (presence.show){
+							case "away":
+								presencable.showStatus = PresenceStatuses.AWAY;
+								break;
+							case "dnd":
+								presencable.showStatus = PresenceStatuses.DND;
+								break;
+							default :
+								presencable.showStatus = PresenceStatuses.ONLINE;
+						}
+					}
+				}
+			}else{
+				presencable.showStatus = PresenceStatuses.UNKNOWN;
+			}
 		}
 	}
 }
