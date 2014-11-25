@@ -22,6 +22,12 @@ package com.chat.controller.commands {
 
 			var message:Message = event.data;
 
+			if(message.type == null){
+				trace("Message not handled");
+				trace(message.xml);
+				return;
+			}
+
 			var communicator:ICommunicator = communicators.getFor(message) as ICommunicator;
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
 				handleReceipt(message, communicator);
