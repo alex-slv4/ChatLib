@@ -10,7 +10,7 @@ package com.chat.controller.commands.cm.muc {
 		override protected function executeIfNoErrors():void {
 			print("leave");
 			if(roomCommunicator){
-				roomCommunicator.chatRoom.leave(false);
+				roomCommunicator.chatRoom.leave();
 				model.communicators.dispose(roomCommunicator);
 			}
 		}

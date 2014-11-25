@@ -6,6 +6,7 @@ package com.chat.config {
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.IChatController;
+	import com.chat.controller.commands.PresenceCommand;
 	import com.chat.controller.commands.SyncTimeWithServerCommand;
 	import com.chat.controller.commands.cm.ClearCMCommand;
 	import com.chat.controller.commands.cm.HelpCMCommand;
@@ -13,7 +14,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.CloseCMCommand;
 	import com.chat.controller.commands.cm.TraceCMCommand;
 	import com.chat.controller.commands.cm.message.MarkAsReadCMCommand;
-	import com.chat.controller.commands.cm.message.OnNewMessageCMCommand;
+	import com.chat.controller.commands.MessageCommand;
 	import com.chat.controller.commands.cm.message.RetrieveHistoryCMCommand;
 	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
 	import com.chat.controller.commands.cm.message.SendPrivateMessageCMCommand;
@@ -36,6 +37,11 @@ package com.chat.config {
 	import com.chat.model.presences.IPresences;
 	import com.chat.model.presences.IPresencesHandler;
 	import com.chat.model.presences.Presences;
+
+	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.events.PresenceEvent;
 
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
@@ -73,6 +79,8 @@ package com.chat.config {
 		private function mapCommands():void {
 			//App commands
 			commandMap.map(ChatEvent.SYNC_TIME).toCommand(SyncTimeWithServerCommand);
+			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
+			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 
 			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
@@ -94,7 +102,6 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.ROSTER_INFO).toCommand(RosterInfoCommand);
 
 			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED).toCommand(OnNewMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
 			commandMap.map(CommunicatorCommandEvent.INFO).toCommand(InfoCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLOSE).toCommand(CloseCMCommand);

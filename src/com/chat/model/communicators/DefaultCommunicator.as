@@ -62,10 +62,6 @@ package com.chat.model.communicators {
 
 		public function push(data:ICItem):void {
 			_items.push(data);
-			var messageItem:СItemMessage = data as СItemMessage;
-			if (messageItem) {
-				dispatch(CommunicatorCommandEvent.ON_MESSAGE_RECEIVED, [messageItem]);
-			}
 			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 

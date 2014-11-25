@@ -3,23 +3,15 @@
  */
 package com.chat.controller {
 	import com.chat.events.ChatEvent;
-	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
-	import com.chat.model.communicators.ICommunicatorBase;
-	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.СItemMessage;
-	import com.chat.model.presences.IPresencesHandler;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 
 	import org.igniterealtime.xiff.core.Browser;
-	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.IXMPPStanza;
-	import org.igniterealtime.xiff.data.Message;
-	import org.igniterealtime.xiff.data.Presence;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
@@ -30,11 +22,8 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.data.time.Time;
 	import org.igniterealtime.xiff.events.LoginEvent;
-	import org.igniterealtime.xiff.events.MessageEvent;
-	import org.igniterealtime.xiff.events.PresenceEvent;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.im.Roster;
-	import org.igniterealtime.xiff.util.DateTimeParser;
 
 	use namespace archive_internal;
 
@@ -44,23 +33,14 @@ package com.chat.controller {
 		public var model:IChatModel;
 
 		[Inject]
-		public var communicators:ICommunicatorFactory;
-
-		[Inject]
 		public var bus:IEventDispatcher;
 
-		[Inject]
-		public var presences:IPresencesHandler;
 
 		private var _browser:Browser;
 
 		[PostConstruct]
 		override public function init():void {
 			super.init();
-
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED, communicatorEventHandler);
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, communicatorEventHandler);
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicatorEventHandler);
 
 			_browser = new Browser(connection);
 
@@ -80,61 +60,17 @@ package com.chat.controller {
 			model.currentUser = new ChatUser(_connection.jid);
 		}
 
-		private function communicatorEventHandler(event:CommunicatorFactoryEvent):void {
-			var communicator:ICommunicatorBase = event.data as ICommunicatorBase;
-			switch (event.type){
-				case CommunicatorFactoryEvent.COMMUNICATOR_ADDED:
-					break;
-				case CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED:
-					break;
-				case CommunicatorFactoryEvent.COMMUNICATOR_ACTIVATED:
-					//chatModel.activeCommunicator = communicator;
-					break;
-			}
-		}
-
 		override protected function setupRoster():void {
 			model.roster = new Roster();
 			super.setupRoster();
 		}
 
-
 		override public function get roster():IRoster {
 			return model.roster;
 		}
 
-		override protected function onMessageCome(event:MessageEvent):void {
-			var message:Message = event.data;
-			if(message.type != null) {
-				var communicator:ICommunicatorBase = communicators.getFor(message);
-				if(message.body == null){
-//					if(message.online) communicator.push(new CItemString(message.online));
-				}else{
-					communicator.push(new СItemMessage(message));
-				}
-			}
-		}
-
-
 		public function send(stanza:IXMPPStanza):void {
 			connection.send(stanza);
-		}
-
-		override protected function onPresence(event:PresenceEvent):void {
-			var presence:Presence;
-			for (var i:int = 0; i < event.data.length; i++) {
-				presence = event.data[i] as Presence;
-				if (presence.type == Presence.TYPE_SUBSCRIBE) {
-					model.roster.grantSubscription(presence.from.unescaped, false);
-				}
-
-				if (presence.type == Presence.TYPE_PROBE) {
-					var reply:IXMPPStanza = new Presence();
-					connection.send(reply);
-				}
-				presences.handlePresence(presence);
-			}
-			super.onPresence(event);
 		}
 
 		override protected function onLogin(event:LoginEvent):void {
@@ -154,35 +90,6 @@ package com.chat.controller {
 			}
 			//TODO: add normal reaction
 //			throw new Error("Server not configured");
-		}
-
-		public function test():void {
-
-			var test:IQ = new IQ(null, IQ.TYPE_GET);
-			test.callback = function (iq:IQ):void {
-				var chatNS:Namespace = new Namespace(null, archive_internal);
-				var chat:XML = iq.xml.chatNS::chat[0];
-				var chats:XMLList = chat.children();
-				var str:String = "";
-				var startDate:Date = DateTimeParser.string2dateTime(chat.attribute("start"));
-				for each (var tag:XML in chats) {
-					if(tag.localName() == "from"){
-						str += formatDate(startDate) + " " + chat.attribute("with") + ": " + tag.body;
-					}else{
-						str += formatDate(startDate) + " " + model.currentUser.jid + ": " + tag.body;
-					}
-					str += "\n";
-				}
-				trace(str);
-			}
-			var stanza:Retrieve = new Retrieve();
-			stanza.withJID = new EscapedJID("joe@localhost");
-			test.addExtension(stanza);
-			connection.send(test);
-		}
-
-		private function formatDate(startDate:Date):String {
-			return startDate.toString();
 		}
 
 		override protected function dispatch(e:Event):void {

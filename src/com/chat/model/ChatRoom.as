@@ -1,8 +1,6 @@
 package com.chat.model
 {
 
-	import com.chat.controller.IChatController;
-
 	import flash.events.EventDispatcher;
 
 	import org.igniterealtime.xiff.collections.ArrayCollection;
@@ -17,8 +15,6 @@ package com.chat.model
 	{
 		[Inject]
 		public var model:IChatModel;
-		[Inject]
-		public var controller:IChatController;
 
 		private var _room:Room;
 		private var _users:ArrayCollection;
@@ -70,7 +66,7 @@ package com.chat.model
 			_room.join();
 		}
 		
-		public function leave( disconnect:Boolean=false ):void
+		public function leave():void
 		{
 			_users.removeAll();
 			_owners.removeAll();
@@ -79,10 +75,9 @@ package com.chat.model
 			_outcasts.removeAll();
 			_room.leave();
 			_room = new Room();
-			if( disconnect ) controller.disconnect();
 		}
 		
-		public function destroy( reason:String, alternateJID:UnescapedJID=null, callback:Function=null, disconnect:Boolean=false ):void
+		public function destroy( reason:String, alternateJID:UnescapedJID=null, callback:Function=null ):void
 		{
 			_users.removeAll();
 			_owners.removeAll();
@@ -91,7 +86,6 @@ package com.chat.model
 			_outcasts.removeAll();
 			_room.destroy( reason, alternateJID, callback );
 			_room = new Room();
-			if( disconnect ) controller.disconnect();
 		}
 		
 		public function sendMessage( body:String ):void
