@@ -323,10 +323,7 @@ package com.chat.controller {
 		}
 
 		protected function onSubscriptionRequest(event:RosterEvent):void {
-			if(roster.contains(RosterItemVO.get(event.jid, false))) {
-				roster.grantSubscription(event.jid, true);
-			}
-
+			roster.grantSubscription(event.jid, false);
 			dispatch(event);
 		}
 

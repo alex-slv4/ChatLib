@@ -34,6 +34,7 @@ package com.chat.controller.commands {
 					}
 
 					presences.handlePresence(presence);
+					model.roster.handlePresence(presence);
 				}
 			}
 		}

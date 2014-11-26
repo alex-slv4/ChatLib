@@ -16,7 +16,7 @@ package com.chat.controller.commands.cm.roster {
 				var itemAt:RosterItemVO = model.roster.getItemAt(i);
 				var presence:IPresence = model.presences.getByUID(itemAt.jid.toString());
 				var online:Boolean = presence != null;
-				print(itemAt.nickname, itemAt.jid.toString(), "|", itemAt.subscribeType, "|", online ? "on" : "off");
+				print(itemAt.jid.node, "|", itemAt.subscribeType, "|", itemAt.askType);
 			}
 		}
 	}
