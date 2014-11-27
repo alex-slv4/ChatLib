@@ -2,6 +2,7 @@
  * Created by AlexanderSla on 21.11.2014.
  */
 package com.chat.model {
+	import com.chat.model.activity.IActivities;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
 
@@ -24,6 +25,7 @@ package com.chat.model {
 
 		function get communicators():ICommunicatorFactory;
 		function get presences():IPresences;
+		function get activities():IActivities;
 
 		function get receiptRequests():Dictionary;
 

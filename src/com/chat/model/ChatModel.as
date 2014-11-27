@@ -2,6 +2,7 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.model {
+	import com.chat.model.activity.IActivities;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
 
@@ -9,12 +10,7 @@ package com.chat.model {
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.core.IXMPPConnection;
-
-	import org.igniterealtime.xiff.core.XMPPTLSConnection;
-
 	import org.igniterealtime.xiff.im.IRoster;
-
-	import org.igniterealtime.xiff.im.Roster;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -26,15 +22,14 @@ package com.chat.model {
 		[Inject]
 		public var _communicators:ICommunicatorFactory;
 
-		[Inject]
-		public var _presences:IPresences;
-
 		private var _connection:IXMPPConnection;
 
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
 		private var _serverTimeOffset:Number;
+		private var _presences:IPresences;
+		private var _activities:IActivities;
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
@@ -59,6 +54,7 @@ package com.chat.model {
 		public function set serverTimeOffset(value:int):void {
 			_serverTimeOffset = value;
 		}
+
 		public function get currentTime():Number {
 			return new Date().time + serverTimeOffset;
 		}
@@ -67,8 +63,22 @@ package com.chat.model {
 			return _communicators;
 		}
 
+		[Inject]
+		public function set presences(value:IPresences):void {
+			_presences = value;
+		}
+
 		public function get presences():IPresences {
 			return _presences;
+		}
+
+		public function get activities():IActivities {
+			return _activities;
+		}
+
+		[Inject]
+		public function set activities(value:IActivities):void {
+			_activities = value;
 		}
 
 		public function get receiptRequests():Dictionary {
@@ -84,7 +94,10 @@ package com.chat.model {
 		}
 
 		public function get conferenceServer():String {
-			return "conference." + _connection.domain;;
+			return "conference." + _connection.domain;
+			;
 		}
+
+
 	}
 }

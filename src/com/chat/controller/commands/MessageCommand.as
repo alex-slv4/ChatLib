@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands {
 	import com.chat.events.CommunicatorEvent;
+	import com.chat.model.activity.IActivitiesHandler;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.СItemMessage;
@@ -18,6 +19,9 @@ package com.chat.controller.commands {
 		[Inject]
 		public var communicators:ICommunicatorFactory;
 
+		[Inject]
+		public var activities:IActivitiesHandler;
+
 		override public function execute():void {
 
 			var message:Message = event.data;
@@ -27,6 +31,8 @@ package com.chat.controller.commands {
 				trace(message.xml);
 				return;
 			}
+
+			activities.handleActivity(message);
 
 			var communicator:ICommunicator = communicators.getFor(message) as ICommunicator;
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
@@ -43,6 +49,7 @@ package com.chat.controller.commands {
 			}
 			communicator.active = true;
 		}
+
 		private function handleReceipt(message:Message, communicator:ICommunicator):void {
 			var receiptMessageItem:СItemMessage = model.receiptRequests[message.receiptId];
 			if (receiptMessageItem) {
