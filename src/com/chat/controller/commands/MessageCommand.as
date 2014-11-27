@@ -39,6 +39,12 @@ package com.chat.controller.commands {
 				handleReceipt(message, communicator);
 			}
 
+			if(message.body == null){
+				trace("Message without body");
+				trace(message.xml);
+				return;
+			}
+
 			var itemMessage:СItemMessage = new СItemMessage(message);
 			communicator.push(itemMessage);
 
