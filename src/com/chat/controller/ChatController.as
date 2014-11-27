@@ -81,6 +81,11 @@ package com.chat.controller {
 			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROSTER_ADD, null, [jidStr]));
 		}
 
+
+		public function joinRoom(room:String, password:String = null):void {
+			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROOM_JOIN, null, [room, password]));
+		}
+
 		public function destroy():void {
 			//TODO: destroy
 		}

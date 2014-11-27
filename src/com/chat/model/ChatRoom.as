@@ -57,12 +57,12 @@ package com.chat.model
 			_room.join( true );
 		}
 		
-		public function join( roomJID:UnescapedJID ):void
+		public function join( roomJID:UnescapedJID, password:String = null ):void
 		{
 			_room.nickname = model.currentUser.displayName;
 			_room.roomJID = roomJID;
 			_room.connection = model.connection;
-			
+			_room.password = password;
 			_room.join();
 		}
 		

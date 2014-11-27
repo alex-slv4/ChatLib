@@ -11,5 +11,7 @@ package com.chat.controller {
 		function disconnect():void;
 
 		function addFriend(jid:AbstractJID):void;
+
+		function joinRoom(room:String, password:String = null):void;
 	}
 }

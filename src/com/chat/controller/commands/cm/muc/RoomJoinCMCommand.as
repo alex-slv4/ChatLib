@@ -29,7 +29,7 @@ package com.chat.controller.commands.cm.muc {
 			_chatRoom = new ChatRoom();
 			injector.injectInto(_chatRoom);
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
-			_chatRoom.join(roomJID);
+			_chatRoom.join(roomJID, password);
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {

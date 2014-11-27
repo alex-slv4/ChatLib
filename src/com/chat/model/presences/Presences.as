@@ -32,7 +32,9 @@ package com.chat.model.presences {
 					var userExtension:MUCUserExtension = allExtensionsByNS[i];
 					for(var j:int = 0; j < userExtension.items.length; j++) {
 						var mucItem:MUCItem = userExtension.items[j];
-						storePresence(presence, mucItem.jid.bareJID);
+						if(mucItem.jid){
+							storePresence(presence, mucItem.jid.bareJID);
+						}
 					}
 				}
 			}else{
