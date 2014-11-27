@@ -56,9 +56,6 @@ package com.chat.controller.commands.cm {
 
 		public function hasErrors():Boolean {
 			var result:Boolean;
-			if (communicator == null) {
-				result = true;
-			}
 			if (params.length < this.requiredParamsCount) {
 				onParamsError();
 				result = true;

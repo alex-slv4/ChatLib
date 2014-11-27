@@ -3,11 +3,14 @@
  */
 package com.chat.controller {
 	import com.chat.events.ChatEvent;
+	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+
+	import org.igniterealtime.xiff.core.AbstractJID;
 
 	import org.igniterealtime.xiff.core.Browser;
 	import org.igniterealtime.xiff.data.IQ;
@@ -24,6 +27,7 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.im.Roster;
+	import org.igniterealtime.xiff.util.JIDUtil;
 
 	use namespace archive_internal;
 
@@ -70,6 +74,11 @@ package com.chat.controller {
 
 		override protected function dispatch(e:Event):void {
 			bus.dispatchEvent(e);
+		}
+
+		public function addFriend(jid:AbstractJID):void {
+			var jidStr:String = JIDUtil.unescape(jid).bareJID;
+			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROSTER_ADD, null, [jidStr]));
 		}
 
 		public function destroy():void {
