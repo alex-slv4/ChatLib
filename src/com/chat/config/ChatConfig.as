@@ -6,6 +6,7 @@ package com.chat.config {
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.IChatController;
+	import com.chat.controller.commands.LoginCommand;
 	import com.chat.controller.commands.PresenceCommand;
 	import com.chat.controller.commands.SyncTimeWithServerCommand;
 	import com.chat.controller.commands.cm.ClearCMCommand;
@@ -43,6 +44,7 @@ package com.chat.config {
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.Presence;
+	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
 
@@ -87,6 +89,7 @@ package com.chat.config {
 			commandMap.map(ChatEvent.SYNC_TIME).toCommand(SyncTimeWithServerCommand);
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
+			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
 
 			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);

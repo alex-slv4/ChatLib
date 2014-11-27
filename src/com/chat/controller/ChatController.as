@@ -36,14 +36,9 @@ package com.chat.controller {
 		public var bus:IEventDispatcher;
 
 
-		private var _browser:Browser;
-
 		[PostConstruct]
 		override public function init():void {
 			super.init();
-
-			_browser = new Browser(connection);
-
 		}
 
 		override protected function setupConnection():void {
@@ -71,25 +66,6 @@ package com.chat.controller {
 
 		public function send(stanza:IXMPPStanza):void {
 			connection.send(stanza);
-		}
-
-		override protected function onLogin(event:LoginEvent):void {
-			super.onLogin(event);
-			model.currentUser.loadVCard(_connection);
-			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
-			_browser.getServiceInfo(null, onServerInfo);
-		}
-
-		private function onServerInfo(iq:IQ):void {
-			var extension1:InfoDiscoExtension = iq.getExtension(DiscoExtension.ELEMENT_NAME) as InfoDiscoExtension;
-			for (var i:int = 0; i < extension1.features.length; i++) {
-				var feature:DiscoFeature = extension1.features[i];
-				if (feature.varName == "urn:xmpp:archive:auto") {
-					return;
-				}
-			}
-			//TODO: add normal reaction
-//			throw new Error("Server not configured");
 		}
 
 		override protected function dispatch(e:Event):void {
