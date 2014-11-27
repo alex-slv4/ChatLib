@@ -21,7 +21,7 @@ package com.chat.model.communicators.factory {
 		}
 
 		public function get uid():String {
-			return _rosterItem.jid.toString();
+			return _rosterItem.jid.bareJID;
 		}
 
 		public function create():ICommunicator {

@@ -4,7 +4,8 @@
 package com.chat.model.communicators.factory {
 	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.ChatRoom;
-	import com.chat.model.communicators.*;
+import com.chat.model.ChatUser;
+import com.chat.model.communicators.*;
 
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
@@ -32,6 +33,7 @@ package com.chat.model.communicators.factory {
 			creatorsMap[Message] = MessageCreator;
 			creatorsMap[ChatRoom] = RoomCreator;
 			creatorsMap[RosterItemVO] = RosterItemCreator;
+			creatorsMap[ChatUser] = ChatUserCreator;
 		}
 
 		public function dispose(communicator:ICommunicator):void {
