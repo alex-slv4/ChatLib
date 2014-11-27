@@ -24,6 +24,7 @@ package com.chat.controller.commands.cm.muc {
 
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0];
+			var password:String = params[1];
 			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + model.conferenceServer);
 			_chatRoom = new ChatRoom();
 			injector.injectInto(_chatRoom);

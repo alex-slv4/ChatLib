@@ -56,7 +56,7 @@ package com.chat.model.communicators.factory {
 			if(_msg == null) return null;
 			if(_msg.from == null) return null;
 			if(_msg.to == null) return null;
-			var isCurrentUserMessage:Boolean = _msg.from.equals(model.currentUser.jid.escaped, true);
+			var isCurrentUserMessage:Boolean = model.isMe(_msg.from);
 			return isCurrentUserMessage ? _msg.to.unescaped : _msg.from.unescaped;
 		}
 	}

@@ -13,7 +13,7 @@ package com.chat.controller.commands.cm.message {
 
 		override protected function executeIfNoErrors():void {
 			var message:Message = messageItem.data as Message;
-			if(message.from.equals(model.currentUser.jid.escaped, true)) {
+			if(model.isMe(message.from)) {
 				//do nothing
 			}else{
 				if(!messageItem.isRead){

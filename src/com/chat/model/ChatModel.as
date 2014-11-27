@@ -9,7 +9,12 @@ package com.chat.model {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
+	import org.igniterealtime.xiff.core.AbstractJID;
+
+	import org.igniterealtime.xiff.core.EscapedJID;
+
 	import org.igniterealtime.xiff.core.IXMPPConnection;
+	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.im.IRoster;
 
 	import robotlegs.bender.framework.api.IInjector;
@@ -95,7 +100,16 @@ package com.chat.model {
 
 		public function get conferenceServer():String {
 			return "conference." + _connection.domain;
-			;
+		}
+
+		public function isMe(jid:AbstractJID):Boolean {
+			var unescapedJID:UnescapedJID;
+			if(jid is UnescapedJID){
+				unescapedJID = jid as UnescapedJID;
+			}else if(jid is EscapedJID){
+				unescapedJID = (jid as EscapedJID).unescaped;
+			}
+			return currentUser.jid.equals(unescapedJID, false);
 		}
 
 

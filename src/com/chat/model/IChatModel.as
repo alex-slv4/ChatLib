@@ -9,6 +9,10 @@ package com.chat.model {
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 
+	import org.igniterealtime.xiff.core.AbstractJID;
+
+	import org.igniterealtime.xiff.core.EscapedJID;
+
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.im.IRoster;
 
@@ -33,5 +37,7 @@ package com.chat.model {
 		function set connection(value:IXMPPConnection):void;
 
 		function get conferenceServer():String;
+
+		function isMe(jid:AbstractJID):Boolean
 	}
 }

@@ -48,7 +48,7 @@ package com.chat.controller.commands {
 			var itemMessage:СItemMessage = new СItemMessage(message);
 			communicator.push(itemMessage);
 
-			if (message.from.equals(model.currentUser.jid.escaped, true)) {
+			if (model.isMe(message.from)) {
 				//do nothing
 			} else {
 				communicator.unreadCount++;
