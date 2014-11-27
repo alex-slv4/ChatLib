@@ -11,11 +11,10 @@ package com.chat.model {
 
 	import org.igniterealtime.xiff.core.AbstractJID;
 
-	import org.igniterealtime.xiff.core.EscapedJID;
-
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.im.IRoster;
+	import org.igniterealtime.xiff.util.JIDUtil;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -103,12 +102,7 @@ package com.chat.model {
 		}
 
 		public function isMe(jid:AbstractJID):Boolean {
-			var unescapedJID:UnescapedJID;
-			if(jid is UnescapedJID){
-				unescapedJID = jid as UnescapedJID;
-			}else if(jid is EscapedJID){
-				unescapedJID = (jid as EscapedJID).unescaped;
-			}
+			var unescapedJID:UnescapedJID = JIDUtil.unescape(jid);
 			return currentUser.jid.equals(unescapedJID, false);
 		}
 
