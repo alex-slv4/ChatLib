@@ -16,6 +16,13 @@ package com.chat.model.presences {
 		private var _statuses:Vector.<IPresenceStatus> = new <IPresenceStatus>[];
 		private var _presences:Dictionary = new Dictionary();
 
+		private const IGNORED_TYPES:Vector.<String> = new <String>[
+				Presence.TYPE_ERROR,
+				Presence.TYPE_SUBSCRIBE,
+				Presence.TYPE_SUBSCRIBED,
+				Presence.TYPE_UNSUBSCRIBE,
+		];
+
 		public function handlePresence(presence:IPresence):void {
 			var allExtensionsByNS:Array = presence.getAllExtensionsByNS(MUCUserExtension.NS);
 
@@ -56,6 +63,12 @@ package com.chat.model.presences {
 			if(presence.type == Presence.TYPE_UNSUBSCRIBED){
 				delete _presences[uid];
 			}else{
+				if(presence.type != null){
+					if(IGNORED_TYPES.indexOf(presence.type) != -1){
+						//Skip the special presence types
+						return;
+					}
+				}
 				_presences[uid] = presence;
 			}
 			updateStatusesByUID(uid);
