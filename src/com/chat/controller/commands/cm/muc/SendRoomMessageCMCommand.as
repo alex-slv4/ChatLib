@@ -6,8 +6,6 @@ package com.chat.controller.commands.cm.muc {
 	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
 	import com.chat.model.communicators.RoomCommunicator;
 
-	import flash.utils.clearTimeout;
-
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendRoomMessageCMCommand extends SendMessageBaseCommand {
@@ -21,7 +19,7 @@ package com.chat.controller.commands.cm.muc {
 			message.body = messageText;
 			message.state = Message.STATE_ACTIVE;
 
-			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
+			SendMessageStateCMCommand.cancel();
 
 			send(message);
 		}

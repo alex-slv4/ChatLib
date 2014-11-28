@@ -14,8 +14,10 @@ package com.chat.controller.commands.cm.message {
 	public class SendMessageStateCMCommand extends SendMessageBaseCommand {
 
 		private static const PAUSED_DELAY:uint = 7000;
+		private static const SEND_DELAY:int = 500;
 
-		public static var STATE_TIMER_ID:uint;
+		private static var STATE_TIMER_ID:uint;
+		private static var SEND_STATE_TIMER_ID:uint;
 
 		override protected function executeIfNoErrors():void {
 			var state:String = params[0];
@@ -52,7 +54,18 @@ package com.chat.controller.commands.cm.message {
 					}
 				}, PAUSED_DELAY);
 			}
+
 			send(message);
+		}
+
+		override protected function send(message:Message):void {
+			clearTimeout(SEND_STATE_TIMER_ID);
+			SEND_STATE_TIMER_ID = setTimeout(super.send, SEND_DELAY, message);
+		}
+
+		public static function cancel():void {
+			clearTimeout(SEND_STATE_TIMER_ID);
+			clearTimeout(STATE_TIMER_ID);
 		}
 
 		private function get writableCommunicator():WritableCommunicator {

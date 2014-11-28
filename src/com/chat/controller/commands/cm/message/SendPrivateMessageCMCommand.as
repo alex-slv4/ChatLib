@@ -5,8 +5,6 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.СItemMessage;
 
-	import flash.utils.clearTimeout;
-
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendPrivateMessageCMCommand extends SendMessageBaseCommand {
@@ -33,8 +31,8 @@ package com.chat.controller.commands.cm.message {
 			//clear receipt
 			message.receipt = null;
 
-			//clear composing timer
-			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
+			//clear state timer
+			SendMessageStateCMCommand.cancel();
 		}
 
 		private function get directCommunicatorData():DirectCommunicator {
