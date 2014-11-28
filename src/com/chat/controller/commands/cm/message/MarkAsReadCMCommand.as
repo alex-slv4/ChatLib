@@ -24,6 +24,7 @@ package com.chat.controller.commands.cm.message {
 			if(message.receipt == Message.RECEIPT_REQUEST){
 				message.receipt = null;
 				var ackMessage:Message = new Message();
+				ackMessage.type = message.type;
 				ackMessage.from = message.to;
 				ackMessage.to = message.from;
 				ackMessage.receipt = Message.RECEIPT_RECEIVED;
