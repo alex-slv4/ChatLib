@@ -20,9 +20,9 @@ package com.chat.controller.commands.cm {
 		public var event:CommunicatorCommandEvent;
 		[Inject]
 		public var communicators:ICommunicatorFactory;
-
 		[Inject]
 		public var bus:IEventDispatcher;
+
 		private var _communicator:ICommunicatorBase;
 
 		override public function execute():void {

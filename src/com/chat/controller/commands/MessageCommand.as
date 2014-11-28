@@ -5,6 +5,7 @@ package com.chat.controller.commands {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.activity.IActivitiesHandler;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.IWritableCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.СItemMessage;
 
@@ -35,9 +36,10 @@ package com.chat.controller.commands {
 			activities.handleActivity(message);
 
 			var communicator:ICommunicator = communicators.getFor(message) as ICommunicator;
-			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
-				handleReceipt(message, communicator);
-			}
+
+			handleReceipt(message, communicator);
+			handleThread(message, communicator);
+
 
 			if(message.body == null){
 				trace("Message without body");
@@ -56,14 +58,25 @@ package com.chat.controller.commands {
 			communicator.active = true;
 		}
 
+		private function handleThread(message:Message, communicator:ICommunicator):void {
+			if(communicator is IWritableCommunicator){
+				var writable:IWritableCommunicator = communicator as IWritableCommunicator;
+				if(writable.thread == null && message.thread != null){
+					writable.thread = message.thread;
+				}
+			}
+		}
+
 		private function handleReceipt(message:Message, communicator:ICommunicator):void {
-			var receiptMessageItem:СItemMessage = model.receiptRequests[message.receiptId];
-			if (receiptMessageItem) {
-				delete model.receiptRequests[message.receiptId];
-				var message:Message = receiptMessageItem.data as Message;
-				receiptMessageItem.isRead = true;
-				message.receipt = null;
-				communicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessageItem));
+			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
+				var receiptMessageItem:СItemMessage = model.receiptRequests[message.receiptId];
+				if (receiptMessageItem) {
+					delete model.receiptRequests[message.receiptId];
+					var message:Message = receiptMessageItem.data as Message;
+					receiptMessageItem.isRead = true;
+					message.receipt = null;
+					communicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessageItem));
+				}
 			}
 		}
 	}

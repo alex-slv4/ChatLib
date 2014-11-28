@@ -5,6 +5,7 @@ package {
 	import tests.ActivitiesTest;
 	import tests.FabricTest;
 	import tests.PresencesTest;
+	import tests.ThreadingTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -12,5 +13,6 @@ package {
 		public var fabricTest:FabricTest;
 		public var presencesTest:PresencesTest;
 		public var activityTest:ActivitiesTest;
+		public var threadingTest:ThreadingTest;
 	}
 }

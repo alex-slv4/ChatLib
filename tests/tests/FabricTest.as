@@ -10,6 +10,7 @@ package tests {
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
+	import com.chat.model.activity.IActivities;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
@@ -57,6 +58,7 @@ package tests {
 			var presences:Presences = new Presences();
 			injector.map(IPresences).toValue(presences);
 			injector.map(IPresencesHandler).toValue(presences);
+			injector.map(IActivities).toValue(null);
 
 			chat = injector.getInstance(IChat);
 			chat.model.currentUser = new ChatUser(new UnescapedJID("bob@localhost"));

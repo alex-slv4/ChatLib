@@ -11,7 +11,7 @@ package com.chat.model.communicators {
 
 	import org.as3commons.lang.StringUtils;
 
-	public class WritableCommunicator extends DefaultCommunicator {
+	public class WritableCommunicator extends DefaultCommunicator implements IWritableCommunicator{
 
 		private static const COMMAND_PATTERN:RegExp = /^\/\w+(\s|$)/ig;
 		private static const ARG_DELIMITER:RegExp = /\s+/;
@@ -21,6 +21,7 @@ package com.chat.model.communicators {
 		public static const SUCCESS:int = 0;
 		protected var commandsMap:Dictionary = new Dictionary();
 		private var _state:String;
+		private var _thread:String;
 
 		/**
 		 *
@@ -84,6 +85,14 @@ package com.chat.model.communicators {
 				_state = value;
 				dispatch(CommunicatorCommandEvent.SEND_MESSAGE_STATE, [_state]);
 			}
+		}
+
+		public function get thread():String {
+			return _thread;
+		}
+
+		public function set thread(value:String):void {
+			_thread = value;
 		}
 	}
 }

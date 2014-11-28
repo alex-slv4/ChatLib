@@ -13,6 +13,8 @@ package com.chat.model {
 
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.data.id.IIDGenerator;
+	import org.igniterealtime.xiff.data.id.UUIDGenerator;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.util.JIDUtil;
 
@@ -23,17 +25,15 @@ package com.chat.model {
 		[Inject]
 		public var injector:IInjector;
 
-		[Inject]
-		public var _communicators:ICommunicatorFactory;
-
 		private var _connection:IXMPPConnection;
-
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
 		private var _serverTimeOffset:Number;
+		private var _communicators:ICommunicatorFactory;
 		private var _presences:IPresences;
 		private var _activities:IActivities;
+		private var _threadGenerator:IIDGenerator;
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
@@ -63,15 +63,22 @@ package com.chat.model {
 			return new Date().time + serverTimeOffset;
 		}
 
-		public function get communicators():ICommunicatorFactory {
-			return _communicators;
+		[Inject]
+		public function set communicators(value:ICommunicatorFactory):void {
+			_communicators = value;
 		}
-
 		[Inject]
 		public function set presences(value:IPresences):void {
 			_presences = value;
 		}
+		[Inject]
+		public function set activities(value:IActivities):void {
+			_activities = value;
+		}
 
+		public function get communicators():ICommunicatorFactory {
+			return _communicators;
+		}
 		public function get presences():IPresences {
 			return _presences;
 		}
@@ -80,9 +87,13 @@ package com.chat.model {
 			return _activities;
 		}
 
-		[Inject]
-		public function set activities(value:IActivities):void {
-			_activities = value;
+
+		public function get threadGenerator():IIDGenerator {
+			if(_threadGenerator == null) {
+				//better replace with SHA
+				_threadGenerator = new UUIDGenerator();
+			}
+			return _threadGenerator;
 		}
 
 		public function get receiptRequests():Dictionary {
@@ -105,7 +116,6 @@ package com.chat.model {
 			var unescapedJID:UnescapedJID = JIDUtil.unescape(jid);
 			return currentUser.jid.equals(unescapedJID, false);
 		}
-
 
 	}
 }

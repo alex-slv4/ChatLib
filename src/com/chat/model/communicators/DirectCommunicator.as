@@ -55,7 +55,7 @@ package com.chat.model.communicators {
 
 
 		override public function toString():String {
-			return "[Direct " + _chatUser.jid.toString() + " / " + _participant + "]";
+			return "[Direct " + _chatUser.jid.toString() + " <-> " + _participant + "]";
 		}
 
 		public function get history():IHistoryProvider {
