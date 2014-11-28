@@ -34,7 +34,7 @@ package com.chat.model.history {
 
 		public function ConversationsProvider(participant:UnescapedJID, me:UnescapedJID) {
 			_me = me;
-			_participant = participant;
+			_participant = new UnescapedJID(participant.bareJID);
 		}
 
 
