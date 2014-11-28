@@ -13,7 +13,7 @@ package com.chat.controller.commands.cm.message {
 
 	import org.igniterealtime.xiff.data.Message;
 
-	public class SendMessageStateCMCommand extends CMCommand {
+	public class SendMessageStateCMCommand extends SendMessageBaseCommand {
 
 		private static const PAUSED_DELAY:uint = 7000;
 
@@ -54,7 +54,7 @@ package com.chat.controller.commands.cm.message {
 					}
 				}, PAUSED_DELAY);
 			}
-			controller.send(message);
+			send(message);
 		}
 
 		private function get writableCommunicator():WritableCommunicator {

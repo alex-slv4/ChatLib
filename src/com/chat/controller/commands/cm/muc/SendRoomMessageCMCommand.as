@@ -2,7 +2,7 @@
  * Created by kvint on 11.11.14.
  */
 package com.chat.controller.commands.cm.muc {
-	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.controller.commands.cm.message.SendMessageBaseCommand;
 	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
 	import com.chat.model.communicators.RoomCommunicator;
 
@@ -10,7 +10,7 @@ package com.chat.controller.commands.cm.muc {
 
 	import org.igniterealtime.xiff.data.Message;
 
-	public class SendRoomMessageCMCommand extends CMCommand {
+	public class SendRoomMessageCMCommand extends SendMessageBaseCommand {
 
 		override protected function executeIfNoErrors():void {
 			var messageText:String = params[0];
@@ -23,7 +23,7 @@ package com.chat.controller.commands.cm.muc {
 
 			clearTimeout(SendMessageStateCMCommand.STATE_TIMER_ID);
 
-			controller.send(message);
+			send(message);
 		}
 
 		private function get roomCommunicator():RoomCommunicator {
