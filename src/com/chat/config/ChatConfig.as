@@ -8,7 +8,7 @@ package com.chat.config {
 	import com.chat.controller.IChatController;
 	import com.chat.controller.commands.LoginCommand;
 	import com.chat.controller.commands.PresenceCommand;
-	import com.chat.controller.commands.SyncTimeWithServerCommand;
+	import com.chat.controller.commands.TimeSyncCommand;
 	import com.chat.controller.commands.cm.ClearCMCommand;
 	import com.chat.controller.commands.cm.HelpCMCommand;
 	import com.chat.controller.commands.cm.InfoCMCommand;
@@ -41,9 +41,6 @@ package com.chat.config {
 	import com.chat.model.presences.IPresences;
 	import com.chat.model.presences.IPresencesHandler;
 	import com.chat.model.presences.Presences;
-
-	import org.igniterealtime.xiff.data.Message;
-	import org.igniterealtime.xiff.data.Presence;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
@@ -66,7 +63,6 @@ package com.chat.config {
 
 		public function configure():void {
 			mapMembership();
-			mapView();
 			mapCommands();
 		}
 
@@ -86,7 +82,7 @@ package com.chat.config {
 		}
 		private function mapCommands():void {
 			//App commands
-			commandMap.map(ChatEvent.SYNC_TIME).toCommand(SyncTimeWithServerCommand);
+			commandMap.map(ChatEvent.SYNC_TIME).toCommand(TimeSyncCommand);
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
@@ -114,13 +110,6 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
 			commandMap.map(CommunicatorCommandEvent.INFO).toCommand(InfoCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLOSE).toCommand(CloseCMCommand);
-		}
-
-		private function mapView():void {
-//			mediatorMap.map(HistoryCommunicatorView).toMediator(HistoryCommunicatorMediator);
-			//mediatorMap.map(TeamCommunicatorView).toMediator(TeamCommunicatorMediator);
-			//mediatorMap.map(GlobalCommunicatorView).toMediator(GlobalCommunicatorMediator);
-
 		}
 	}
 }

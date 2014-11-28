@@ -6,7 +6,7 @@ package com.chat.controller.commands {
 	import org.igniterealtime.xiff.data.time.Time;
 	import org.igniterealtime.xiff.util.DateTimeParser;
 
-	public class SyncTimeWithServerCommand extends BaseChatCommand {
+	public class TimeSyncCommand extends BaseChatCommand {
 
 		override public function execute():void {
 			var iq:IQ = new IQ();
