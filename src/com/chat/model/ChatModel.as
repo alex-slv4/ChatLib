@@ -14,6 +14,7 @@ package com.chat.model {
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.id.IIDGenerator;
+	import org.igniterealtime.xiff.data.id.RandomGenerator;
 	import org.igniterealtime.xiff.data.id.UUIDGenerator;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.util.JIDUtil;
@@ -90,8 +91,7 @@ package com.chat.model {
 
 		public function get threadGenerator():IIDGenerator {
 			if(_threadGenerator == null) {
-				//better replace with SHA
-				_threadGenerator = new UUIDGenerator();
+				_threadGenerator = new RandomGenerator();
 			}
 			return _threadGenerator;
 		}
