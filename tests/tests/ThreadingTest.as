@@ -95,7 +95,9 @@ package tests {
 
 			var messageEvent:MessageEvent = new MessageEvent();
 			messageEvent.data = messageFromJoe;
-			bus.dispatchEvent(messageEvent)
+			bus.dispatchEvent(messageEvent);
+			messageFromJoe.thread = model.threadGenerator.generateID();
+			bus.dispatchEvent(messageEvent);
 
 			var iCommunicator:DirectCommunicator = model.communicators.getFor(messageFromJoe) as DirectCommunicator;
 

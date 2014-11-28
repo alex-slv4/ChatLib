@@ -61,8 +61,8 @@ package com.chat.controller.commands {
 		private function handleThread(message:Message, communicator:ICommunicator):void {
 			if(communicator is IWritableCommunicator){
 				var writable:IWritableCommunicator = communicator as IWritableCommunicator;
-				if(writable.thread == null && message.thread != null){
-					writable.thread = message.thread;
+				if(message.thread != null && writable.thread != message.thread){
+					writable.thread = message.thread
 				}
 			}
 		}
