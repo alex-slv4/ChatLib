@@ -44,7 +44,8 @@ package com.chat.model.communicators.factory {
 		private function createRoom():ICommunicator {
 			var chatRoom:ChatRoom = new ChatRoom();
 			injector.injectInto(chatRoom);
-			chatRoom.join(from);
+			var roomJID:UnescapedJID = new UnescapedJID(from.bareJID);
+			chatRoom.join(roomJID);
 			return new RoomCommunicator(chatRoom)
 		}
 
