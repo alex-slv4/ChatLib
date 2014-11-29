@@ -10,6 +10,7 @@ package com.chat.model.communicators {
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.СItemMessage;
+	import com.chat.signals.CommunicatorSignal;
 
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -26,7 +27,7 @@ package com.chat.model.communicators {
 		public var communicators:ICommunicatorFactory;
 
 		[Inject]
-		public var bus:IEventDispatcher;
+		public var communicatorSignal:CommunicatorSignal;
 
 
 		private var _uid:String;
@@ -73,7 +74,7 @@ package com.chat.model.communicators {
 		}
 
 		public function dispatch(eventName:String, params:Array):void {
-			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, this, params));
+			communicatorSignal.dispatch(eventName, this, params);
 		}
 
 		public function get active():Boolean {
@@ -98,7 +99,7 @@ package com.chat.model.communicators {
 
 		public function destroy():void {
 			clear();
-			bus = null;
+			communicatorSignal = null;
 			model = null;
 			controller = null;
 			_uid = null;

@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.WritableCommunicator;
 
@@ -18,6 +19,11 @@ package com.chat.controller.commands.cm.message {
 
 		private static var STATE_TIMER_ID:uint;
 		private static var SEND_STATE_TIMER_ID:uint;
+
+
+		public function SendMessageStateCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			var state:String = params[0];

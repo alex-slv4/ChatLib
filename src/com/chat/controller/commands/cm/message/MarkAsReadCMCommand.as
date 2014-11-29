@@ -4,12 +4,16 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class MarkAsReadCMCommand extends CMCommand {
 
+		public function MarkAsReadCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			var message:Message = messageItem.data as Message;

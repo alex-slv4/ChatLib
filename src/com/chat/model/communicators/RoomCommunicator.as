@@ -12,12 +12,11 @@ package com.chat.model.communicators {
 
 		public function RoomCommunicator(chatRoom:ChatRoom) {
 			_chatRoom = chatRoom;
-			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
 		}
 
 		override public function send(data:Object):int {
 			var result:int = super.send(data);
-			if(result == SUCCESS){
+			if (result == SUCCESS) {
 				dispatch(CommunicatorCommandEvent.ROOM_MESSAGE, [data]);
 			}
 			return result;

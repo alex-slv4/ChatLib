@@ -5,6 +5,7 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.history.ConversationsProvider;
 
@@ -21,6 +22,10 @@ package com.chat.controller.commands.cm.message {
 
 		[Inject]
 		public var injector:IInjector;
+
+		public function RetrieveHistoryCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			directCommunicator.history.fetchNext(onHistoryLoaded);

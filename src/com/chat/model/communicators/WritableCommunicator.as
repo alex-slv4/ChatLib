@@ -4,9 +4,6 @@
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
-
 	import flash.utils.Dictionary;
 
 	import org.as3commons.lang.StringUtils;
@@ -23,11 +20,6 @@ package com.chat.model.communicators {
 		private var _state:String;
 		private var _thread:String;
 
-		/**
-		 *
-		 * @param data
-		 * @return status code. 0 - success
-		 */
 
 		public function WritableCommunicator() {
 			commandsMap["/close"] = CommunicatorCommandEvent.CLOSE;
@@ -42,14 +34,14 @@ package com.chat.model.communicators {
 
 		public function send(data:Object):int {
 
-			if(!(data is String)) throw new Error("Implement me!");
+			if (!(data is String)) throw new Error("Implement me!");
 
 			var body:String = StringUtils.trim(data.toString());
 
-			if(!body || body == "")
+			if (!body || body == "")
 				return BLANK_BODY;
 
-			if(proceedCommand(body)){
+			if (proceedCommand(body)) {
 				return COMMAND;
 			}
 			return SUCCESS;
@@ -59,17 +51,13 @@ package com.chat.model.communicators {
 			var commands:Array = body.match(COMMAND_PATTERN);
 			var success:Boolean = false;
 			if(commands && commands.length == 1) {
-				var commandName:String = StringUtils.trim(commands[0])
+				var commandName:String = StringUtils.trim(commands[0]);
 				var params:Array = body.split(ARG_DELIMITER);
 				params.shift();
 				var eventName:String = commandsMap[commandName];
 
 				if (eventName != null) {
-					if (eventName == CommunicatorCommandEvent.HELP) {
-						dispatch(eventName, [commandsMap]);
-					} else {
-						dispatch(eventName, params);
-					}
+					dispatch(eventName, params);
 					success = true;
 				}
 			}

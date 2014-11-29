@@ -13,6 +13,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.HelpCMCommand;
 	import com.chat.controller.commands.cm.InfoCMCommand;
 	import com.chat.controller.commands.cm.CloseCMCommand;
+	import com.chat.controller.commands.cm.ExecuteCMCommand;
 	import com.chat.controller.commands.cm.TraceCMCommand;
 	import com.chat.controller.commands.cm.message.MarkAsReadCMCommand;
 	import com.chat.controller.commands.MessageCommand;
@@ -41,12 +42,16 @@ package com.chat.config {
 	import com.chat.model.presences.IPresences;
 	import com.chat.model.presences.IPresencesHandler;
 	import com.chat.model.presences.Presences;
+	import com.chat.signals.CommunicatorSignal;
+	import com.chat.signals.SyncTimeSignal;
+
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
 
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -61,6 +66,9 @@ package com.chat.config {
 		[Inject]
 		public var commandMap:IEventCommandMap;
 
+		[Inject]
+		public var signalCommandMap:ISignalCommandMap;
+
 		public function configure():void {
 			mapMembership();
 			mapCommands();
@@ -73,6 +81,8 @@ package com.chat.config {
 			injector.map(IChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
 
+			injector.map(ICMCommandsConfig).toSingleton(CMCommandsConfig);
+
 			var presences:Presences = new Presences();
 			injector.map(IPresences).toValue(presences);
 			injector.map(IPresencesHandler).toValue(presences);
@@ -81,17 +91,16 @@ package com.chat.config {
 			injector.map(IActivitiesHandler).toValue(activity);
 		}
 		private function mapCommands():void {
+
+			signalCommandMap.map(SyncTimeSignal).toCommand(TimeSyncCommand);
+			signalCommandMap.map(CommunicatorSignal).toCommand(ExecuteCMCommand);
+
 			//App commands
-			commandMap.map(ChatEvent.SYNC_TIME).toCommand(TimeSyncCommand);
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
 
 			//Communicator commands
-			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
-			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
-			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);
-			commandMap.map(CommunicatorCommandEvent.HELP).toCommand(HelpCMCommand);
 
 			commandMap.map(CommunicatorCommandEvent.ROOM).toCommand(RoomCMCommand);
 			commandMap.map(CommunicatorCommandEvent.ROOM_INFO).toCommand(RoomInfoCMCommand);
@@ -108,8 +117,6 @@ package com.chat.config {
 			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
 			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
 			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
-			commandMap.map(CommunicatorCommandEvent.INFO).toCommand(InfoCMCommand);
-			commandMap.map(CommunicatorCommandEvent.CLOSE).toCommand(CloseCMCommand);
 		}
 	}
 }

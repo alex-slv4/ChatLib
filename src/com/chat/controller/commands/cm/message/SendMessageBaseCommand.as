@@ -3,11 +3,16 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.IWritableCommunicator;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendMessageBaseCommand extends CMCommand {
+
+		public function SendMessageBaseCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		protected function send(message:Message):void {
 			//append thread

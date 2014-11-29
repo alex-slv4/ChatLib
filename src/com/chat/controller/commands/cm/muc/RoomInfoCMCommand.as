@@ -4,11 +4,17 @@
 package com.chat.controller.commands.cm.muc {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.ChatUser;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.data.IPresence;
 
 	public class RoomInfoCMCommand extends CMCommand {
+
+
+		public function RoomInfoCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			for (var i:int = 0; i < roomCommunicator.chatRoom.users.length; i++) {

@@ -15,7 +15,9 @@ package com.chat.controller.commands.cm.muc {
 
 		protected var _chatRoom:ChatRoom;
 
-		public function RoomCMCommand() {
+
+		public function RoomCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
 			subCommands["join"] = CommunicatorCommandEvent.ROOM_JOIN;
 			subCommands["create"] = CommunicatorCommandEvent.ROOM_CREATE;
 			subCommands["leave"] = CommunicatorCommandEvent.ROOM_LEAVE;

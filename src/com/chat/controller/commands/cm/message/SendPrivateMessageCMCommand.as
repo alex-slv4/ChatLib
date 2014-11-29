@@ -3,11 +3,17 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.data.СItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendPrivateMessageCMCommand extends SendMessageBaseCommand {
+
+
+		public function SendPrivateMessageCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 

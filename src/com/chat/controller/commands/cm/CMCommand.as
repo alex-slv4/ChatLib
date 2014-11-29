@@ -17,16 +17,20 @@ package com.chat.controller.commands.cm {
 	public class CMCommand extends BaseChatCommand implements ICommand, ICMCommand {
 
 		[Inject]
-		public var event:CommunicatorCommandEvent;
-		[Inject]
 		public var communicators:ICommunicatorFactory;
 		[Inject]
 		public var bus:IEventDispatcher;
 
 		private var _communicator:ICommunicatorBase;
+		private var _params:Array;
+
+
+		public function CMCommand(communicator:ICommunicatorBase, params:Array) {
+			_communicator = communicator;
+			_params = params;
+		}
 
 		override public function execute():void {
-			_communicator = event.communicator;
 			setUp();
 
 			if (!hasErrors()) {
@@ -87,7 +91,7 @@ package com.chat.controller.commands.cm {
 		}
 
 		public function get params():Array {
-			return event.params;
+			return _params;
 		}
 
 		public function get requiredParamsCount():int {

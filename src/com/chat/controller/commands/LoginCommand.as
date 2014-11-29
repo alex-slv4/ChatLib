@@ -2,9 +2,7 @@
  * Created by kvint on 27.11.14.
  */
 package com.chat.controller.commands {
-	import com.chat.events.ChatEvent;
-
-	import flash.events.Event;
+	import com.chat.signals.SyncTimeSignal;
 
 	import flash.events.IEventDispatcher;
 
@@ -20,11 +18,13 @@ package com.chat.controller.commands {
 
 		[Inject]
 		public var bus:IEventDispatcher;
+		[Inject]
+		public var syncTimeSignal:SyncTimeSignal;
 		private var _browser:Browser;
 
 		override public function execute():void {
 			model.currentUser.loadVCard(model.connection);
-			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
+			syncTimeSignal.dispatch();
 			_browser = new Browser(model.connection);
 			_browser.getServiceInfo(null, onServerInfo);
 		}

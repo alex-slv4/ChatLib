@@ -6,6 +6,7 @@ package com.chat.controller {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
+	import com.chat.signals.CommunicatorSignal;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -38,6 +39,9 @@ package com.chat.controller {
 
 		[Inject]
 		public var bus:IEventDispatcher;
+
+		[Inject]
+		public var communicatorSignal:CommunicatorSignal;
 
 
 		[PostConstruct]
@@ -83,7 +87,8 @@ package com.chat.controller {
 
 
 		public function joinRoom(room:String, password:String = null):void {
-			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROOM_JOIN, null, [room, password]));
+			communicatorSignal.dispatch("roomJoin", null, [room, password]);
+			//bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROOM_JOIN, null, [room, password]));
 		}
 
 		public function destroy():void {

@@ -2,16 +2,23 @@
  * Created by kvint on 14.11.14.
  */
 package com.chat.controller.commands.cm {
-	import com.chat.controller.commands.*;
 	import com.adobe.utils.DictionaryUtil;
-	import com.chat.events.CommunicatorCommandEvent;
+	import com.chat.model.communicators.ICommunicatorBase;
+	import com.chat.signals.CommunicatorSignal;
 
-	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 
 	public class MacroCMCommand extends CMCommand {
 
+		[Inject]
+		public var communicatorSignal:CommunicatorSignal;
+
 		protected var subCommands:Dictionary = new Dictionary();
+
+
+		public function MacroCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function onParamsError():void {
 			printInfo();
@@ -29,7 +36,8 @@ package com.chat.controller.commands.cm {
 			var eventName:String = subCommands[commandName];
 			var subParams:Array = params.concat();
 			subParams.shift();
-			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, communicator, subParams));
+			communicatorSignal.dispatch(eventName, communicator, subParams);
+//			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, communicator, subParams));
 		}
 		override public function get requiredParamsCount():int {
 			return 1;
