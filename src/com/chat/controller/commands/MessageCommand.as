@@ -27,6 +27,12 @@ package com.chat.controller.commands {
 
 			var message:Message = event.data;
 
+			if(message.type == null){
+				trace("Message not handled");
+				trace(message.xml);
+				return;
+			}
+
 			activities.handleActivity(message);
 
 			var communicator:ICommunicator = communicators.getFor(message) as ICommunicator;
@@ -34,8 +40,9 @@ package com.chat.controller.commands {
 			handleReceipt(message, communicator);
 			handleThread(message, communicator);
 
-			if(message.body == null || message.type == null){
-				trace("Message unhandled");
+
+			if(message.body == null){
+				trace("Message without body");
 				trace(message.xml);
 				return;
 			}
