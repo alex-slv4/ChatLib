@@ -3,12 +3,17 @@
  */
 package com.chat.controller.commands.cm.roster {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.model.communicators.ICommunicatorBase;
 
 	import org.igniterealtime.xiff.data.IPresence;
 
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 
 	public class RosterInfoCommand extends CMCommand {
+
+		public function RosterInfoCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			print(this);

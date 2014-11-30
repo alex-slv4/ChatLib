@@ -4,11 +4,16 @@
 package com.chat.controller.commands.cm.muc {
 	import com.chat.controller.commands.cm.message.SendMessageBaseCommand;
 	import com.chat.controller.commands.cm.message.SendMessageStateCMCommand;
+	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendRoomMessageCMCommand extends SendMessageBaseCommand {
+
+		public function SendRoomMessageCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			var messageText:String = params[0];

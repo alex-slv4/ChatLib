@@ -13,8 +13,9 @@ package com.chat.controller.commands.cm.muc {
 
 	public class RoomCreateCMCommand extends RoomCMCommand {
 
-		[Inject]
-		public var injector:IInjector;
+		public function RoomCreateCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0]

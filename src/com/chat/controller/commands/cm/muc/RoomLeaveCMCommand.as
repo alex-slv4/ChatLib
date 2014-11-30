@@ -2,20 +2,19 @@
  * Created by kvint on 17.11.14.
  */
 package com.chat.controller.commands.cm.muc {
-	import com.chat.controller.commands.cm.CMCommand;
-	import com.chat.model.communicators.RoomCommunicator;
+	import com.chat.model.communicators.ICommunicatorBase;
 
-	public class RoomLeaveCMCommand extends CMCommand {
+	public class RoomLeaveCMCommand extends RoomCMCommand {
+
+
+		public function RoomLeaveCMCommand(communicator:ICommunicatorBase, params:Array) {
+			super(communicator, params);
+		}
 
 		override protected function executeIfNoErrors():void {
 			print("leave");
-			if(roomCommunicator){
-				roomCommunicator.chatRoom.leave();
-				model.communicators.dispose(roomCommunicator);
-			}
-		}
-		private function get roomCommunicator():RoomCommunicator {
-			return communicator as RoomCommunicator;
+			roomCommunicator.chatRoom.leave();
+			model.communicators.dispose(roomCommunicator);
 		}
 	}
 }

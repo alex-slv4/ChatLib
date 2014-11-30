@@ -2,15 +2,12 @@
  * Created by kvint on 11.11.14.
  */
 package com.chat.controller.commands.cm.muc {
-	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.ICommunicatorBase;
-	import com.chat.model.communicators.RoomCommunicator;
 
 	import org.igniterealtime.xiff.data.IPresence;
 
-	public class RoomInfoCMCommand extends CMCommand {
-
+	public class RoomInfoCMCommand extends RoomCMCommand {
 
 		public function RoomInfoCMCommand(communicator:ICommunicatorBase, params:Array) {
 			super(communicator, params);
@@ -24,9 +21,6 @@ package com.chat.controller.commands.cm.muc {
 				print(user.displayName + " (" + user.jid + ")", online ? "on" : "off");
 
 			}
-		}
-		private function get roomCommunicator():RoomCommunicator {
-			return communicator as RoomCommunicator;
 		}
 	}
 }

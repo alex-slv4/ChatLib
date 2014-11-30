@@ -8,10 +8,15 @@ package com.chat.controller.commands.cm {
 
 	import flash.utils.Dictionary;
 
+	import robotlegs.bender.framework.api.IInjector;
+
 	public class MacroCMCommand extends CMCommand {
 
 		[Inject]
 		public var communicatorSignal:CommunicatorSignal;
+
+		[Inject]
+		public var injector:IInjector;
 
 		protected var subCommands:Dictionary = new Dictionary();
 
@@ -33,11 +38,14 @@ package com.chat.controller.commands.cm {
 		}
 
 		public function runSubCommand(commandName:String):void {
-			var eventName:String = subCommands[commandName];
 			var subParams:Array = params.concat();
 			subParams.shift();
-			communicatorSignal.dispatch(eventName, communicator, subParams);
-//			bus.dispatchEvent(new CommunicatorCommandEvent(eventName, communicator, subParams));
+			var CommandClass:Class = subCommands[commandName];
+			if(CommandClass) {
+				var command:CMCommand = new CommandClass(communicator, subParams);
+				injector.injectInto(command);
+				command.execute();
+			}
 		}
 		override public function get requiredParamsCount():int {
 			return 1;

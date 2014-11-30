@@ -10,6 +10,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.message.RetrieveHistoryCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomCreateCMCommand;
+	import com.chat.controller.commands.cm.muc.RoomInfoCMCommand;
 	import com.chat.controller.commands.cm.roster.RosterCMCommand;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
@@ -37,6 +38,7 @@ package com.chat.config {
 
 			_concreteCommands[RoomCommunicator] = new Dictionary();
 			_concreteCommands[RoomCommunicator]["room"] = RoomCMCommand;
+			_concreteCommands[RoomCommunicator]["info"] = RoomInfoCMCommand;
 
 			_concreteCommands[DirectCommunicator] = new Dictionary();
 			_concreteCommands[DirectCommunicator]["invite"] = RoomCreateCMCommand;

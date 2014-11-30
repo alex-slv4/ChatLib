@@ -2,8 +2,6 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.controller {
-	import com.chat.events.ChatEvent;
-	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.IChatModel;
 	import com.chat.signals.CommunicatorSignal;
@@ -12,20 +10,13 @@ package com.chat.controller {
 	import flash.events.IEventDispatcher;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
-
-	import org.igniterealtime.xiff.core.Browser;
-	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.IXMPPStanza;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.archive.archive_internal;
-	import org.igniterealtime.xiff.data.disco.DiscoExtension;
-	import org.igniterealtime.xiff.data.disco.DiscoFeature;
-	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.data.time.Time;
-	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.im.Roster;
 	import org.igniterealtime.xiff.util.JIDUtil;
@@ -82,13 +73,12 @@ package com.chat.controller {
 
 		public function addFriend(jid:AbstractJID):void {
 			var jidStr:String = JIDUtil.unescape(jid).bareJID;
-			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROSTER_ADD, null, [jidStr]));
+			communicatorSignal.dispatch("roster add", null, [jidStr]);
 		}
 
 
 		public function joinRoom(room:String, password:String = null):void {
-			communicatorSignal.dispatch("roomJoin", null, [room, password]);
-			//bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROOM_JOIN, null, [room, password]));
+			communicatorSignal.dispatch("room join", null, [room, password]);
 		}
 
 		public function destroy():void {

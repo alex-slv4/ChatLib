@@ -16,21 +16,8 @@ package com.chat.model.communicators {
 		public static const COMMAND:int = 1;
 		public static const BLANK_BODY:int = -1;
 		public static const SUCCESS:int = 0;
-		protected var commandsMap:Dictionary = new Dictionary();
 		private var _state:String;
 		private var _thread:String;
-
-
-		public function WritableCommunicator() {
-			commandsMap["/close"] = CommunicatorCommandEvent.CLOSE;
-			commandsMap["/roster"] = CommunicatorCommandEvent.ROSTER;
-			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
-			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
-			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
-			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
-			commandsMap["/info"] = CommunicatorCommandEvent.INFO;
-			commandsMap["/history"] = CommunicatorCommandEvent.HISTORY;
-		}
 
 		public function send(data:Object):int {
 
@@ -54,12 +41,8 @@ package com.chat.model.communicators {
 				var commandName:String = StringUtils.trim(commands[0]);
 				var params:Array = body.split(ARG_DELIMITER);
 				params.shift();
-				var eventName:String = commandsMap[commandName];
-
-				if (eventName != null) {
-					dispatch(eventName, params);
-					success = true;
-				}
+				dispatch(commandName, params);
+				success = true;
 			}
 			return success;
 		}

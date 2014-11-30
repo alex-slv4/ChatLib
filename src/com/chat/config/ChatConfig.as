@@ -26,8 +26,8 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.muc.RoomJoinCMCommand;
 	import com.chat.controller.commands.cm.muc.RoomLeaveCMCommand;
 	import com.chat.controller.commands.cm.muc.SendRoomMessageCMCommand;
-	import com.chat.controller.commands.cm.roster.AddUserCMCommand;
-	import com.chat.controller.commands.cm.roster.RemoveUserCMCommand;
+	import com.chat.controller.commands.cm.roster.RosterAddCMCommand;
+	import com.chat.controller.commands.cm.roster.RosterRemoveCMCommand;
 	import com.chat.controller.commands.cm.roster.RosterCMCommand;
 	import com.chat.controller.commands.cm.roster.RosterInfoCommand;
 	import com.chat.events.ChatEvent;
@@ -99,24 +99,6 @@ package com.chat.config {
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
-
-			//Communicator commands
-
-			commandMap.map(CommunicatorCommandEvent.ROOM).toCommand(RoomCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM_INFO).toCommand(RoomInfoCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM_CREATE).toCommand(RoomCreateCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM_MESSAGE).toCommand(SendRoomMessageCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM_JOIN).toCommand(RoomJoinCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROOM_LEAVE).toCommand(RoomLeaveCMCommand);
-
-			commandMap.map(CommunicatorCommandEvent.ROSTER).toCommand(RosterCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROSTER_ADD).toCommand(AddUserCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROSTER_REMOVE).toCommand(RemoveUserCMCommand);
-			commandMap.map(CommunicatorCommandEvent.ROSTER_INFO).toCommand(RosterInfoCommand);
-
-			commandMap.map(CommunicatorCommandEvent.PRIVATE_MESSAGE).toCommand(SendPrivateMessageCMCommand);
-			commandMap.map(CommunicatorCommandEvent.SEND_MESSAGE_STATE).toCommand(SendMessageStateCMCommand);
-			commandMap.map(CommunicatorCommandEvent.MARK_AS_RECEIVED).toCommand(MarkAsReadCMCommand);
 		}
 	}
 }
