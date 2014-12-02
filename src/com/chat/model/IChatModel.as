@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.activity.IActivities;
+	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
 
@@ -25,6 +26,7 @@ package com.chat.model {
 		function get serverTimeOffset():int;
 		function set serverTimeOffset(value:int):void;
 
+		function get conversations():IConversationsCommunicator;
 		function get communicators():ICommunicatorFactory;
 		function get presences():IPresences;
 		function get activities():IActivities;

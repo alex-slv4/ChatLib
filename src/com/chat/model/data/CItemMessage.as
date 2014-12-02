@@ -5,11 +5,11 @@ package com.chat.model.data {
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.data.Message;
 
-	public class СItemMessage extends BaseCItem {
+	public class CItemMessage extends BaseCItem {
 
 		private var _time:Number;
 
-		public function СItemMessage(data:Message, time:Number = NaN) {
+		public function CItemMessage(data:Message, time:Number = NaN) {
 			super(data);
 			_time = time;
 		}
@@ -33,7 +33,7 @@ package com.chat.model.data {
 				return data.from;
 		}
 
-		private function get messageData():Message {
+		public function get messageData():Message {
 			return data as Message;
 		}
 

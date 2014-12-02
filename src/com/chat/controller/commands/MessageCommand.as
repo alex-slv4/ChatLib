@@ -5,9 +5,10 @@ package com.chat.controller.commands {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.activity.IActivitiesHandler;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.IWritableCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -22,6 +23,9 @@ package com.chat.controller.commands {
 
 		[Inject]
 		public var activities:IActivitiesHandler;
+
+		[Inject]
+		public var conversations:IConversationsCommunicator;
 
 		override public function execute():void {
 
@@ -47,7 +51,7 @@ package com.chat.controller.commands {
 				return;
 			}
 
-			var itemMessage:СItemMessage = new СItemMessage(message);
+			var itemMessage:CItemMessage = new CItemMessage(message);
 			communicator.push(itemMessage);
 
 			if (model.isMe(message.from)) {
@@ -55,6 +59,7 @@ package com.chat.controller.commands {
 			} else {
 				communicator.unreadCount++;
 			}
+			conversations.push(itemMessage);
 			communicator.active = true;
 		}
 
@@ -69,7 +74,7 @@ package com.chat.controller.commands {
 
 		private function handleReceipt(message:Message, communicator:ICommunicator):void {
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
-				var receiptMessageItem:СItemMessage = model.receiptRequests[message.receiptId];
+				var receiptMessageItem:CItemMessage = model.receiptRequests[message.receiptId];
 				if (receiptMessageItem) {
 					delete model.receiptRequests[message.receiptId];
 					var message:Message = receiptMessageItem.data as Message;

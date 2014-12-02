@@ -3,7 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -19,7 +19,7 @@ package com.chat.controller.commands.cm.message {
 			message.body = params[0];
 			message.state = Message.STATE_ACTIVE;
 
-			var messageItem:СItemMessage = new СItemMessage(message);
+			var messageItem:CItemMessage = new CItemMessage(message);
 			directCommunicatorData.push(messageItem);
 
 			//save receipt

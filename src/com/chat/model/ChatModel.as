@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.activity.IActivities;
+	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
 
@@ -10,12 +11,10 @@ package com.chat.model {
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
-
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.id.IIDGenerator;
 	import org.igniterealtime.xiff.data.id.RandomGenerator;
-	import org.igniterealtime.xiff.data.id.UUIDGenerator;
 	import org.igniterealtime.xiff.im.IRoster;
 	import org.igniterealtime.xiff.util.JIDUtil;
 
@@ -27,6 +26,7 @@ package com.chat.model {
 		public var injector:IInjector;
 
 		private var _connection:IXMPPConnection;
+		private var _conversations:IConversationsCommunicator;
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
@@ -76,19 +76,18 @@ package com.chat.model {
 		public function set activities(value:IActivities):void {
 			_activities = value;
 		}
-
 		public function get communicators():ICommunicatorFactory {
-			return _communicators;
+			return _communicators ||= injector.instantiateUnmapped(IConversationsCommunicator);
 		}
 		public function get presences():IPresences {
 			return _presences;
 		}
-
 		public function get activities():IActivities {
 			return _activities;
 		}
-
-
+		public function get conversations():IConversationsCommunicator {
+			return _conversations;
+		}
 		public function get threadGenerator():IIDGenerator {
 			if(_threadGenerator == null) {
 				_threadGenerator = new RandomGenerator();

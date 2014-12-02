@@ -8,7 +8,7 @@ package com.chat.model.communicators {
 	import com.chat.model.history.HistoryProvider;
 	import com.chat.model.history.IHistoryProvider;
 	import com.chat.model.data.ICItem;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 

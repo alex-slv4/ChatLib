@@ -6,6 +6,7 @@ package com.chat.events {
 
 		public static const UNREAD_UPDATED:String = "onUnreadUpdated";
 		public static const ITEM_ADDED:String = "onItemAdded";
+		public static const ITEM_REMOVED:String = "onItemRemoved";
 		public static const ITEM_UPDATED:String = "onItemUpdated";
 		public static const CHANGED:String = "onChanged";
 

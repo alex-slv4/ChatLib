@@ -4,7 +4,7 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -36,7 +36,7 @@ package com.chat.controller.commands.cm.message {
 		public function get castedCommunicator():ICommunicator {
 			return communicator as ICommunicator;
 		}
-		private function get messageItem():СItemMessage {
+		private function get messageItem():CItemMessage {
 			return params[0];
 		}
 

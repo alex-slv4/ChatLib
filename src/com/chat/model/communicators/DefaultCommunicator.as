@@ -9,7 +9,7 @@ package com.chat.model.communicators {
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.ICItem;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -66,7 +66,7 @@ package com.chat.model.communicators {
 		}
 
 		public function read(data:ICItem):void {
-			var messageItem:СItemMessage = data as СItemMessage;
+			var messageItem:CItemMessage = data as CItemMessage;
 			if (messageItem) {
 				dispatch(CommunicatorCommandEvent.MARK_AS_RECEIVED, [messageItem]);
 			}

@@ -36,6 +36,8 @@ package com.chat.config {
 	import com.chat.model.activity.Activities;
 	import com.chat.model.activity.IActivities;
 	import com.chat.model.activity.IActivitiesHandler;
+	import com.chat.model.communicators.ConversationsCommunicator;
+	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.factory.CommunicatorFactory;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
@@ -72,10 +74,12 @@ package com.chat.config {
 			injector.map(IChatModel).toSingleton(ChatModel);
 			injector.map(IChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
+			injector.map(IConversationsCommunicator).toSingleton(ConversationsCommunicator);
 
 			var presences:Presences = new Presences();
 			injector.map(IPresences).toValue(presences);
 			injector.map(IPresencesHandler).toValue(presences);
+
 			var activity:Activities = new Activities();
 			injector.map(IActivities).toValue(activity);
 			injector.map(IActivitiesHandler).toValue(activity);

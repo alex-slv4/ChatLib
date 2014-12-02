@@ -4,7 +4,7 @@
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
 	import com.chat.model.data.ICItem;
-	import com.chat.model.data.СItemMessage;
+	import com.chat.model.data.CItemMessage;
 	import com.chat.utils.RSMStepper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -92,7 +92,7 @@ package com.chat.model.history {
 				message.from = tag.localName() == "from" ? _participant.escaped : _me.escaped;
 				var secsOffset:int = tag.@secs;
 				//var time:Number = startDate.time + secsOffset;
-				var itemMessage:СItemMessage = new СItemMessage(message, secsOffset);
+				var itemMessage:CItemMessage = new CItemMessage(message, secsOffset);
 				itemMessage.isRead = true;
 				items.push(itemMessage);
 			}
