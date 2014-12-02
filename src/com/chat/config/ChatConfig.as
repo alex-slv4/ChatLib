@@ -6,6 +6,7 @@ package com.chat.config {
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.IChatController;
+	import com.chat.controller.commands.LoadConversationsCommand;
 	import com.chat.controller.commands.LoginCommand;
 	import com.chat.controller.commands.PresenceCommand;
 	import com.chat.controller.commands.TimeSyncCommand;
@@ -87,6 +88,7 @@ package com.chat.config {
 		private function mapCommands():void {
 			//App commands
 			commandMap.map(ChatEvent.SYNC_TIME).toCommand(TimeSyncCommand);
+			commandMap.map(ChatEvent.LOAD_CONVERSATIONS).toCommand(LoadConversationsCommand);
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);

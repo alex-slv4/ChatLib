@@ -35,13 +35,18 @@ package com.chat.model.communicators {
 		}
 
 		override public function push(data:ICItem):void {
+
+			if(data is CItemConversation){
+				super.push(data);
+				return;
+			}
 			var itemMessage:CItemMessage = data as CItemMessage;
 			var from:EscapedJID = getParticipant(itemMessage.messageData);
 			var conversation:CItemConversation;
 			for (var i:int = 0; i < _items.length; i++) {
 				conversation = _items[i] as CItemConversation;
-				if(conversation.from.equals(from, false)){
-					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, itemMessage));
+				if(conversation.from.equals(from, true)){
+					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, conversation));
 					_items.splice(i, 1);
 					break;
 				}
@@ -56,7 +61,7 @@ package com.chat.model.communicators {
 			}
 			conversation.lastMessage = itemMessage;
 			_items.unshift(conversation);
-			var eventName:String = newly ? CommunicatorEvent.ITEM_ADDED : CommunicatorEvent.ITEM_UPDATED;
+			var eventName:String = newly ? CommunicatorEvent.ITEM_INSERTED : CommunicatorEvent.ITEM_UPDATED;
 			dispatchEvent(new CommunicatorEvent(eventName, conversation));
 			//updateUnreadCount();
 		}

@@ -30,7 +30,7 @@ package com.chat.utils {
 
 		public function getInitial():RSMSet {
 			var result:RSMSet = new RSMSet();
-			result.max = 1; //It has to be zero here, but openfire...
+			result.max = _stepSize; //It has to be zero here, but openfire...
 			result.before = "";
 			return result;
 		}
