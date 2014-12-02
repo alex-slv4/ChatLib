@@ -58,6 +58,7 @@ package com.chat.model.communicators {
 			_items.unshift(conversation);
 			var eventName:String = newly ? CommunicatorEvent.ITEM_ADDED : CommunicatorEvent.ITEM_UPDATED;
 			dispatchEvent(new CommunicatorEvent(eventName, conversation));
+			updateUnreadCount();
 		}
 
 		private function getParticipant(message:Message):EscapedJID {
@@ -65,7 +66,7 @@ package com.chat.model.communicators {
 		}
 
 		public function updateUnreadCount():void {
-			var count:int = 0;
+			var count:int = Math.round(Math.random() * 100);
 
 			this.unreadCount = count;
 		}

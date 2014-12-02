@@ -77,7 +77,7 @@ package com.chat.model {
 			_activities = value;
 		}
 		public function get communicators():ICommunicatorFactory {
-			return _communicators ||= injector.instantiateUnmapped(IConversationsCommunicator);
+			return _communicators;
 		}
 		public function get presences():IPresences {
 			return _presences;
@@ -86,7 +86,7 @@ package com.chat.model {
 			return _activities;
 		}
 		public function get conversations():IConversationsCommunicator {
-			return _conversations;
+			return _conversations ||= injector.getInstance(IConversationsCommunicator);;
 		}
 		public function get threadGenerator():IIDGenerator {
 			if(_threadGenerator == null) {
