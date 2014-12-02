@@ -3,11 +3,15 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
+	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.data.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class SendPrivateMessageCMCommand extends SendMessageBaseCommand {
+
+		[Inject]
+		public var conversations:IConversationsCommunicator;
 
 		override protected function executeIfNoErrors():void {
 
@@ -21,6 +25,8 @@ package com.chat.controller.commands.cm.message {
 
 			var messageItem:CItemMessage = new CItemMessage(message);
 			directCommunicatorData.push(messageItem);
+
+			conversations.push(messageItem);
 
 			//save receipt
 			message.receipt = Message.RECEIPT_REQUEST;
