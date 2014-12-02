@@ -57,6 +57,9 @@ package com.chat.controller.commands {
 			if (model.isMe(message.from)) {
 				//do nothing
 			} else {
+				if(communicator.unreadCount == 0){
+					conversations.unreadCount++;
+				}
 				communicator.unreadCount++;
 			}
 			conversations.push(itemMessage);
