@@ -7,6 +7,7 @@ package com.chat.model.communicators {
 	import com.chat.model.data.CItemConversation;
 	import com.chat.model.data.ICItem;
 	import com.chat.model.data.CItemMessage;
+	import com.chat.model.history.IHistoryProvider;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.core.EscapedJID;
@@ -67,6 +68,19 @@ package com.chat.model.communicators {
 			var count:int = 0;
 
 			this.unreadCount = count;
+		}
+
+
+		public function get history():IHistoryProvider {
+			return null;
+		}
+
+		public function get type():int {
+			return -1;
+		}
+
+		public function get name():String {
+			return null;
 		}
 
 		override public function destroy():void {
