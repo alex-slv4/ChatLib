@@ -14,6 +14,7 @@ package com.chat.model.history {
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.setmanagement.ISetLooper;
 	import org.igniterealtime.xiff.setmanagement.IndexedSetLooper;
+	import org.igniterealtime.xiff.util.DateTimeParser;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -102,6 +103,9 @@ package com.chat.model.history {
 				return;
 			}
 			var ns:Namespace = new Namespace(null, chat.getNS());
+			var results:Vector.<ICItem> = new <ICItem>[];
+			var date:Date = DateTimeParser.string2dateTime(_currentChat.start);
+			var startTime:Number = date.getTime();
 			for each (var tag:XML in chat.xml.children()) {
 
 				if(!(tag.localName() == "from" || tag.localName() == "to")) continue;
@@ -110,10 +114,13 @@ package com.chat.model.history {
 				message.body = tag.ns::body;
 				message.from = tag.localName() == "from" ? _participant.escaped : _me.escaped;
 				var secsOffset:int = tag.@secs;
-				var itemMessage:CItemMessage = new CItemMessage(message, secsOffset);
+				var time:Number = startTime + secsOffset * 1000;
+				var itemMessage:CItemMessage = new CItemMessage(message, time);
 				itemMessage.isRead = true;
-				_cachedItems.push(itemMessage);
+				results.push(itemMessage);
 			}
+
+			_cachedItems = results.concat(_cachedItems);
 
 			if(resultsIsReady()){
 				deliverResults();
@@ -145,8 +152,7 @@ package com.chat.model.history {
 		}
 
 		private function deliverResults():void {
-			var results:Vector.<ICItem> = _cachedItems.splice(0, _minRequiredCount);
-			results.reverse();
+			var results:Vector.<ICItem> = _cachedItems.splice(-_minRequiredCount, _minRequiredCount);
 			_callBack(results);
 			_callBack = null;
 		}
