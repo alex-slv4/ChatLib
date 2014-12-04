@@ -26,8 +26,8 @@ package com.chat.controller.commands {
 			model.currentUser.loadVCard(model.connection);
 			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
 			bus.dispatchEvent(new Event(ChatEvent.LOAD_CONVERSATIONS));
-			_browser = new Browser(model.connection);
-			_browser.getServiceInfo(null, onServerInfo);
+			//_browser = new Browser(model.connection);
+			//_browser.getServiceInfo(null, onServerInfo);
 		}
 		private function onServerInfo(iq:IQ):void {
 			var extension1:InfoDiscoExtension = iq.getExtension(DiscoExtension.ELEMENT_NAME) as InfoDiscoExtension;

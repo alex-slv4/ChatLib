@@ -3,13 +3,14 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
-	import com.chat.utils.RSMStepper;
+	import com.chat.utils.OFSetLooper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.List;
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
+	import org.igniterealtime.xiff.setmanagement.ISetLooper;
 
 	public class DirectListProvider {
 
@@ -19,7 +20,7 @@ package com.chat.model.history {
 		private var _participant:UnescapedJID;
 		private var _chatIndex:int;
 		private var _list:List;
-		private var _chatStepper:RSMStepper = new RSMStepper(20);
+		private var _chatStepper:ISetLooper = new OFSetLooper(20);
 		private var _end:Boolean;
 		private var _callBack:Function;
 
@@ -34,11 +35,7 @@ package com.chat.model.history {
 				_callBack(new <ChatStanza>[]);
 				return;
 			}
-			if(_chatStepper.current == null){
-				loadListSize();
-			}else{
-				loadNext();
-			}
+			loadNext();
 		}
 
 		private function loadNext():void {
@@ -56,10 +53,16 @@ package com.chat.model.history {
 		private function listCallback(iq:IQ):void {
 			_list = iq.getExtension(List.ELEMENT_NAME) as List;
 			var rsmSet:RSMSet = _list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
+
+			if(rsmSet.first == null){
+				loadNext();
+				return;
+			}
+
 			if(rsmSet.firstIndex == 0){
 				_end = true;
 			}else{
-				_chatStepper.current = rsmSet;
+				_chatStepper.pin(rsmSet);
 			}
 			_callBack(_list.chats);
 			_callBack = null;
@@ -69,33 +72,15 @@ package com.chat.model.history {
 			throw new Error("listErrorCallback");
 
 		}
-		private function loadListSize():void {
-
-			var rsmSet:RSMSet = _chatStepper.getInitial();
-			var listStanza:List = new List();
-			listStanza.withJID = _participant.escaped;
-			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
-			listIQ.callback = listSizeCallback;
-			listIQ.errorCallback = listSizeErrorCallback;
-			listIQ.addExtension(listStanza);
-			listStanza.addExtension(rsmSet);
-
-			controller.send(listIQ);
-		}
-
-		private function listSizeCallback(iq:IQ):void {
+		/*private function listSizeCallback(iq:IQ):void {
 			var list:List = iq.getExtension(List.ELEMENT_NAME) as List;
 			var rsmSet:RSMSet = list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
 			_chatIndex = rsmSet.count;
 			var initialSet:RSMSet = new RSMSet();
 			initialSet.firstIndex = _chatIndex;
-			_chatStepper.current = initialSet;
+			_chatStepper.pin(initialSet);
 			loadNext();
-		}
+		}*/
 
-		private function listSizeErrorCallback(iq:IQ):void {
-			throw new Error("listSizeErrorCallback");
-
-		}
 	}
 }

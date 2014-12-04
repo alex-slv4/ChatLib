@@ -3,9 +3,9 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
-	import com.chat.model.data.ICItem;
 	import com.chat.model.data.CItemMessage;
-	import com.chat.utils.RSMStepper;
+	import com.chat.model.data.ICItem;
+	import com.chat.utils.OFSetLooper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.IQ;
@@ -13,6 +13,7 @@ package com.chat.model.history {
 	import org.igniterealtime.xiff.data.archive.ChatStanza;
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
+	import org.igniterealtime.xiff.setmanagement.ISetLooper;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -27,7 +28,7 @@ package com.chat.model.history {
 		private var _me:UnescapedJID;
 		private var _participant:UnescapedJID;
 		private var _chats:Vector.<ChatStanza>;
-		private var _conversationStepper:RSMStepper = new RSMStepper(50);
+		private var _conversationStepper:ISetLooper = new OFSetLooper(50);
 		private var _currentChat:ChatStanza;
 		private var _currentConversationIndex:int;
 		private var _callBack:Function;
@@ -79,7 +80,7 @@ package com.chat.model.history {
 			if(rsmSet.firstIndex == 0){
 				_currentChat = null;
 			}else{
-				_conversationStepper.current = rsmSet;
+				_conversationStepper.pin(rsmSet);
 			}
 			var ns:Namespace = new Namespace(null, chat.getNS());
 			var items:Vector.<ICItem> = new <ICItem>[];
@@ -126,7 +127,7 @@ package com.chat.model.history {
 		}
 
 		private function loadConversationSize():void {
-			var rsm:RSMSet = _conversationStepper.getInitial();
+			var rsm:RSMSet = _conversationStepper.previous;
 			var retrieveStanza:Retrieve = new Retrieve();
 			retrieveStanza.addExtension(rsm);
 			retrieveStanza.start = _currentChat.start;
@@ -146,7 +147,7 @@ package com.chat.model.history {
 			_currentConversationIndex = rsmSet.count;
 			var initialSet:RSMSet = new RSMSet();
 			initialSet.firstIndex = _currentConversationIndex;
-			_conversationStepper.current = initialSet;
+			_conversationStepper.pin(initialSet);
 			loadNextConversations();
 		}
 
