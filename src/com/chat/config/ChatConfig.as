@@ -6,8 +6,10 @@ package com.chat.config {
 	import com.chat.IChat;
 	import com.chat.controller.ChatController;
 	import com.chat.controller.IChatController;
+	import com.chat.controller.commands.IncomingDataCommand;
 	import com.chat.controller.commands.LoadConversationsCommand;
 	import com.chat.controller.commands.LoginCommand;
+	import com.chat.controller.commands.OutgoingDataCommand;
 	import com.chat.controller.commands.PresenceCommand;
 	import com.chat.controller.commands.TimeSyncCommand;
 	import com.chat.controller.commands.cm.ClearCMCommand;
@@ -44,8 +46,11 @@ package com.chat.config {
 	import com.chat.model.presences.IPresences;
 	import com.chat.model.presences.IPresencesHandler;
 	import com.chat.model.presences.Presences;
+
+	import org.igniterealtime.xiff.events.IncomingDataEvent;
 	import org.igniterealtime.xiff.events.LoginEvent;
 	import org.igniterealtime.xiff.events.MessageEvent;
+	import org.igniterealtime.xiff.events.OutgoingDataEvent;
 	import org.igniterealtime.xiff.events.PresenceEvent;
 
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
@@ -92,6 +97,8 @@ package com.chat.config {
 			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
 			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
 			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
+			commandMap.map(IncomingDataEvent.INCOMING_DATA).toCommand(IncomingDataCommand);
+			commandMap.map(OutgoingDataEvent.OUTGOING_DATA).toCommand(OutgoingDataCommand);
 
 			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);

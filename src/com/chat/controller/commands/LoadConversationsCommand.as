@@ -31,7 +31,7 @@ package com.chat.controller.commands {
 		private var _chatStepper:ISetLooper = new OFSetLooper(4);
 
 		public function execute():void {
-			var previous:RSMSet = _chatStepper.previous;
+			var previous:RSMSet = _chatStepper.getPrevious();
 			if(previous){
 				var listStanza:List = new List();
 				var listIQ:IQ = new IQ(null, IQ.TYPE_GET);

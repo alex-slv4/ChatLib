@@ -11,11 +11,11 @@ package com.chat.utils {
 			this.bufferSize = bufferSize;
 		}
 
-		override public function get previous():RSMSet {
+		override public function getPrevious():RSMSet {
 			if(current == null) {
 				return getBottomEdge();
 			}
-			return super.previous;
+			return super.getPrevious();
 		}
 
 		private function getBottomEdge():RSMSet {

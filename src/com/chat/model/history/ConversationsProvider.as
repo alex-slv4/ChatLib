@@ -33,6 +33,13 @@ package com.chat.model.history {
 		private var _currentChat:ChatStanza;
 		private var _callBack:Function;
 
+		private var _cachedItems:Vector.<ICItem> = new <ICItem>[];
+
+		/**
+		 * please remove it when openfire will handle RSM like it should!
+		 */
+		private var _uglyOpenfireTrigger:Boolean;
+
 		public function ConversationsProvider(participant:UnescapedJID, me:UnescapedJID) {
 			_me = me;
 			_conversationStepper.bufferSize = 1;
@@ -44,6 +51,7 @@ package com.chat.model.history {
 			if(_callBack != null) return;
 
 			_callBack = callBack;
+			_cachedItems = new <ICItem>[];
 
 			if(_listProvider == null){
 				_listProvider = new DirectListProvider(_participant);
@@ -61,7 +69,7 @@ package com.chat.model.history {
 		private function loadNextConversations():void {
 
 			var retrieveStanza:Retrieve = new Retrieve();
-			var rsmSet:RSMSet = _conversationStepper.previous;
+			var rsmSet:RSMSet = _conversationStepper.getPrevious();
 			if(rsmSet){
 				retrieveStanza.addExtension(rsmSet);
 				retrieveStanza.withJID = _participant.escaped;
@@ -83,15 +91,14 @@ package com.chat.model.history {
 			var chat:ChatStanza = iq.getExtension(ChatStanza.ELEMENT_NAME) as ChatStanza;
 			var rsmSet:RSMSet = chat.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
 
-			trace("come", rsmSet.count);
-			_conversationStepper.pin(rsmSet);
-			if(rsmSet.first == null){
+			if(_uglyOpenfireTrigger) {
+				_uglyOpenfireTrigger = false;
+				rsmSet.first = null;
+				_conversationStepper.pin(rsmSet);
 				loadNextConversations();
 				return;
 			}
-
 			var ns:Namespace = new Namespace(null, chat.getNS());
-			var items:Vector.<ICItem> = new <ICItem>[];
 			for each (var tag:XML in chat.xml.children()) {
 
 				if(!(tag.localName() == "from" || tag.localName() == "to")) continue;
@@ -103,10 +110,12 @@ package com.chat.model.history {
 				//var time:Number = startDate.time + secsOffset;
 				var itemMessage:CItemMessage = new CItemMessage(message, secsOffset);
 				itemMessage.isRead = true;
-				items.push(itemMessage);
+				_cachedItems.push(itemMessage);
 			}
-			_callBack(items);
-			_callBack = null;
+
+
+			_conversationStepper.pin(rsmSet);
+			loadNextConversations();
 		}
 
 		private function conversationErrorCallback(iq:IQ):void {
@@ -118,13 +127,19 @@ package com.chat.model.history {
 
 		private function onListLoaded(chats:Vector.<ChatStanza>):void {
 			_chats = chats;
-			loadLastChat();
+			if(_chats.length == 0){
+				_callBack(_cachedItems);
+				_callBack = null;
+			}else{
+				loadLastChat();
+			}
 		}
 
 		private function loadLastChat():void {
 			_conversationStepper.reset();
+
 			if(_chats.length>0){
-				trace("loadLastChat");
+				_uglyOpenfireTrigger = true;
 				_currentChat = _chats.pop();
 				loadNextConversations()
 			}else{

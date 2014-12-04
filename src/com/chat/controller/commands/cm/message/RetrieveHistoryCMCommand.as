@@ -23,7 +23,9 @@ package com.chat.controller.commands.cm.message {
 			for (var i:int = 0; i < items.length; i++) {
 				directCommunicator.push(items[i]);
 			}
-			setTimeout(directCommunicator.history.fetchNext, 10, arguments.callee);
+			if(items.length > 0){
+				setTimeout(directCommunicator.history.fetchNext, 10, arguments.callee);
+			}
 		}
 
 		private function get directCommunicator():DirectCommunicator {

@@ -38,7 +38,7 @@ package com.chat.model.history {
 		}
 
 		private function loadNext():void {
-			var previous:RSMSet = _chatStepper.previous;
+			var previous:RSMSet = _chatStepper.getPrevious();
 			if(previous){
 				var listStanza:List = new List();
 				listStanza.withJID = _participant.escaped;
