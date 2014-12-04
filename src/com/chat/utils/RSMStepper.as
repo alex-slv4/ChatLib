@@ -18,7 +18,7 @@ package com.chat.utils {
 		}
 
 		public function get current():RSMSet {
-			return _current;
+			return _current == null ? getInitial() : _current;
 		}
 
 		public function get next():RSMSet {
@@ -38,6 +38,9 @@ package com.chat.utils {
 			var result:RSMSet = new RSMSet();
 			if(_current) {
 				result.index = Math.min(_current.firstIndex+1, _current.count);
+				result.after = _current.last;
+			}else{
+				result.after = "";
 			}
 			result.max = count;
 			return result;
@@ -46,6 +49,9 @@ package com.chat.utils {
 			var result:RSMSet = new RSMSet();
 			if(_current) {
 				result.index = Math.max(_current.firstIndex-count, 0);
+				result.before = _current.first;
+			}else{
+				result.before = "";
 			}
 			result.max = count;
 			return result;

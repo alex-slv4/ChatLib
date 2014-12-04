@@ -37,7 +37,7 @@ package com.chat.model.communicators {
 		override public function push(data:ICItem):void {
 
 			if(data is CItemConversation){
-				super.push(data);
+				updateArrayWithConversation(data as CItemConversation);
 				return;
 			}
 			var itemMessage:CItemMessage = data as CItemMessage;
@@ -66,6 +66,22 @@ package com.chat.model.communicators {
 			//updateUnreadCount();
 		}
 
+		private function updateArrayWithConversation(conversation:CItemConversation):void {
+			var itemUpdated:Boolean = false;
+			for(var i:int = 0; i < _items.length; i++) {
+				var item:CItemConversation = _items[i] as CItemConversation;
+				if(item == null) continue;
+				if(item.from.equals(conversation.from, true)) {
+					itemUpdated = true;
+					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, item));
+					_items.splice(i, 1);
+					break;
+				}
+			}
+			_items.unshift(conversation);
+			var eventName:String = itemUpdated ? CommunicatorEvent.ITEM_UPDATED : CommunicatorEvent.ITEM_INSERTED;
+			dispatchEvent(new CommunicatorEvent(eventName, conversation));
+		}
 		private function getParticipant(message:Message):EscapedJID {
 			return model.isMe(message.from) ? message.to : message.from;
 		}

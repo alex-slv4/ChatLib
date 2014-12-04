@@ -30,7 +30,7 @@ package com.chat.controller.commands {
 		[Inject]
 		public var conversations:IConversationsCommunicator;
 
-		private var _chatStepper:RSMStepper = new RSMStepper(20);
+		private var _chatStepper:RSMStepper = new RSMStepper(3);
 
 		public function execute():void {
 			var listStanza:List = new List();
@@ -38,7 +38,7 @@ package com.chat.controller.commands {
 			listIQ.callback = listCallback;
 			listIQ.errorCallback = listErrorCallback;
 			listIQ.addExtension(listStanza);
-			listStanza.addExtension(_chatStepper.getInitial());
+			listStanza.addExtension(_chatStepper.next);
 
 			controller.send(listIQ);
 		}
@@ -46,47 +46,16 @@ package com.chat.controller.commands {
 		private function listCallback(iq:IQ):void {
 			var _list:List = iq.getExtension(List.ELEMENT_NAME) as List;
 			var rsmSet:RSMSet = _list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
-			if(rsmSet.firstIndex == 0){
-				//_end = true;
-			}else{
+			if(rsmSet.count != int(rsmSet.last)){
 				_chatStepper.current = rsmSet;
+				execute();
 			}
-			var filtered:Vector.<ChatStanza> = _list.chats.filter(chatStanzaComparator);
-			for (var i:int = 0; i < filtered.length; i++) {
-				var chat:ChatStanza = filtered[i];
-				var conversation:CItemConversation = new CItemConversation(chat.withJID);
+			for (var i:int = 0; i < _list.chats.length; i++) {
+				var chat:ChatStanza = _list.chats[i];
+				var date:Date = DateTimeParser.string2dateTime(chat.start);
+				var conversation:CItemConversation = new CItemConversation(chat.withJID, date.getTime());
 				conversations.push(conversation);
 			}
-		}
-
-		/*private function printChat(element:ChatStanza, index:int, array:Vector.<ChatStanza>):void {
-			var date1:Date = DateTimeParser.string2dateTime(element.start);
-			var df:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.MEDIUM);
-			trace(element.withJID.bareJID + " " + df.format(date1));//.date + "/" + date1.month + " " + date1.hours + ":" + date1.minutes);
-		}*/
-		private function chatStanzaComparator(element:ChatStanza, index:int, array:Vector.<ChatStanza>):Boolean {
-			var newestItem:ChatStanza;
-			for each (var item:ChatStanza in array) {
-				if(item.withJID.equals(element.withJID, true)) {
-					//check dates
-					var date1:Date = DateTimeParser.string2dateTime(item.start);
-					var date2:Date = DateTimeParser.string2dateTime(element.start);
-					if(dateComparator(date1, date2) > 0){
-						newestItem = item;
-					}
-				}
-			}
-			if(newestItem){
-				return element == newestItem;
-			}
-			return true;
-		}
-
-		private function dateComparator(date1:Date, date2:Date):int {
-			var date1Milliseconds:Number = date1.getTime();
-			var date2Milliseconds:Number = date2.getTime();
-			var diff:int = Math.round(date1Milliseconds - date2Milliseconds);
-			return diff / Math.abs(diff);
 		}
 		private function listErrorCallback(iq:IQ):void {
 			throw new Error("listErrorCallback");

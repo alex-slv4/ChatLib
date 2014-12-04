@@ -8,10 +8,12 @@ package com.chat.model.data {
 
 		private var _lastMessage:CItemMessage;
 		private var _withJID:AbstractJID;
+		private var _startTime:Number;
 
-		public function CItemConversation(withJID:AbstractJID) {
+		public function CItemConversation(withJID:AbstractJID, startTime:Number = NaN) {
 			super(null);
 			_withJID = withJID;
+			_startTime = startTime;
 		}
 
 		override public function get from():Object {
@@ -23,6 +25,10 @@ package com.chat.model.data {
 		}
 		public function set lastMessage(value:CItemMessage):void {
 			_lastMessage = value;
+		}
+
+		override public function get time():Number {
+			return _lastMessage ? _lastMessage.time : _startTime;
 		}
 	}
 }
