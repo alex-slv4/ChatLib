@@ -16,15 +16,14 @@ package com.chat.controller.commands.cm.message {
 		public var injector:IInjector;
 
 		override protected function executeIfNoErrors():void {
-			directCommunicator.history.fetchNext(onHistoryLoaded);
+			var count:int = params[0];
+			;
+			directCommunicator.history.fetchNext(count, onHistoryLoaded);
 		}
 
 		private function onHistoryLoaded(items:Vector.<ICItem>):void {
 			for (var i:int = 0; i < items.length; i++) {
 				directCommunicator.push(items[i]);
-			}
-			if(items.length > 0){
-				setTimeout(directCommunicator.history.fetchNext, 10, arguments.callee);
 			}
 		}
 
