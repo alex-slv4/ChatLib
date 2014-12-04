@@ -18,7 +18,6 @@ package com.chat.model.history {
 		public var controller:IChatController;
 
 		private var _participant:UnescapedJID;
-		private var _chatIndex:int;
 		private var _list:List;
 		private var _chatStepper:ISetLooper = new OFSetLooper(20);
 		private var _end:Boolean;
@@ -39,21 +38,23 @@ package com.chat.model.history {
 		}
 
 		private function loadNext():void {
-			var listStanza:List = new List();
-			listStanza.withJID = _participant.escaped;
-			var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
-			listIQ.callback = listCallback;
-			listIQ.errorCallback = listErrorCallback;
-			listIQ.addExtension(listStanza);
-			listStanza.addExtension(_chatStepper.previous);
-
-			controller.send(listIQ);
+			var previous:RSMSet = _chatStepper.previous;
+			if(previous){
+				var listStanza:List = new List();
+				listStanza.withJID = _participant.escaped;
+				var listIQ:IQ = new IQ(null, IQ.TYPE_GET);
+				listIQ.callback = listCallback;
+				listIQ.errorCallback = listErrorCallback;
+				listIQ.addExtension(listStanza);
+				listStanza.addExtension(previous);
+				controller.send(listIQ);
+			}
 		}
 
 		private function listCallback(iq:IQ):void {
 			_list = iq.getExtension(List.ELEMENT_NAME) as List;
 			var rsmSet:RSMSet = _list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
-
+			_chatStepper.pin(rsmSet);
 			if(rsmSet.first == null){
 				loadNext();
 				return;
@@ -61,9 +62,8 @@ package com.chat.model.history {
 
 			if(rsmSet.firstIndex == 0){
 				_end = true;
-			}else{
-				_chatStepper.pin(rsmSet);
 			}
+
 			_callBack(_list.chats);
 			_callBack = null;
 		}

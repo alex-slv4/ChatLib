@@ -5,7 +5,6 @@ package com.chat.model.history {
 	import com.chat.controller.IChatController;
 	import com.chat.model.data.CItemMessage;
 	import com.chat.model.data.ICItem;
-	import com.chat.utils.OFSetLooper;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.IQ;
@@ -14,6 +13,8 @@ package com.chat.model.history {
 	import org.igniterealtime.xiff.data.archive.Retrieve;
 	import org.igniterealtime.xiff.data.rsm.RSMSet;
 	import org.igniterealtime.xiff.setmanagement.ISetLooper;
+	import org.igniterealtime.xiff.setmanagement.IndexedSetLooper;
+	import org.igniterealtime.xiff.setmanagement.SetLooper;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -28,13 +29,13 @@ package com.chat.model.history {
 		private var _me:UnescapedJID;
 		private var _participant:UnescapedJID;
 		private var _chats:Vector.<ChatStanza>;
-		private var _conversationStepper:ISetLooper = new OFSetLooper(50);
+		private var _conversationStepper:ISetLooper = new IndexedSetLooper();
 		private var _currentChat:ChatStanza;
-		private var _currentConversationIndex:int;
 		private var _callBack:Function;
 
 		public function ConversationsProvider(participant:UnescapedJID, me:UnescapedJID) {
 			_me = me;
+			_conversationStepper.bufferSize = 1;
 			_participant = new UnescapedJID(participant.bareJID);
 		}
 
@@ -60,28 +61,35 @@ package com.chat.model.history {
 		private function loadNextConversations():void {
 
 			var retrieveStanza:Retrieve = new Retrieve();
-			var previous:RSMSet = _conversationStepper.previous;
-			retrieveStanza.addExtension(previous);
-			retrieveStanza.withJID = _participant.escaped;
-			retrieveStanza.start = _currentChat.start;
+			var rsmSet:RSMSet = _conversationStepper.previous;
+			if(rsmSet){
+				retrieveStanza.addExtension(rsmSet);
+				retrieveStanza.withJID = _participant.escaped;
+				retrieveStanza.start = _currentChat.start;
 
-			var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);
-			retrieveIQ.callback = conversationCallback;
-			retrieveIQ.errorCallback = conversationErrorCallback;
-			retrieveIQ.addExtension(retrieveStanza);
-
-			controller.send(retrieveIQ);
+				var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);
+				retrieveIQ.callback = conversationCallback;
+				retrieveIQ.errorCallback = conversationErrorCallback;
+				retrieveIQ.addExtension(retrieveStanza);
+				//trace("send");
+				trace("send", rsmSet.index);
+				controller.send(retrieveIQ);
+			}else{
+				loadLastChat();
+			}
 		}
 
 		private function conversationCallback(iq:IQ):void {
 			var chat:ChatStanza = iq.getExtension(ChatStanza.ELEMENT_NAME) as ChatStanza;
 			var rsmSet:RSMSet = chat.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
 
-			if(rsmSet.firstIndex == 0){
-				_currentChat = null;
-			}else{
-				_conversationStepper.pin(rsmSet);
+			trace("come", rsmSet.count);
+			_conversationStepper.pin(rsmSet);
+			if(rsmSet.first == null){
+				loadNextConversations();
+				return;
 			}
+
 			var ns:Namespace = new Namespace(null, chat.getNS());
 			var items:Vector.<ICItem> = new <ICItem>[];
 			for each (var tag:XML in chat.xml.children()) {
@@ -102,7 +110,7 @@ package com.chat.model.history {
 		}
 
 		private function conversationErrorCallback(iq:IQ):void {
-
+			throw iq.xml;
 		}
 		private function loadNextList():void {
 			_listProvider.getNext(onListLoaded);
@@ -110,50 +118,19 @@ package com.chat.model.history {
 
 		private function onListLoaded(chats:Vector.<ChatStanza>):void {
 			_chats = chats;
-			if(_chats.length>0){
-				loadLastChat();
-			}else{
-				_chats;
-			}
+			loadLastChat();
 		}
 
 		private function loadLastChat():void {
+			_conversationStepper.reset();
 			if(_chats.length>0){
+				trace("loadLastChat");
 				_currentChat = _chats.pop();
-				loadConversationSize();
+				loadNextConversations()
 			}else{
 				loadNextList();
 			}
 		}
 
-		private function loadConversationSize():void {
-			var rsm:RSMSet = _conversationStepper.previous;
-			var retrieveStanza:Retrieve = new Retrieve();
-			retrieveStanza.addExtension(rsm);
-			retrieveStanza.start = _currentChat.start;
-			retrieveStanza.withJID = _participant.escaped;
-
-			var retrieveIQ:IQ = new IQ(null, IQ.TYPE_GET);
-			retrieveIQ.callback = conversationSizeCallback;
-			retrieveIQ.errorCallback = conversationSizeErrorCallback;
-			retrieveIQ.addExtension(retrieveStanza);
-
-			controller.send(retrieveIQ);
-		}
-
-		public function conversationSizeCallback(iq:IQ):void {
-			var conversation:ChatStanza = iq.getExtension(ChatStanza.ELEMENT_NAME) as ChatStanza;
-			var rsmSet:RSMSet = conversation.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
-			_currentConversationIndex = rsmSet.count;
-			var initialSet:RSMSet = new RSMSet();
-			initialSet.firstIndex = _currentConversationIndex;
-			_conversationStepper.pin(initialSet);
-			loadNextConversations();
-		}
-
-
-		public function conversationSizeErrorCallback(iq:IQ):void {
-			throw new Error("conversationSizeErrorCallback");
-		}
 	}
 }

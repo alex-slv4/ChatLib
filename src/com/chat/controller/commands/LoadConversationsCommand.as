@@ -31,7 +31,6 @@ package com.chat.controller.commands {
 		private var _chatStepper:ISetLooper = new OFSetLooper(4);
 
 		public function execute():void {
-
 			var previous:RSMSet = _chatStepper.previous;
 			if(previous){
 				var listStanza:List = new List();
@@ -43,7 +42,6 @@ package com.chat.controller.commands {
 
 				controller.send(listIQ);
 			}
-			trace(new Error().getStackTrace());
 		}
 
 		private function listCallback(iq:IQ):void {

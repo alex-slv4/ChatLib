@@ -270,12 +270,10 @@ package com.chat.controller {
 		}
 
 		protected function onOutgoingData(event:OutgoingDataEvent):void {
-			trace("sent\n", event.data)
 			dispatch(event);
 		}
 
 		protected function onIncomingData(event:IncomingDataEvent):void {
-			trace("come\n", event.data)
 			dispatch(event);
 		}
 
