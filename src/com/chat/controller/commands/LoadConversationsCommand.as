@@ -51,7 +51,7 @@ package com.chat.controller.commands {
 				var chat:ChatStanza = _list.chats[i];
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var conversation:CItemConversation = new CItemConversation(chat.withJID, date.getTime());
-				conversations.push(conversation);
+				conversations.items.append(conversation);
 			}
 
 			_chatStepper.pin(rsmSet);

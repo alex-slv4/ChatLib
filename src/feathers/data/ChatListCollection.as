@@ -5,7 +5,16 @@ package feathers.data {
 	import com.chat.model.data.collections.CItemCollectionDescriptor;
 	import com.chat.model.data.collections.ICItemCollection;
 
+	import feathers.events.CollectionEventType;
+
+	import starling.events.Event;
+
 	public class ChatListCollection extends ListCollection {
+
+
+		public function ChatListCollection(data:ICItemCollection) {
+			super(data);
+		}
 
 		override public function set data(value:Object):void
 		{
@@ -23,11 +32,23 @@ package feathers.data {
 		}
 
 		private function addCollectionListeners():void {
-			//TODO:
+			_data.addEventListener(Event.CHANGE, dispatchEvent);
+			_data.addEventListener(CollectionEventType.ADD_ITEM, dispatchEvent);
+			_data.addEventListener(CollectionEventType.RESET, dispatchEvent);
+			_data.addEventListener(CollectionEventType.REMOVE_ITEM, dispatchEvent);
+			_data.addEventListener(CollectionEventType.REPLACE_ITEM, dispatchEvent);
+			_data.addEventListener(CollectionEventType.UPDATE_ITEM, dispatchEvent);
 		}
 
 		private function removeCollectionListeners():void {
-			//TODO:
+			if(_data){
+				_data.removeEventListener(Event.CHANGE, dispatchEvent);
+				_data.removeEventListener(CollectionEventType.ADD_ITEM, dispatchEvent);
+				_data.removeEventListener(CollectionEventType.RESET, dispatchEvent);
+				_data.removeEventListener(CollectionEventType.REMOVE_ITEM, dispatchEvent);
+				_data.removeEventListener(CollectionEventType.REPLACE_ITEM, dispatchEvent);
+				_data.removeEventListener(CollectionEventType.UPDATE_ITEM, dispatchEvent);
+			}
 		}
 
 		override public function addItemAt(item:Object, index:int):void

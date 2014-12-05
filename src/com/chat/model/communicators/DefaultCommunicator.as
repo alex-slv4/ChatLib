@@ -10,6 +10,8 @@ package com.chat.model.communicators {
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.citems.ICItem;
 	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.collections.CItemCollection;
+	import com.chat.model.data.collections.ICItemCollection;
 
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -31,7 +33,7 @@ package com.chat.model.communicators {
 
 		private var _uid:String;
 		private var _count:int = 0;
-		protected var _items:Vector.<ICItem> = new <ICItem>[];
+		protected var _items:ICItemCollection = new CItemCollection();
 		private var _active:Boolean;
 
 		public function DefaultCommunicator() {
@@ -46,23 +48,17 @@ package com.chat.model.communicators {
 			return _count;
 		}
 
-		public function get items():Vector.<ICItem> {
+		public function get items():ICItemCollection {
 			return _items;
 		}
 
 		public function clear():void {
-			_items = new <ICItem>[];
+			_items.removeAll();
 			_count = 0;
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.CHANGED, this));
 		}
 
 		override public function toString():String {
 			return super.toString();
-		}
-
-		public function push(data:ICItem):void {
-			_items.push(data);
-			dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_ADDED, data));
 		}
 
 		public function read(data:ICItem):void {

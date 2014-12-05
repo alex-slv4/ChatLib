@@ -13,19 +13,21 @@ package com.chat.model.data.collections {
 		public function getLength(data:Object):int
 		{
 			this.checkForCorrectDataType(data);
-			return (data as Array).length;
+			return (data as ICItemCollection).length;
 		}
 
 		public function getItemAt(data:Object, index:int):Object
 		{
 			this.checkForCorrectDataType(data);
-			return (data as ICItemCollection)[index];
+			return (data as ICItemCollection).getItemAt(index);
 		}
 
 		public function setItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
-			(data as ICItemCollection)[index] = item;
+			checkForCorrectItemType(item);
+			var icItem:ICItem = item as ICItem;
+			(data as ICItemCollection).setItemAt(icItem, index);
 		}
 
 		public function addItemAt(data:Object, item:Object, index:int):void

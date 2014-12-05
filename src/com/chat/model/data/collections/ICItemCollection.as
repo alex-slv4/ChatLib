@@ -17,7 +17,8 @@ package com.chat.model.data.collections {
 		function prepend(item:ICItem):void;
 		function remove(index:int):ICItem;
 		function indexOf(item:ICItem):int;
-		function touch(index:int):void;
+		function touch(indexOrItem:*):void;
+		function getItemAt(index:int):ICItem;
 		function setItemAt(item:ICItem, index:int):void;
 		function removeAll():void;
 		function get length():int;

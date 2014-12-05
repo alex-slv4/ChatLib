@@ -79,7 +79,7 @@ package com.chat.controller.commands.cm {
 
 		public function write(type:int, ...args):void {
 			var prefix:String = type == 1 ? "error" : "";
-			communicator.push(new CItemString(prefix + " " + args.join(" ")));
+			communicator.items.append(new CItemString(prefix + " " + args.join(" ")));
 		}
 
 		public function get communicator():ICommunicatorBase {

@@ -120,7 +120,7 @@ package com.chat.model.history {
 				results.push(itemMessage);
 			}
 
-			_cachedItems = results.concat(_cachedItems);
+			_cachedItems = _cachedItems.concat(results);
 
 			if(resultsIsReady()){
 				deliverResults();

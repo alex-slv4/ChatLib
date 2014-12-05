@@ -24,9 +24,9 @@ package com.chat.controller.commands.cm.message {
 			message.state = Message.STATE_ACTIVE;
 
 			var messageItem:CItemMessage = new CItemMessage(message);
-			directCommunicatorData.push(messageItem);
+			directCommunicatorData.items.append(messageItem);
 
-			conversations.push(messageItem);
+			conversations.items.append(messageItem);
 
 			//save receipt
 			message.receipt = Message.RECEIPT_REQUEST;

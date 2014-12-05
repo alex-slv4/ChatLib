@@ -34,7 +34,7 @@ package com.chat.model.communicators {
 			}
 		}
 
-		override public function push(data:ICItem):void {
+		public function push(data:ICItem):void {
 
 			if(data is CItemConversation){
 				updateArrayWithConversation(data as CItemConversation);
@@ -47,7 +47,7 @@ package com.chat.model.communicators {
 				conversation = _items[i] as CItemConversation;
 				if(conversation.from.equals(from, true)){
 					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, conversation));
-					_items.splice(i, 1);
+					_items.remove(i);
 					break;
 				}
 
@@ -60,7 +60,7 @@ package com.chat.model.communicators {
 				newly = true;
 			}
 			conversation.lastMessage = itemMessage;
-			_items.unshift(conversation);
+			_items.prepend(conversation);
 			var eventName:String = newly ? CommunicatorEvent.ITEM_INSERTED : CommunicatorEvent.ITEM_UPDATED;
 			dispatchEvent(new CommunicatorEvent(eventName, conversation));
 			//updateUnreadCount();
@@ -74,11 +74,11 @@ package com.chat.model.communicators {
 				if(item.from.equals(conversation.from, true)) {
 					itemUpdated = true;
 					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, item));
-					_items.splice(i, 1);
+					_items.remove(i);
 					break;
 				}
 			}
-			_items.unshift(conversation);
+			_items.prepend(conversation);
 			var eventName:String = itemUpdated ? CommunicatorEvent.ITEM_UPDATED : CommunicatorEvent.ITEM_INSERTED;
 			dispatchEvent(new CommunicatorEvent(eventName, conversation));
 		}

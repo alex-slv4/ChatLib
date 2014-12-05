@@ -3,6 +3,7 @@
  */
 package com.chat.model.communicators {
 	import com.chat.model.data.citems.ICItem;
+	import com.chat.model.data.collections.ICItemCollection;
 
 	import flash.events.IEventDispatcher;
 
@@ -15,11 +16,9 @@ package com.chat.model.communicators {
 
 	public interface ICommunicatorBase extends IEventDispatcher {
 
-		function get items():Vector.<ICItem>;
+		function get items():ICItemCollection;
 
 		function read(data:ICItem):void;
-
-		function push(data:ICItem):void;
 
 		function clear():void;
 

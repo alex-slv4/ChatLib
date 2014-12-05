@@ -27,6 +27,9 @@ package com.chat.model.data.collections {
 			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 		}
 
+		public function getItemAt(index:int):ICItem {
+			return _rawData[index];
+		}
 
 		public function setItemAt(item:ICItem, index:int):void {
 			_rawData[index] = item;
@@ -55,8 +58,15 @@ package com.chat.model.data.collections {
 			this.dispatchEventWith(CollectionEventType.RESET, false);
 		}
 
-		public function touch(index:int):void {
-			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
+		public function touch(indexOrItem:*):void {
+			if(indexOrItem is int){
+				this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, indexOrItem);
+			}else if(indexOrItem is ICItem){
+				var index:int = indexOf(indexOrItem);
+				if(index != -1){
+					this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
+				}
+			}
 		}
 
 		private function changed():void {

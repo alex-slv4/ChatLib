@@ -17,13 +17,12 @@ package com.chat.controller.commands.cm.message {
 
 		override protected function executeIfNoErrors():void {
 			var count:int = params[0];
-			;
 			directCommunicator.history.fetchNext(count, onHistoryLoaded);
 		}
 
 		private function onHistoryLoaded(items:Vector.<ICItem>):void {
 			for (var i:int = 0; i < items.length; i++) {
-				directCommunicator.push(items[i]);
+				directCommunicator.items.prepend(items[i]);
 			}
 		}
 

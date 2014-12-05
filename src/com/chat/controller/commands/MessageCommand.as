@@ -52,7 +52,7 @@ package com.chat.controller.commands {
 			}
 
 			var itemMessage:CItemMessage = new CItemMessage(message);
-			communicator.push(itemMessage);
+			communicator.items.append(itemMessage);
 
 			if (model.isMe(message.from)) {
 				//do nothing
@@ -62,7 +62,7 @@ package com.chat.controller.commands {
 				}
 				communicator.unreadCount++;
 			}
-			conversations.push(itemMessage);
+			conversations.items.append(itemMessage);
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {
@@ -82,7 +82,7 @@ package com.chat.controller.commands {
 					var message:Message = receiptMessageItem.data as Message;
 					receiptMessageItem.isRead = true;
 					message.receipt = null;
-					communicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_UPDATED, receiptMessageItem));
+					communicator.items.touch(receiptMessageItem);
 				}
 			}
 		}
