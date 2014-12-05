@@ -8,7 +8,7 @@ package com.chat.controller.commands {
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.IWritableCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.CItemMessage;
+	import com.chat.model.data.citems.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;

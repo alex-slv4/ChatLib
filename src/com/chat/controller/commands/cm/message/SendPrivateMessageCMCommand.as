@@ -4,7 +4,7 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.CItemMessage;
+	import com.chat.model.data.citems.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 

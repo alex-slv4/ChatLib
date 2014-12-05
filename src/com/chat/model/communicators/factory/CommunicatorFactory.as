@@ -6,8 +6,8 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.ChatRoom;
 import com.chat.model.ChatUser;
 import com.chat.model.communicators.*;
-import com.chat.model.data.CItemConversation;
-import com.chat.model.data.ICItem;
+import com.chat.model.data.citems.CItemConversation;
+import com.chat.model.data.citems.ICItem;
 
 import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;

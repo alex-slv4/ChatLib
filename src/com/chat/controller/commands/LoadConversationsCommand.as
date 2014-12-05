@@ -5,7 +5,7 @@ package com.chat.controller.commands {
 	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.CItemConversation;
+	import com.chat.model.data.citems.CItemConversation;
 	import com.chat.utils.OFSetLooper;
 
 	import org.igniterealtime.xiff.data.IQ;

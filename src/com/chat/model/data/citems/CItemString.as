@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 13.11.14.
  */
-package com.chat.model.data {
+package com.chat.model.data.citems {
 	public class CItemString extends BaseCItem {
 
 		public function CItemString(data:String) {

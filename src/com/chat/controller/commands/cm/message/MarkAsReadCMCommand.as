@@ -5,7 +5,7 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.CItemMessage;
+	import com.chat.model.data.citems.CItemMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 

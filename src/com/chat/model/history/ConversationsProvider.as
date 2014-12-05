@@ -3,8 +3,8 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
-	import com.chat.model.data.CItemMessage;
-	import com.chat.model.data.ICItem;
+	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.ICItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.IQ;

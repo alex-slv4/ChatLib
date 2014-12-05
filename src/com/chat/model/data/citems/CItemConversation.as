@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 02.12.14.
  */
-package com.chat.model.data {
+package com.chat.model.data.citems {
+	import com.chat.model.data.*;
 	import org.igniterealtime.xiff.core.AbstractJID;
 
 	public class CItemConversation extends BaseCItem {

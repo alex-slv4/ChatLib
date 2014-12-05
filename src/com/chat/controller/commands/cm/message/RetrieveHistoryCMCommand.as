@@ -4,7 +4,7 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.ICItem;
+	import com.chat.model.data.citems.ICItem;
 
 	import flash.utils.setTimeout;
 

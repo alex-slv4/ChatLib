@@ -1,7 +1,8 @@
 /**
  * Created by kvint on 16.11.14.
  */
-package com.chat.model.data {
+package com.chat.model.data.citems {
+	import com.chat.model.data.*;
 	public class BaseCItem implements ICItem {
 
 		private var _isRead:Boolean = false;

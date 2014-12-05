@@ -4,7 +4,7 @@
 package com.chat.model.communicators {
 	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.history.IHistoryProvider;
-	import com.chat.model.data.ICItem;
+	import com.chat.model.data.citems.ICItem;
 
 	public class LogCommunicator extends DefaultCommunicator implements ICommunicator {
 

@@ -1,7 +1,7 @@
 /**
  * Created by kvint on 13.11.14.
  */
-package com.chat.model.data {
+package com.chat.model.data.citems {
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.data.Message;
 

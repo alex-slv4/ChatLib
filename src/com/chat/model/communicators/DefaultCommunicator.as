@@ -8,8 +8,8 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.ICItem;
-	import com.chat.model.data.CItemMessage;
+	import com.chat.model.data.citems.ICItem;
+	import com.chat.model.data.citems.CItemMessage;
 
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;

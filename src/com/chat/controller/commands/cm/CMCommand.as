@@ -8,7 +8,7 @@ package com.chat.controller.commands.cm {
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.CItemString;
+	import com.chat.model.data.citems.CItemString;
 
 	import flash.events.IEventDispatcher;
 

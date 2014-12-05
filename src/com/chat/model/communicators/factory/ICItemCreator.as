@@ -6,7 +6,7 @@ package com.chat.model.communicators.factory
 import com.chat.model.IChatModel;
 import com.chat.model.communicators.DirectCommunicator;
 import com.chat.model.communicators.ICommunicator;
-import com.chat.model.data.ICItem;
+import com.chat.model.data.citems.ICItem;
 
 import org.igniterealtime.xiff.core.AbstractJID;
 import org.igniterealtime.xiff.core.UnescapedJID;
