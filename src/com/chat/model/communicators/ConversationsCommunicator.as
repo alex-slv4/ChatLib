@@ -2,85 +2,56 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
-	import com.chat.events.CommunicatorEvent;
-	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.data.citems.CItemConversation;
-	import com.chat.model.data.citems.ICItem;
 	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.ICItem;
 	import com.chat.model.history.IHistoryProvider;
 
-	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.core.EscapedJID;
-	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.data.Message;
 
 	public class ConversationsCommunicator extends DefaultCommunicator implements IConversationsCommunicator {
 
-		[PostConstruct]
-		private function init():void {
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, communicator_handler);
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicator_handler);
-		}
-
-		private function communicator_handler(event:CommunicatorFactoryEvent):void {
-			var iCommunicator:ICommunicator = event.data as ICommunicator;
-			switch (event.type){
-				case CommunicatorFactoryEvent.COMMUNICATOR_ADDED:
-
-					break;
-				case CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED:
-
-					break;
-			}
-		}
-
-		public function push(data:ICItem):void {
+		public function updateWith(data:ICItem):void {
 
 			if(data is CItemConversation){
-				updateArrayWithConversation(data as CItemConversation);
-				return;
+				updateWithConversation(data as CItemConversation);
+			}else if(data is CItemMessage){
+				updateWithMessage(data as CItemMessage);
 			}
-			var itemMessage:CItemMessage = data as CItemMessage;
+		}
+
+		private function updateWithMessage(itemMessage:CItemMessage):void {
 			var from:EscapedJID = getParticipant(itemMessage.messageData);
 			var conversation:CItemConversation;
-			for (var i:int = 0; i < _items.length; i++) {
+			for(var i:int = 0; i < _items.length; i++) {
 				conversation = _items.getItemAt(i) as CItemConversation;
-				if(conversation.from.equals(from, true)){
-					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, conversation));
+				if(conversation.from.equals(from, true)) {
 					_items.remove(i);
 					break;
 				}
 
 			}
-			var newly:Boolean = false;
-			if(conversation == null){
+			if(conversation == null) {
 				var message:Message = itemMessage.messageData;
 				var withJID:EscapedJID = getParticipant(message);
 				conversation = new CItemConversation(withJID);
-				newly = true;
 			}
 			conversation.lastMessage = itemMessage;
 			_items.prepend(conversation);
-			var eventName:String = newly ? CommunicatorEvent.ITEM_INSERTED : CommunicatorEvent.ITEM_UPDATED;
-			dispatchEvent(new CommunicatorEvent(eventName, conversation));
-			//updateUnreadCount();
+			_items.touch(conversation);
 		}
 
-		private function updateArrayWithConversation(conversation:CItemConversation):void {
-			var itemUpdated:Boolean = false;
+		private function updateWithConversation(conversation:CItemConversation):void {
 			for(var i:int = 0; i < _items.length; i++) {
 				var item:CItemConversation = _items.getItemAt(i) as CItemConversation;
 				if(item == null) continue;
 				if(item.from.equals(conversation.from, true)) {
-					itemUpdated = true;
-					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, item));
-					_items.remove(i);
-					break;
+					_items.setItemAt(conversation, i);
+					return;
 				}
 			}
 			_items.prepend(conversation);
-			var eventName:String = itemUpdated ? CommunicatorEvent.ITEM_UPDATED : CommunicatorEvent.ITEM_INSERTED;
-			dispatchEvent(new CommunicatorEvent(eventName, conversation));
 		}
 		private function getParticipant(message:Message):EscapedJID {
 			return model.isMe(message.from) ? message.to : message.from;
@@ -102,13 +73,8 @@ package com.chat.model.communicators {
 		}
 
 		public function get name():String {
-			return null;
+			return "Conversations";
 		}
 
-		override public function destroy():void {
-			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, communicator_handler);
-			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicator_handler);
-			super.destroy();
-		}
 	}
 }

@@ -7,13 +7,6 @@ package com.chat.model.communicators {
 
 	import flash.events.IEventDispatcher;
 
-	[Event(name="onUnreadUpdated", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemAdded", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemUpdated", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemSent", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onItemRequested", type="com.chat.events.CommunicatorEvent")]
-	[Event(name="onChanged", type="com.chat.events.CommunicatorEvent")]
-
 	public interface ICommunicatorBase extends IEventDispatcher {
 
 		function get items():ICItemCollection;

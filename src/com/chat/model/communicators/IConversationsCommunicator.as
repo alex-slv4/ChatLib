@@ -6,6 +6,6 @@ package com.chat.model.communicators {
 
 	public interface IConversationsCommunicator extends ICommunicator {
 		function updateUnreadCount():void;
-		function push(data:ICItem):void;
+		function updateWith(data:ICItem):void;
 	}
 }
