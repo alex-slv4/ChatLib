@@ -62,7 +62,7 @@ package com.chat.controller.commands {
 				}
 				communicator.unreadCount++;
 			}
-			conversations.items.append(itemMessage);
+			conversations.push(itemMessage);
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {

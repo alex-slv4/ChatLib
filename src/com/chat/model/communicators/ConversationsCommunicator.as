@@ -44,7 +44,7 @@ package com.chat.model.communicators {
 			var from:EscapedJID = getParticipant(itemMessage.messageData);
 			var conversation:CItemConversation;
 			for (var i:int = 0; i < _items.length; i++) {
-				conversation = _items[i] as CItemConversation;
+				conversation = _items.getItemAt(i) as CItemConversation;
 				if(conversation.from.equals(from, true)){
 					dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ITEM_REMOVED, conversation));
 					_items.remove(i);
@@ -69,7 +69,7 @@ package com.chat.model.communicators {
 		private function updateArrayWithConversation(conversation:CItemConversation):void {
 			var itemUpdated:Boolean = false;
 			for(var i:int = 0; i < _items.length; i++) {
-				var item:CItemConversation = _items[i] as CItemConversation;
+				var item:CItemConversation = _items.getItemAt(i) as CItemConversation;
 				if(item == null) continue;
 				if(item.from.equals(conversation.from, true)) {
 					itemUpdated = true;
