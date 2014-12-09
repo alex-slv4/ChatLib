@@ -142,7 +142,7 @@ package com.chat.model.history {
 
 		private function onListLoaded(chats:Vector.<ChatStanza>):void {
 			_chats = chats;
-			if(_chats.length == 0){
+			if(_chats != null && _chats.length == 0){
 				deliverResults();
 			}else{
 				loadLastChat();
@@ -160,12 +160,17 @@ package com.chat.model.history {
 		private function loadLastChat():void {
 			_conversationStepper.reset();
 
-			if(_chats.length>0){
+			if(_chats != null && _chats.length>0){
 				_uglyOpenfireTrigger = true;
 				_currentChat = _chats.pop();
 				loadNextConversations()
 			}else{
-				loadNextList();
+				if(_chats == null){
+					_currentChat = null;
+					deliverResults();
+				}else{
+					loadNextList();
+				}
 			}
 		}
 

@@ -31,7 +31,7 @@ package com.chat.model.history {
 			if(_callBack != null) return;
 			_callBack = callBack;
 			if(_end) {
-				_callBack(new <ChatStanza>[]);
+				_callBack(null);
 				return;
 			}
 			loadNext();
@@ -72,15 +72,5 @@ package com.chat.model.history {
 			throw new Error("listErrorCallback");
 
 		}
-		/*private function listSizeCallback(iq:IQ):void {
-			var list:List = iq.getExtension(List.ELEMENT_NAME) as List;
-			var rsmSet:RSMSet = list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
-			_chatIndex = rsmSet.count;
-			var initialSet:RSMSet = new RSMSet();
-			initialSet.firstIndex = _chatIndex;
-			_chatStepper.pin(initialSet);
-			loadNext();
-		}*/
-
 	}
 }
