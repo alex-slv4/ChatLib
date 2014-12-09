@@ -41,6 +41,7 @@ package com.chat.model.history {
 		private var _uglyOpenfireTrigger:Boolean;
 		private var _minRequiredCount:int;
 		private var _communicator:DirectCommunicator;
+		private var _endReached:Boolean = false;
 
 		public function ConversationsProvider(communicator:DirectCommunicator) {
 			_communicator = communicator;
@@ -130,7 +131,7 @@ package com.chat.model.history {
 		}
 
 		private function resultsIsReady():Boolean {
-			return _cachedItems.length >= _minRequiredCount;
+			return _cachedItems.length >= _minRequiredCount || _endReached;
 		}
 
 		private function conversationErrorCallback(iq:IQ):void {
@@ -142,7 +143,14 @@ package com.chat.model.history {
 
 		private function onListLoaded(chats:Vector.<ChatStanza>):void {
 			_chats = chats;
-			if(_chats != null && _chats.length == 0){
+			_endReached = _chats == null;
+
+			if(_endReached){
+				deliverResults();
+				return;
+			}
+
+			if(_chats.length == 0){
 				deliverResults();
 			}else{
 				loadLastChat();
@@ -160,17 +168,13 @@ package com.chat.model.history {
 		private function loadLastChat():void {
 			_conversationStepper.reset();
 
-			if(_chats != null && _chats.length>0){
+			if(_chats.length>0){
 				_uglyOpenfireTrigger = true;
 				_currentChat = _chats.pop();
 				loadNextConversations()
 			}else{
-				if(_chats == null){
-					_currentChat = null;
-					deliverResults();
-				}else{
-					loadNextList();
-				}
+				_currentChat = null;
+				loadNextList();
 			}
 		}
 
