@@ -25,7 +25,7 @@ package com.chat.controller.commands {
 		override public function execute():void {
 			model.currentUser.loadVCard(model.connection);
 			bus.dispatchEvent(new Event(ChatEvent.SYNC_TIME));
-			bus.dispatchEvent(new Event(ChatEvent.LOAD_CONVERSATIONS));
+			//bus.dispatchEvent(new Event(ChatEvent.LOAD_CONVERSATIONS));
 			//_browser = new Browser(model.connection);
 			//_browser.getServiceInfo(null, onServerInfo);
 		}
