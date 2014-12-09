@@ -11,41 +11,41 @@ package com.chat.model.data.collections {
 
 	public class CItemCollection extends EventDispatcher implements ICItemCollection {
 
-		private var _rawData:Vector.<ICItem> = new <ICItem>[];
+		private var _source:Vector.<ICItem> = new <ICItem>[];
 
 		public function append(item:ICItem):void {
-			_rawData.push(item);
+			_source.push(item);
 
 			changed();
 			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, this.length-1);
 		}
 
 		public function insert(index:int, item:ICItem):void {
-			_rawData.splice(index, 0, item);
+			_source.splice(index, 0, item);
 
 			changed();
 			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 		}
 
 		public function getItemAt(index:int):ICItem {
-			return _rawData[index];
+			return _source[index];
 		}
 
 		public function setItemAt(item:ICItem, index:int):void {
-			_rawData[index] = item;
+			_source[index] = item;
 			changed();
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 		}
 
 		public function prepend(item:ICItem):void {
-			_rawData.unshift(item);
+			_source.unshift(item);
 
 			changed();
 			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, 0);
 		}
 
 		public function remove(index:int):ICItem {
-			var icItem:ICItem = _rawData.splice(index, 1)[0];
+			var icItem:ICItem = _source.splice(index, 1)[0];
 			changed();
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 			return icItem;
@@ -53,12 +53,12 @@ package com.chat.model.data.collections {
 
 
 		public function removeAll():void {
-			_rawData = new <ICItem>[];
+			_source = new <ICItem>[];
 			changed();
 			this.dispatchEventWith(CollectionEventType.RESET, false);
 		}
 
-		public function touch(indexOrItem:*):void {
+		public function touch(indexOrItem:* = null):void {
 			if(indexOrItem is int){
 				this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, indexOrItem);
 			}else if(indexOrItem is ICItem){
@@ -66,6 +66,8 @@ package com.chat.model.data.collections {
 				if(index != -1){
 					this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
 				}
+			}else{
+				changed();
 			}
 		}
 
@@ -74,11 +76,15 @@ package com.chat.model.data.collections {
 		}
 
 		public function indexOf(item:ICItem):int {
-			return _rawData.indexOf(item);
+			return _source.indexOf(item);
 		}
 
 		public function get length():int {
-			return _rawData.length;
+			return _source.length;
+		}
+
+		public function get source():Vector.<ICItem> {
+			return _source;
 		}
 	}
 }

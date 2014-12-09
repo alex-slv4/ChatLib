@@ -26,7 +26,7 @@ package com.chat.controller.commands.cm.message {
 			var messageItem:CItemMessage = new CItemMessage(message);
 			directCommunicatorData.items.append(messageItem);
 
-			conversations.items.append(messageItem);
+			conversations.updateWith(messageItem);
 
 			//save receipt
 			message.receipt = Message.RECEIPT_REQUEST;

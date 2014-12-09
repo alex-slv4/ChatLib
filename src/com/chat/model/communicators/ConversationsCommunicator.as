@@ -47,11 +47,17 @@ package com.chat.model.communicators {
 				var item:CItemConversation = _items.getItemAt(i) as CItemConversation;
 				if(item == null) continue;
 				if(item.from.equals(conversation.from, true)) {
-					_items.setItemAt(conversation, i);
+					if(conversation.time >= item.time && conversation.lastMessage != null){
+						_items.setItemAt(conversation, i);
+					}
+					return;
+				}
+				if(conversation.time >= item.time){
+					_items.insert(i, conversation);
 					return;
 				}
 			}
-			_items.prepend(conversation);
+			_items.append(conversation);
 		}
 		private function getParticipant(message:Message):EscapedJID {
 			return model.isMe(message.from) ? message.to : message.from;

@@ -30,5 +30,9 @@ package com.chat.model.data.citems {
 		override public function get time():Number {
 			return _lastMessage ? _lastMessage.time : _startTime;
 		}
+
+		public function toString():String {
+			return _withJID.bareJID;
+		}
 	}
 }
