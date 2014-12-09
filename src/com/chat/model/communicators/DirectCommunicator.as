@@ -60,7 +60,7 @@ package com.chat.model.communicators {
 
 		public function get history():IHistoryProvider {
 			if(_history == null) {
-				_history = new ConversationsProvider(_participant, _chatUser.jid);
+				_history = new ConversationsProvider(this);
 				injector.injectInto(_history);
 			}
 			return _history;

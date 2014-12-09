@@ -3,6 +3,6 @@
  */
 package com.chat.model.history {
 	public interface IHistoryProvider {
-		function fetchNext(minRequired:int, callBack:Function):void;
+		function fetchNext(minRequired:int):void;
 	}
 }

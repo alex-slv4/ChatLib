@@ -3,6 +3,7 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
+	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.citems.CItemMessage;
 	import com.chat.model.data.citems.ICItem;
 
@@ -31,7 +32,6 @@ package com.chat.model.history {
 		private var _chats:Vector.<ChatStanza>;
 		private var _conversationStepper:ISetLooper = new IndexedSetLooper();
 		private var _currentChat:ChatStanza;
-		private var _callBack:Function;
 
 		private var _cachedItems:Vector.<ICItem> = new <ICItem>[];
 
@@ -40,19 +40,17 @@ package com.chat.model.history {
 		 */
 		private var _uglyOpenfireTrigger:Boolean;
 		private var _minRequiredCount:int;
+		private var _communicator:DirectCommunicator;
 
-		public function ConversationsProvider(participant:UnescapedJID, me:UnescapedJID) {
-			_me = me;
-			_participant = new UnescapedJID(participant.bareJID);
+		public function ConversationsProvider(communicator:DirectCommunicator) {
+			_communicator = communicator;
+			_me = _communicator.chatUser.jid;
+			_participant = new UnescapedJID(communicator.participant.bareJID);
 		}
 
 
-		public function fetchNext(minRequired:int, callBack:Function):void {
-			if(_callBack != null) return;
-
+		public function fetchNext(minRequired:int):void {
 			_minRequiredCount = minRequired;
-
-			_callBack = callBack;
 
 			if(resultsIsReady()){
 				deliverResults();
@@ -153,8 +151,10 @@ package com.chat.model.history {
 
 		private function deliverResults():void {
 			var results:Vector.<ICItem> = _cachedItems.splice(-_minRequiredCount, _minRequiredCount);
-			_callBack(results);
-			_callBack = null;
+			for(var i:int = 0; i < results.length; i++) {
+				var item:ICItem = results[i];
+				_communicator.items.prepend(item);
+			}
 		}
 
 		private function loadLastChat():void {
