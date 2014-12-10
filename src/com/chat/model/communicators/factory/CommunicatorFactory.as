@@ -6,10 +6,13 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.ChatRoom;
 import com.chat.model.ChatUser;
 import com.chat.model.communicators.*;
-import com.chat.model.data.citems.CItemConversation;
+	import com.chat.model.data.citems.CItemCommunicator;
+	import com.chat.model.data.citems.CItemConversation;
 import com.chat.model.data.citems.ICItem;
+	import com.chat.model.data.collections.CItemCollection;
+	import com.chat.model.data.collections.ICItemCollection;
 
-import flash.events.EventDispatcher;
+	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.data.Message;
@@ -23,12 +26,11 @@ import flash.events.EventDispatcher;
 	[Event(name="onCommunicatorActivated", type="com.chat.events.CommunicatorFactoryEvent")]
 	public class CommunicatorFactory extends EventDispatcher implements ICommunicatorFactory {
 
-
 		[Inject]
 		public var injector:IInjector;
 
 		public var creatorsMap:Dictionary = new Dictionary();
-		private var hash:Dictionary = new Dictionary();
+		private var _items:ICItemCollection = new CItemCollection();
 
 		[PostConstruct]
 		public function fillCreators():void{
@@ -41,10 +43,10 @@ import flash.events.EventDispatcher;
 
 		public function dispose(communicator:ICommunicator):void {
 			if(communicator.uid != null){
-				delete hash[communicator.uid];
-				dispatchEvent(new CommunicatorFactoryEvent(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, communicator));
 				communicator.active = false;
 				communicator.destroy();
+				var i:int = getIndexBy(communicator.uid);
+				items.remove(i);
 			}
 		}
 		public function getFor(data:Object):ICommunicator {
@@ -57,23 +59,34 @@ import flash.events.EventDispatcher;
 			injector.injectInto(creator);
 			if(creator.uid == null) return null;
 
-			var communicator:ICommunicator = hash[creator.uid];
+			var communicator:ICommunicator = getBy(creator.uid);
 			if(communicator == null){
 				communicator = creator.create();
 				communicator.uid = creator.uid;
-				hash[creator.uid] = communicator;
 				injector.injectInto(communicator);
-				dispatchEvent(new CommunicatorFactoryEvent(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, communicator));
+				items.append(new CItemCommunicator(communicator));
 			}
 			return communicator;
 		}
 
-		public function getAll():Vector.<ICommunicator> {
-			var result:Vector.<ICommunicator> = new <ICommunicator>[];
-			for each (var communicator:ICommunicator in hash) {
-				result.push(communicator);
+		private function getBy(uid:String):ICommunicator {
+			var i:int = getIndexBy(uid);
+			if(i == -1) return null;
+			var item:CItemCommunicator = (_items.getItemAt(i) as CItemCommunicator);
+			return item.communicator;
+		}
+		private function getIndexBy(uid:String):int {
+			for (var i:int = 0; i < _items.length; i++) {
+				var item:CItemCommunicator = _items.getItemAt(i) as CItemCommunicator;
+				if(item.communicator.uid == uid){
+					return i;
+				}
 			}
-			return result;
+			return -1;
+		}
+
+		public function get items():ICItemCollection {
+			return _items;
 		}
 	}
 }
