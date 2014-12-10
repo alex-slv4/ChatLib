@@ -8,7 +8,7 @@ package com.chat.controller.commands {
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.IWritableCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -51,7 +51,7 @@ package com.chat.controller.commands {
 				return;
 			}
 
-			var itemMessage:CItemMessage = new CItemMessage(message);
+			var itemMessage:CMessage = new CMessage(message);
 			communicator.items.append(itemMessage);
 
 			if (model.isMe(message.from)) {
@@ -76,7 +76,7 @@ package com.chat.controller.commands {
 
 		private function handleReceipt(message:Message, communicator:ICommunicator):void {
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
-				var receiptMessageItem:CItemMessage = model.receiptRequests[message.receiptId];
+				var receiptMessageItem:CMessage = model.receiptRequests[message.receiptId];
 				if (receiptMessageItem) {
 					delete model.receiptRequests[message.receiptId];
 					var message:Message = receiptMessageItem.data as Message;

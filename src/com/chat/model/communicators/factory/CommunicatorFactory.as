@@ -2,13 +2,10 @@
  * Created by AlexanderSla on 06.11.2014.
  */
 package com.chat.model.communicators.factory {
-	import com.chat.events.CommunicatorFactoryEvent;
 	import com.chat.model.ChatRoom;
-import com.chat.model.ChatUser;
-import com.chat.model.communicators.*;
-	import com.chat.model.data.citems.CItemCommunicator;
-	import com.chat.model.data.citems.CItemConversation;
-import com.chat.model.data.citems.ICItem;
+	import com.chat.model.ChatUser;
+	import com.chat.model.communicators.*;
+	import com.chat.model.data.citems.CCommunicator;
 	import com.chat.model.data.collections.CItemCollection;
 	import com.chat.model.data.collections.ICItemCollection;
 
@@ -20,10 +17,6 @@ import com.chat.model.data.citems.ICItem;
 
 	import robotlegs.bender.framework.api.IInjector;
 
-	[Event(name="onCommunicatorAdded", type="com.chat.events.CommunicatorFactoryEvent")]
-	[Event(name="onCommunicatorRemoved", type="com.chat.events.CommunicatorFactoryEvent")]
-	[Event(name="onCommunicatorActivated", type="com.chat.events.CommunicatorFactoryEvent")]
-	[Event(name="onCommunicatorActivated", type="com.chat.events.CommunicatorFactoryEvent")]
 	public class CommunicatorFactory extends EventDispatcher implements ICommunicatorFactory {
 
 		[Inject]
@@ -38,7 +31,7 @@ import com.chat.model.data.citems.ICItem;
 			creatorsMap[ChatRoom] = RoomCreator;
 			creatorsMap[RosterItemVO] = RosterItemCreator;
 			creatorsMap[ChatUser] = ChatUserCreator;
-			creatorsMap[CItemConversation] = ICItemCreator;
+			creatorsMap[CCommunicator] = ICItemCreator;
 		}
 
 		public function dispose(communicator:ICommunicator):void {
@@ -64,7 +57,7 @@ import com.chat.model.data.citems.ICItem;
 				communicator = creator.create();
 				communicator.uid = creator.uid;
 				injector.injectInto(communicator);
-				items.append(new CItemCommunicator(communicator));
+				items.append(new CCommunicator(communicator));
 			}
 			return communicator;
 		}
@@ -72,12 +65,12 @@ import com.chat.model.data.citems.ICItem;
 		private function getBy(uid:String):ICommunicator {
 			var i:int = getIndexBy(uid);
 			if(i == -1) return null;
-			var item:CItemCommunicator = (_items.getItemAt(i) as CItemCommunicator);
+			var item:CCommunicator = (_items.getItemAt(i) as CCommunicator);
 			return item.communicator;
 		}
 		private function getIndexBy(uid:String):int {
 			for (var i:int = 0; i < _items.length; i++) {
-				var item:CItemCommunicator = _items.getItemAt(i) as CItemCommunicator;
+				var item:CCommunicator = _items.getItemAt(i) as CCommunicator;
 				if(item.communicator.uid == uid){
 					return i;
 				}

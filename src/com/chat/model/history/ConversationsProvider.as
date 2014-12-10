@@ -5,9 +5,9 @@ package com.chat.model.history {
 	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CMessage;
 	import com.chat.model.data.citems.CItemString;
-	import com.chat.model.data.citems.CItemTitle;
+	import com.chat.model.data.citems.CTitle;
 	import com.chat.model.data.citems.ICItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -121,7 +121,7 @@ package com.chat.model.history {
 				message.from = tag.localName() == "from" ? _participant.escaped : _me.escaped;
 				var secsOffset:int = tag.@secs;
 				var time:Number = startTime + secsOffset * 1000;
-				var itemMessage:CItemMessage = new CItemMessage(message, time);
+				var itemMessage:CMessage = new CMessage(message, time);
 				itemMessage.isRead = true;
 				//results.push(new CItemString(model.dateFormatter.formatUTC(new Date(time))));
 				results.push(itemMessage);
@@ -168,13 +168,13 @@ package com.chat.model.history {
 
 		private function deliverResults():void {
 			var idx,i:int = 0;
-			var lastCommunicatorMessage:CItemMessage = getLastCommunicatorMessage();
+			var lastCommunicatorMessage:CMessage = getLastCommunicatorMessage();
 
 			if(lastCommunicatorMessage){
 				for(i = 0; i < _cachedItems.length; i++) {
 					var icItem:ICItem = _cachedItems[i];
-					if(icItem is CItemMessage){
-						var msg:CItemMessage = icItem as CItemMessage;
+					if(icItem is CMessage){
+						var msg:CMessage = icItem as CMessage;
 						if(msg.time < lastCommunicatorMessage.time){
 							idx = i;
 							break;
@@ -188,17 +188,17 @@ package com.chat.model.history {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);
 
-				if(item is CItemMessage){
+				if(item is CMessage){
 					_msgCount--;
 				}
 			}
 			_cachedItems = new <ICItem>[];
 		}
 
-		private function getLastCommunicatorMessage():CItemMessage {
+		private function getLastCommunicatorMessage():CMessage {
 			for(var i:int = 0; i < _communicator.items.length; i++) {
 				var object:ICItem = _communicator.items.getItemAt(i);
-				if(object is CItemMessage) return object as CItemMessage;
+				if(object is CMessage) return object as CMessage;
 
 			}
 			return null;
@@ -209,7 +209,7 @@ package com.chat.model.history {
 
 			if(_currentChat != null){
 				var date:Date = DateTimeParser.string2dateTime(_currentChat.start);
-				_cachedItems.push(new CItemTitle("New conversation", date.getTime()));
+				_cachedItems.push(new CTitle("New conversation", date.getTime()));
 			}
 
 			if(_chats.length>0){
