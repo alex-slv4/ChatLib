@@ -21,6 +21,8 @@ package com.chat.model.history {
 
 	public class ConversationsProvider implements IHistoryProvider {
 
+		public static var BUFFER_SIZE:int = 10;
+
 		[Inject]
 		public var controller:IChatController;
 
@@ -39,7 +41,6 @@ package com.chat.model.history {
 		 * please remove it when openfire will handle RSM like it should!
 		 */
 		private var _uglyOpenfireTrigger:Boolean;
-		private var _minRequiredCount:int;
 		private var _communicator:DirectCommunicator;
 		private var _endReached:Boolean = false;
 
@@ -50,8 +51,7 @@ package com.chat.model.history {
 		}
 
 
-		public function fetchNext(minRequired:int):void {
-			_minRequiredCount = minRequired;
+		public function fetch():void {
 
 			if(resultsIsReady()){
 				deliverResults();
@@ -131,7 +131,7 @@ package com.chat.model.history {
 		}
 
 		private function resultsIsReady():Boolean {
-			return _cachedItems.length >= _minRequiredCount || _endReached;
+			return _cachedItems.length >= BUFFER_SIZE || _endReached;
 		}
 
 		private function conversationErrorCallback(iq:IQ):void {
@@ -158,7 +158,7 @@ package com.chat.model.history {
 		}
 
 		private function deliverResults():void {
-			var results:Vector.<ICItem> = _cachedItems.splice(-_minRequiredCount, _minRequiredCount);
+			var results:Vector.<ICItem> = _cachedItems.splice(-BUFFER_SIZE, BUFFER_SIZE);
 			for(var i:int = 0; i < results.length; i++) {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);

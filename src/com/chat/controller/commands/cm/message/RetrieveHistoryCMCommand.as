@@ -14,7 +14,7 @@ package com.chat.controller.commands.cm.message {
 
 		override protected function executeIfNoErrors():void {
 			var count:int = params[0];
-			directCommunicator.history.fetchNext(count);
+			directCommunicator.history.fetch();
 		}
 
 		private function get directCommunicator():DirectCommunicator {

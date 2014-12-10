@@ -24,7 +24,7 @@ package com.chat.model.history {
 		}
 
 
-		public function fetchNext(minRequired:int):void {
+		public function fetch():void {
 		}
 
 		/*public function getNext():void {
