@@ -3,8 +3,10 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
+	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CItemString;
 	import com.chat.model.data.citems.ICItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -21,10 +23,13 @@ package com.chat.model.history {
 
 	public class ConversationsProvider implements IHistoryProvider {
 
-		public static var BUFFER_SIZE:int = 10;
+		public static var BUFFER_SIZE:int = 50;
 
 		[Inject]
 		public var controller:IChatController;
+
+		[Inject]
+		public var model:IChatModel;
 
 		[Inject]
 		public var injector:IInjector;
@@ -116,6 +121,7 @@ package com.chat.model.history {
 				var time:Number = startTime + secsOffset * 1000;
 				var itemMessage:CItemMessage = new CItemMessage(message, time);
 				itemMessage.isRead = true;
+				//results.push(new CItemString(model.dateFormatter.formatUTC(new Date(time))));
 				results.push(itemMessage);
 			}
 
@@ -158,7 +164,7 @@ package com.chat.model.history {
 		}
 
 		private function deliverResults():void {
-			var results:Vector.<ICItem> = _cachedItems.splice(-BUFFER_SIZE, BUFFER_SIZE);
+			var results:Vector.<ICItem> = _cachedItems.splice(0, BUFFER_SIZE);
 			for(var i:int = 0; i < results.length; i++) {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);
@@ -168,10 +174,15 @@ package com.chat.model.history {
 		private function loadLastChat():void {
 			_conversationStepper.reset();
 
+			if(_currentChat != null){
+				var date:Date = DateTimeParser.string2dateTime(_currentChat.start);
+				_cachedItems.push(new CItemString("--------------------(" + model.dateFormatter.formatUTC(date) + ")--------------------"));
+			}
+
 			if(_chats.length>0){
 				_uglyOpenfireTrigger = true;
 				_currentChat = _chats.pop();
-				loadNextConversations()
+				loadNextConversations();
 			}else{
 				_currentChat = null;
 				loadNextList();

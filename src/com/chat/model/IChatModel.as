@@ -8,6 +8,7 @@ package com.chat.model {
 	import com.chat.model.presences.IPresences;
 
 	import flash.events.IEventDispatcher;
+	import flash.globalization.DateTimeFormatter;
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
@@ -41,5 +42,6 @@ package com.chat.model {
 		function isMe(jid:AbstractJID):Boolean
 
 		function get threadGenerator():IIDGenerator;
+		function get dateFormatter():DateTimeFormatter;
 	}
 }
