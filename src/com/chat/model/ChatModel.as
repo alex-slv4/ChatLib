@@ -37,7 +37,7 @@ package com.chat.model {
 		private var _presences:IPresences;
 		private var _activities:IActivities;
 		private var _threadGenerator:IIDGenerator;
-		private var _dateFormatter:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.SHORT);
+		private var _dateFormatter:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.LONG);
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
