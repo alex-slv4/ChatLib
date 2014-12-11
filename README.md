@@ -4,8 +4,8 @@ ChatLib
 XIFF coverage for Robotlegs project
 
 Dependency:
-XIFF (https://github.com/kvint/XIFF)
+=
 
-Robotlegs
+XIFF (https://github.com/kvint/XIFF) - include
 
-Feathers
+Robotlegs - external
