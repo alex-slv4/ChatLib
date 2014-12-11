@@ -4,7 +4,7 @@
 package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -23,7 +23,7 @@ package com.chat.controller.commands.cm.message {
 			message.body = params[0];
 			message.state = Message.STATE_ACTIVE;
 
-			var messageItem:CItemMessage = new CItemMessage(message);
+			var messageItem:CMessage = new CMessage(message);
 			directCommunicatorData.items.append(messageItem);
 
 			conversations.updateWith(messageItem);

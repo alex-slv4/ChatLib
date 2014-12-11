@@ -4,13 +4,13 @@
 package com.chat.model.data.citems {
 	import org.igniterealtime.xiff.core.AbstractJID;
 
-	public class CItemConversation extends BaseCItem {
+	public class CConversation extends BaseCItem {
 
-		private var _lastMessage:CItemMessage;
+		private var _lastMessage:CMessage;
 		private var _withJID:AbstractJID;
 		private var _startTime:Number;
 
-		public function CItemConversation(withJID:AbstractJID, startTime:Number = NaN) {
+		public function CConversation(withJID:AbstractJID, startTime:Number = NaN) {
 			super(null);
 			_withJID = withJID;
 			_startTime = startTime;
@@ -20,10 +20,10 @@ package com.chat.model.data.citems {
 			return _withJID;
 		}
 
-		public function get lastMessage():CItemMessage {
+		public function get lastMessage():CMessage {
 			return _lastMessage;
 		}
-		public function set lastMessage(value:CItemMessage):void {
+		public function set lastMessage(value:CMessage):void {
 			_lastMessage = value;
 		}
 
@@ -31,7 +31,7 @@ package com.chat.model.data.citems {
 			return _lastMessage ? _lastMessage.time : _startTime;
 		}
 
-		public function toString():String {
+		override public function toString():String {
 			return _withJID.bareJID;
 		}
 	}

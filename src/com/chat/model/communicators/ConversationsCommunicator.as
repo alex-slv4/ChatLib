@@ -2,8 +2,8 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
-	import com.chat.model.data.citems.CItemConversation;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CConversation;
+	import com.chat.model.data.citems.CMessage;
 	import com.chat.model.data.citems.ICItem;
 	import com.chat.model.history.IHistoryProvider;
 
@@ -14,18 +14,18 @@ package com.chat.model.communicators {
 
 		public function updateWith(data:ICItem):void {
 
-			if(data is CItemConversation){
-				updateWithConversation(data as CItemConversation);
-			}else if(data is CItemMessage){
-				updateWithMessage(data as CItemMessage);
+			if(data is CConversation){
+				updateWithConversation(data as CConversation);
+			}else if(data is CMessage){
+				updateWithMessage(data as CMessage);
 			}
 		}
 
-		private function updateWithMessage(itemMessage:CItemMessage):void {
-			var from:EscapedJID = getParticipant(itemMessage.messageData);
-			var conversation:CItemConversation;
+		private function updateWithMessage(itemMessage:CMessage):void {
+			var from:EscapedJID = getParticipant(itemMessage.data);
+			var conversation:CConversation;
 			for(var i:int = 0; i < _items.length; i++) {
-				conversation = _items.getItemAt(i) as CItemConversation;
+				conversation = _items.getItemAt(i) as CConversation;
 				if(conversation.from.equals(from, true)) {
 					_items.remove(i);
 					break;
@@ -33,18 +33,18 @@ package com.chat.model.communicators {
 
 			}
 			if(conversation == null) {
-				var message:Message = itemMessage.messageData;
+				var message:Message = itemMessage.data;
 				var withJID:EscapedJID = getParticipant(message);
-				conversation = new CItemConversation(withJID);
+				conversation = new CConversation(withJID);
 			}
 			conversation.lastMessage = itemMessage;
 			_items.prepend(conversation);
 			_items.touch(conversation);
 		}
 
-		private function updateWithConversation(conversation:CItemConversation):void {
+		private function updateWithConversation(conversation:CConversation):void {
 			for(var i:int = 0; i < _items.length; i++) {
-				var item:CItemConversation = _items.getItemAt(i) as CItemConversation;
+				var item:CConversation = _items.getItemAt(i) as CConversation;
 				if(item == null) continue;
 				if(item.from.equals(conversation.from, true)) {
 					if(conversation.time >= item.time && conversation.lastMessage != null){

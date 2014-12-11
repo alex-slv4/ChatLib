@@ -38,14 +38,13 @@ package com.chat.controller.commands.cm {
 
 
 		protected function setUp():void {
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 		protected function tearDown():void {
-			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 
 		protected function onCommunicatorDestroyed(e:CommunicatorFactoryEvent):void {
 			if(e.data === _communicator){
+				//TODO: handle destroy
 				_communicator = null;
 			}
 		}
