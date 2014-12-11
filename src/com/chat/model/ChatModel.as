@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.activity.IActivities;
+	import com.chat.model.communicators.ConversationsCommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
@@ -37,6 +38,7 @@ package com.chat.model {
 		private var _activities:IActivities;
 		private var _threadGenerator:IIDGenerator;
 		private var _dateFormatter:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.LONG);
+		private var _conversations:IConversationsCommunicator;
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
@@ -117,6 +119,14 @@ package com.chat.model {
 
 		public function get dateFormatter():DateTimeFormatter {
 			return _dateFormatter;
+		}
+
+		public function get conversations():IConversationsCommunicator {
+			if(_conversations == null) {
+				_conversations = new ConversationsCommunicator();
+				injector.injectInto(_conversations);
+			}
+			return _conversations;
 		}
 	}
 }

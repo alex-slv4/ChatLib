@@ -54,7 +54,7 @@ package com.chat.controller.commands {
 				//do nothing
 			} else {
 				if(communicator.unreadCount == 0){
-					model.communicators.conversations.unreadCount++;
+					model.conversations.unreadCount++;
 				}
 				communicator.unreadCount++;
 			}
@@ -74,9 +74,9 @@ package com.chat.controller.commands {
 				var receiptMessageItem:CMessage = model.receiptRequests[message.receiptId];
 				if (receiptMessageItem) {
 					delete model.receiptRequests[message.receiptId];
-					var message:Message = receiptMessageItem.data as Message;
+					var msg:Message = receiptMessageItem.data as Message;
 					receiptMessageItem.isRead = true;
-					message.receipt = null;
+					msg.receipt = null;
 					communicator.items.touch(receiptMessageItem);
 				}
 			}

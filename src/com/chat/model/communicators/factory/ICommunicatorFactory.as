@@ -13,6 +13,6 @@ package com.chat.model.communicators.factory {
 
 		function getFor(data:Object)				:ICommunicator;
 
-		function get conversations():IConversationsCommunicator;
+		function get items():ICItemCollection;
 	}
 }

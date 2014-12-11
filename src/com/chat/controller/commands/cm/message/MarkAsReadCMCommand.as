@@ -19,7 +19,7 @@ package com.chat.controller.commands.cm.message {
 				if(!messageItem.isRead){
 					castedCommunicator.unreadCount--;
 					if(castedCommunicator.unreadCount == 0){
-						model.communicators.conversations.unreadCount--;
+						model.conversations.unreadCount--;
 					}
 					messageItem.isRead = true;
 				}

@@ -6,6 +6,7 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.*;
 	import com.chat.model.data.citems.CCommunicator;
+	import com.chat.model.data.collections.CItemCollection;
 	import com.chat.model.data.collections.ICItemCollection;
 
 	import flash.events.EventDispatcher;
@@ -14,7 +15,6 @@ package com.chat.model.communicators.factory {
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.core.EscapedJID;
 	import org.igniterealtime.xiff.core.UnescapedJID;
-
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 
@@ -26,7 +26,7 @@ package com.chat.model.communicators.factory {
 		public var injector:IInjector;
 
 		public var creatorsMap:Dictionary = new Dictionary();
-		private var _conversations:IConversationsCommunicator;
+		private var _items:ICItemCollection = new CItemCollection();
 
 		[PostConstruct]
 		public function init():void{
@@ -84,16 +84,8 @@ package com.chat.model.communicators.factory {
 			return -1;
 		}
 
-		private function get items():ICItemCollection {
-			return conversations.items;
-		}
-
-		public function get conversations():IConversationsCommunicator {
-			if(_conversations == null){
-				_conversations = new ConversationsCommunicator();
-				injector.injectInto(_conversations);
-			}
-			return _conversations;
+		public function get items():ICItemCollection {
+			return _items;
 		}
 	}
 }

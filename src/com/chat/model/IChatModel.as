@@ -42,5 +42,7 @@ package com.chat.model {
 
 		function get threadGenerator():IIDGenerator;
 		function get dateFormatter():DateTimeFormatter;
+
+		function get conversations():IConversationsCommunicator;
 	}
 }

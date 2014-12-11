@@ -54,7 +54,7 @@ package com.chat.controller.commands {
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var communicator:ICommunicator = model.communicators.getFor(chat.withJID);
 				var conversation:ICConversation = new CConversation(communicator as DirectCommunicator, date.getTime());
-				model.communicators.conversations.updateWith(conversation);
+				model.conversations.updateWith(conversation);
 			}
 
 			_chatStepper.pin(rsmSet);

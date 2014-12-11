@@ -167,7 +167,8 @@ package com.chat.model.history {
 		}
 
 		private function deliverResults():void {
-			var idx,i:int = 0;
+			var i:int = 0;
+			var idx:int = 0;
 			var lastCommunicatorMessage:CMessage = getLastCommunicatorMessage();
 
 			if(lastCommunicatorMessage){
