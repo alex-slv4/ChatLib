@@ -10,9 +10,6 @@ package com.chat.controller.commands.cm.message {
 
 	public class SendPrivateMessageCMCommand extends SendMessageBaseCommand {
 
-		[Inject]
-		public var conversations:IConversationsCommunicator;
-
 		override protected function executeIfNoErrors():void {
 
 			var message:Message = new Message();
@@ -25,8 +22,6 @@ package com.chat.controller.commands.cm.message {
 
 			var messageItem:CMessage = new CMessage(message);
 			directCommunicatorData.items.append(messageItem);
-
-			conversations.updateWith(messageItem);
 
 			//save receipt
 			message.receipt = Message.RECEIPT_REQUEST;

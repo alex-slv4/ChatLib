@@ -12,7 +12,6 @@ package com.chat.model.data.citems {
 		private var _isRead:Boolean;
 
 		public function CMessage(data:Message, time:Number = NaN) {
-			super(data);
 			_time = time;
 			_data = data;
 		}
@@ -50,6 +49,10 @@ package com.chat.model.data.citems {
 
 		public function set isRead(value:Boolean):void {
 			_isRead = value;
+		}
+
+		public function toString():String {
+			return String(body);
 		}
 	}
 }

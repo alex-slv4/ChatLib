@@ -2,7 +2,6 @@
  * Created by kvint on 16.11.14.
  */
 package com.chat.controller.commands {
-	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.activity.IActivitiesHandler;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
@@ -62,7 +61,6 @@ package com.chat.controller.commands {
 				}
 				communicator.unreadCount++;
 			}
-			conversations.updateWith(itemMessage);
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {

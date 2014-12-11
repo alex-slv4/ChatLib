@@ -4,8 +4,10 @@
 package com.chat.model.data.citems {
 	import com.chat.model.communicators.ICommunicator;
 
-	public interface ICCommunicator extends ICItem {
+	public interface ICCommunicator extends ICTime {
 
 		function get communicator():ICommunicator;
+
+		function get lastMessage():ICMessage;
 	}
 }

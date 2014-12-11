@@ -28,7 +28,6 @@ package com.chat.model {
 		public var injector:IInjector;
 
 		private var _connection:IXMPPConnection;
-		private var _conversations:IConversationsCommunicator;
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
@@ -87,9 +86,6 @@ package com.chat.model {
 		}
 		public function get activities():IActivities {
 			return _activities;
-		}
-		public function get conversations():IConversationsCommunicator {
-			return _conversations ||= injector.getInstance(IConversationsCommunicator);;
 		}
 		public function get threadGenerator():IIDGenerator {
 			if(_threadGenerator == null) {

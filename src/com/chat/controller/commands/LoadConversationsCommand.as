@@ -4,8 +4,13 @@
 package com.chat.controller.commands {
 	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
+	import com.chat.model.communicators.DirectCommunicator;
+	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
+	import com.chat.model.data.citems.CCommunicator;
 	import com.chat.model.data.citems.CConversation;
+	import com.chat.model.data.citems.ICCommunicator;
+	import com.chat.model.data.citems.ICConversation;
 	import com.chat.utils.OFSetLooper;
 
 	import org.igniterealtime.xiff.data.IQ;
@@ -50,7 +55,8 @@ package com.chat.controller.commands {
 			for (var i:int = 0; i < _list.chats.length; i++) {
 				var chat:ChatStanza = _list.chats[i];
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
-				var conversation:CConversation = new CConversation(chat.withJID, date.getTime());
+				var communicator:DirectCommunicator = model.communicators.getFor(chat.withJID) as DirectCommunicator;
+				var conversation:ICConversation = new CConversation(communicator, date.getTime());
 				conversations.updateWith(conversation);
 			}
 

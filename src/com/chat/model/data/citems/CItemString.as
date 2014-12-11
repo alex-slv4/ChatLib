@@ -7,7 +7,6 @@ package com.chat.model.data.citems {
 		private var _data:String;
 
 		public function CItemString(data:String) {
-			super(data);
 			_data = data;
 		}
 

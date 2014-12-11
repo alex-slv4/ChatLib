@@ -2,51 +2,22 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
-	import com.chat.model.data.citems.CConversation;
-	import com.chat.model.data.citems.CMessage;
-	import com.chat.model.data.citems.ICItem;
+	import com.chat.model.data.citems.ICConversation;
 	import com.chat.model.history.IHistoryProvider;
 
-	import org.igniterealtime.xiff.core.EscapedJID;
-	import org.igniterealtime.xiff.data.Message;
+	import org.igniterealtime.xiff.core.UnescapedJID;
+	import org.igniterealtime.xiff.util.JIDUtil;
 
 	public class ConversationsCommunicator extends DefaultCommunicator implements IConversationsCommunicator {
 
-		public function updateWith(data:ICItem):void {
+		public function updateWith(conversation:ICConversation):void {
 
-			if(data is CConversation){
-				updateWithConversation(data as CConversation);
-			}else if(data is CMessage){
-				updateWithMessage(data as CMessage);
-			}
-		}
-
-		private function updateWithMessage(itemMessage:CMessage):void {
-			var from:EscapedJID = getParticipant(itemMessage.data);
-			var conversation:CConversation;
+			var fromJID:UnescapedJID = JIDUtil.unescape(conversation.withJID);
 			for(var i:int = 0; i < _items.length; i++) {
-				conversation = _items.getItemAt(i) as CConversation;
-				if(conversation.from.equals(from, true)) {
-					_items.remove(i);
-					break;
-				}
-
-			}
-			if(conversation == null) {
-				var message:Message = itemMessage.data;
-				var withJID:EscapedJID = getParticipant(message);
-				conversation = new CConversation(withJID);
-			}
-			conversation.lastMessage = itemMessage;
-			_items.prepend(conversation);
-			_items.touch(conversation);
-		}
-
-		private function updateWithConversation(conversation:CConversation):void {
-			for(var i:int = 0; i < _items.length; i++) {
-				var item:CConversation = _items.getItemAt(i) as CConversation;
+				var item:ICConversation = _items.getItemAt(i) as ICConversation;
 				if(item == null) continue;
-				if(item.from.equals(conversation.from, true)) {
+				var withJID:UnescapedJID = JIDUtil.unescape(item.withJID);
+				if(withJID.equals(fromJID, true)) {
 					if(conversation.time >= item.time && conversation.lastMessage != null){
 						_items.setItemAt(conversation, i);
 					}
@@ -58,9 +29,6 @@ package com.chat.model.communicators {
 				}
 			}
 			_items.append(conversation);
-		}
-		private function getParticipant(message:Message):EscapedJID {
-			return model.isMe(message.from) ? message.to : message.from;
 		}
 
 		public function updateUnreadCount():void {

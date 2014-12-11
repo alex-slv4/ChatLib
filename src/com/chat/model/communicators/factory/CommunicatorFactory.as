@@ -6,11 +6,12 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.*;
 	import com.chat.model.data.citems.CCommunicator;
-	import com.chat.model.data.collections.CItemCollection;
 	import com.chat.model.data.collections.ICItemCollection;
 
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+
+	import org.igniterealtime.xiff.core.AbstractJID;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
@@ -23,15 +24,15 @@ package com.chat.model.communicators.factory {
 		public var injector:IInjector;
 
 		public var creatorsMap:Dictionary = new Dictionary();
-		private var _items:ICItemCollection = new CItemCollection();
+		private var _conversations:IConversationsCommunicator;
 
 		[PostConstruct]
-		public function fillCreators():void{
+		public function init():void{
 			creatorsMap[Message] = MessageCreator;
 			creatorsMap[ChatRoom] = RoomCreator;
 			creatorsMap[RosterItemVO] = RosterItemCreator;
 			creatorsMap[ChatUser] = ChatUserCreator;
-			creatorsMap[CCommunicator] = ICItemCreator;
+			creatorsMap[AbstractJID] = JIDCreator;
 		}
 
 		public function dispose(communicator:ICommunicator):void {
@@ -65,12 +66,12 @@ package com.chat.model.communicators.factory {
 		private function getBy(uid:String):ICommunicator {
 			var i:int = getIndexBy(uid);
 			if(i == -1) return null;
-			var item:CCommunicator = (_items.getItemAt(i) as CCommunicator);
+			var item:CCommunicator = (items.getItemAt(i) as CCommunicator);
 			return item.communicator;
 		}
 		private function getIndexBy(uid:String):int {
-			for (var i:int = 0; i < _items.length; i++) {
-				var item:CCommunicator = _items.getItemAt(i) as CCommunicator;
+			for (var i:int = 0; i < items.length; i++) {
+				var item:CCommunicator = items.getItemAt(i) as CCommunicator;
 				if(item.communicator.uid == uid){
 					return i;
 				}
@@ -78,8 +79,16 @@ package com.chat.model.communicators.factory {
 			return -1;
 		}
 
-		public function get items():ICItemCollection {
-			return _items;
+		private function get items():ICItemCollection {
+			return conversations.items;
+		}
+
+		public function get conversations():IConversationsCommunicator {
+			if(_conversations == null){
+				_conversations = new ConversationsCommunicator();
+				injector.injectInto(_conversations);
+			}
+			return _conversations;
 		}
 	}
 }

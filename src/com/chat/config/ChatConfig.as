@@ -80,7 +80,6 @@ package com.chat.config {
 			injector.map(IChatModel).toSingleton(ChatModel);
 			injector.map(IChatController).toSingleton(ChatController);
 			injector.map(ICommunicatorFactory).toSingleton(CommunicatorFactory);
-			injector.map(IConversationsCommunicator).toSingleton(ConversationsCommunicator);
 
 			var presences:Presences = new Presences();
 			injector.map(IPresences).toValue(presences);
