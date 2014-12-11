@@ -6,7 +6,7 @@ package com.chat.model.history {
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.citems.CMessage;
-	import com.chat.model.data.citems.CString;
+	import com.chat.model.data.citems.CItem;
 	import com.chat.model.data.citems.CTitle;
 	import com.chat.model.data.citems.ICItem;
 

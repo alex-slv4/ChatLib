@@ -2,11 +2,11 @@
  * Created by kvint on 13.11.14.
  */
 package com.chat.model.data.citems {
-	public class CString implements ICItem {
+	public class CItem implements ICItem {
 
 		private var _data:String;
 
-		public function CString(data:String) {
+		public function CItem(data:String) {
 			_data = data;
 		}
 
