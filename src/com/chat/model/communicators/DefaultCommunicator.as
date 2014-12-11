@@ -30,13 +30,13 @@ package com.chat.model.communicators {
 		[Inject]
 		public var bus:IEventDispatcher;
 
-
 		private var _uid:String;
 		private var _count:int = 0;
 		protected var _items:ICItemCollection = new CItemCollection();
 		private var _active:Boolean;
 
 		public function DefaultCommunicator() {
+
 		}
 
 		public function set unreadCount(value:int):void {
