@@ -16,13 +16,13 @@ package com.chat.model.data.citems {
 		}
 
 		override public function toString():String {
-			return withJID.bareJID;
+			return withJID.bareJID + " " + last.toString();
 		}
 
 		public function get last():ICItem {
 			if(communicator.items.length)
 				return communicator.items.getItemAt(communicator.items.length-1);
-			return CString("");
+			return new CString("");
 		}
 	}
 }

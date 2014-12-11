@@ -15,7 +15,6 @@ package com.chat.model.communicators {
 			var fromJID:UnescapedJID = JIDUtil.unescape(conversation.withJID);
 			for(var i:int = 0; i < _items.length; i++) {
 				var item:ICConversation = _items.getItemAt(i) as ICConversation;
-				if(item == null) continue;
 				var withJID:UnescapedJID = JIDUtil.unescape(item.withJID);
 				if(withJID.equals(fromJID, true)) {
 					if(conversation.time >= item.time){
@@ -50,5 +49,11 @@ package com.chat.model.communicators {
 			return "Conversations";
 		}
 
+		public function fetchLasts():void {
+			for(var i:int = 0; i < _items.length; i++) {
+				var item:ICConversation = _items.getItemAt(i) as ICConversation;
+				item.communicator.history.fetch();
+			}
+		}
 	}
 }

@@ -7,5 +7,7 @@ package com.chat.model.communicators {
 	public interface IConversationsCommunicator extends ICommunicator {
 		function updateUnreadCount():void;
 		function updateWith(conversation:ICConversation):void;
+
+		function fetchLasts():void;
 	}
 }

@@ -43,6 +43,8 @@ package com.chat.controller.commands {
 				listStanza.addExtension(previous);
 
 				controller.send(listIQ);
+			}else{
+				model.conversations.fetchLasts();
 			}
 		}
 
