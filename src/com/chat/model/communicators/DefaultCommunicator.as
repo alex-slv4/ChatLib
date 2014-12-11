@@ -36,6 +36,7 @@ package com.chat.model.communicators {
 		private var _active:Boolean;
 
 		public function DefaultCommunicator() {
+
 		}
 
 		public function set unreadCount(value:int):void {
