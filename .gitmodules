@@ -1,0 +1,3 @@
+[submodule "XIFF"]
+	path = XIFF
+	url = git@github.com:kvint/XIFF.git
