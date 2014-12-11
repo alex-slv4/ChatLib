@@ -8,6 +8,5 @@ package com.chat.model.data.citems {
 
 		function get communicator():ICommunicator;
 
-		function get lastMessage():ICMessage;
 	}
 }

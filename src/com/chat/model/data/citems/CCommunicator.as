@@ -23,10 +23,6 @@ package com.chat.model.data.citems {
 			return _communicator;
 		}
 
-		public function get lastMessage():ICMessage {
-			return null;
-		}
-
 		public function get time():Number {
 			return _startTime;
 		}
@@ -35,5 +31,8 @@ package com.chat.model.data.citems {
 			return _communicator.toString();
 		}
 
+		public function get lastMessage():ICMessage {
+			return null;
+		}
 	}
 }

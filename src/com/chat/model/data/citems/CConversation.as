@@ -14,5 +14,15 @@ package com.chat.model.data.citems {
 		public function get withJID():AbstractJID {
 			return (communicator as DirectCommunicator).participant;
 		}
+
+		override public function toString():String {
+			return withJID.bareJID;
+		}
+
+		public function get last():ICItem {
+			if(communicator.items.length)
+				return communicator.items.getItemAt(communicator.items.length-1);
+			return CString("");
+		}
 	}
 }

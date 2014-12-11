@@ -18,7 +18,7 @@ package com.chat.model.communicators {
 				if(item == null) continue;
 				var withJID:UnescapedJID = JIDUtil.unescape(item.withJID);
 				if(withJID.equals(fromJID, true)) {
-					if(conversation.time >= item.time && conversation.lastMessage != null){
+					if(conversation.time >= item.time){
 						_items.setItemAt(conversation, i);
 					}
 					return;

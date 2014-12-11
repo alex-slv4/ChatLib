@@ -7,5 +7,7 @@ package com.chat.model.data.citems {
 	public interface ICConversation extends ICCommunicator {
 
 		function get withJID():AbstractJID;
+
+		function get last():ICItem;
 	}
 }

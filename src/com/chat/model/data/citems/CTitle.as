@@ -2,7 +2,7 @@
  * Created by AlexanderSla on 10.12.2014.
  */
 package com.chat.model.data.citems {
-	public class CTitle extends CItemString implements ICTime {
+	public class CTitle extends CString implements ICTime {
 
 		private var _time:Number;
 
