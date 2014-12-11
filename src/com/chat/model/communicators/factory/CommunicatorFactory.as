@@ -5,7 +5,6 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.ChatRoom;
 	import com.chat.model.ChatUser;
 	import com.chat.model.communicators.*;
-	import com.chat.model.data.citems.CCommunicator;
 	import com.chat.model.data.collections.CItemCollection;
 	import com.chat.model.data.collections.ICItemCollection;
 
@@ -63,7 +62,7 @@ package com.chat.model.communicators.factory {
 				communicator = creator.create();
 				communicator.uid = creator.uid;
 				injector.injectInto(communicator);
-				items.append(new CCommunicator(communicator));
+				items.append(communicator);
 			}
 			return communicator;
 		}
@@ -71,13 +70,12 @@ package com.chat.model.communicators.factory {
 		private function getBy(uid:String):ICommunicator {
 			var i:int = getIndexBy(uid);
 			if(i == -1) return null;
-			var item:CCommunicator = (items.getItemAt(i) as CCommunicator);
-			return item.communicator;
+			return items.getItemAt(i) as ICommunicator;
 		}
 		private function getIndexBy(uid:String):int {
 			for (var i:int = 0; i < items.length; i++) {
-				var item:CCommunicator = items.getItemAt(i) as CCommunicator;
-				if(item.communicator.uid == uid){
+				var item:ICommunicator = items.getItemAt(i) as ICommunicator;
+				if(item.uid == uid){
 					return i;
 				}
 			}

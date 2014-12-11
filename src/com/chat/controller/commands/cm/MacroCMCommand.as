@@ -2,12 +2,11 @@
  * Created by kvint on 14.11.14.
  */
 package com.chat.controller.commands.cm {
-	import com.chat.controller.commands.*;
-	import com.adobe.utils.DictionaryUtil;
 	import com.chat.events.CommunicatorCommandEvent;
 
-	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
+
+	import org.as3commons.lang.DictionaryUtils;
 
 	public class MacroCMCommand extends CMCommand {
 
@@ -19,7 +18,7 @@ package com.chat.controller.commands.cm {
 
 		protected function printInfo():void {
 			print(this);
-			var keys:Array = DictionaryUtil.getKeys(subCommands);
+			var keys:Array = DictionaryUtils.getKeys(subCommands);
 			for (var i:int = 0; i < keys.length; i++) {
 				print(keys[i]);
 			}
@@ -37,7 +36,7 @@ package com.chat.controller.commands.cm {
 
 		override protected function executeIfNoErrors():void {
 			var subCommandName:String = params[0];
-			var keys:Array = DictionaryUtil.getKeys(subCommands);
+			var keys:Array = DictionaryUtils.getKeys(subCommands);
 			if (keys.indexOf(subCommandName) != -1) {
 				runSubCommand(subCommandName);
 			} else {

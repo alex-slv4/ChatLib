@@ -2,12 +2,10 @@
  * Created by AlexanderSla on 05.12.2014.
  */
 package com.chat.model.data.collections {
+	import com.chat.events.CItemCollectionEvent;
 	import com.chat.model.data.citems.ICItem;
 
-	import feathers.events.CollectionEventType;
-
-	import starling.events.Event;
-	import starling.events.EventDispatcher;
+	import flash.events.EventDispatcher;
 
 	public class CItemCollection extends EventDispatcher implements ICItemCollection {
 
@@ -17,14 +15,14 @@ package com.chat.model.data.collections {
 			_source.push(item);
 
 			changed();
-			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, this.length-1);
+			this.dispatchEventWith(CItemCollectionEvent.ADD_ITEM, false, this.length-1);
 		}
 
 		public function insert(index:int, item:ICItem):void {
 			_source.splice(index, 0, item);
 
 			changed();
-			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
+			this.dispatchEventWith(CItemCollectionEvent.ADD_ITEM, false, index);
 		}
 
 		public function getItemAt(index:int):ICItem {
@@ -34,20 +32,20 @@ package com.chat.model.data.collections {
 		public function setItemAt(item:ICItem, index:int):void {
 			_source[index] = item;
 			changed();
-			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
+			this.dispatchEventWith(CItemCollectionEvent.REPLACE_ITEM, false, index);
 		}
 
 		public function prepend(item:ICItem):void {
 			_source.unshift(item);
 
 			changed();
-			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, 0);
+			this.dispatchEventWith(CItemCollectionEvent.ADD_ITEM, false, 0);
 		}
 
 		public function remove(index:int):ICItem {
 			var icItem:ICItem = _source.splice(index, 1)[0];
 			changed();
-			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
+			this.dispatchEventWith(CItemCollectionEvent.REMOVE_ITEM, false, index);
 			return icItem;
 		}
 
@@ -55,16 +53,16 @@ package com.chat.model.data.collections {
 		public function removeAll():void {
 			_source = new <ICItem>[];
 			changed();
-			this.dispatchEventWith(CollectionEventType.RESET, false);
+			this.dispatchEventWith(CItemCollectionEvent.RESET, false);
 		}
 
 		public function touch(indexOrItem:* = null):void {
 			if(indexOrItem is int){
-				this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, indexOrItem);
+				this.dispatchEventWith(CItemCollectionEvent.UPDATE_ITEM, false, indexOrItem);
 			}else if(indexOrItem is ICItem){
 				var index:int = indexOf(indexOrItem);
 				if(index != -1){
-					this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
+					this.dispatchEventWith(CItemCollectionEvent.UPDATE_ITEM, false, index);
 				}
 			}else{
 				changed();
@@ -72,7 +70,11 @@ package com.chat.model.data.collections {
 		}
 
 		private function changed():void {
-			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CItemCollectionEvent.CHANGE);
+		}
+
+		public function dispatchEventWith(eventName:String, bubbles:Boolean = false, data:Object = null):void {
+			dispatchEvent(new CItemCollectionEvent(eventName, bubbles, data));
 		}
 
 		public function indexOf(item:ICItem):int {

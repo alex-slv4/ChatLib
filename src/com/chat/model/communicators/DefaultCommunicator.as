@@ -92,6 +92,10 @@ package com.chat.model.communicators {
 			_uid = value;
 		}
 
+		public function get data():* {
+			return null;
+		}
+
 		public function destroy():void {
 			clear();
 			bus = null;

@@ -5,10 +5,7 @@ package com.chat.model.communicators {
 	import com.chat.events.CommunicatorCommandEvent;
 	import com.chat.model.ChatUser;
 	import com.chat.model.history.ConversationsProvider;
-	import com.chat.model.history.HistoryProvider;
 	import com.chat.model.history.IHistoryProvider;
-	import com.chat.model.data.citems.ICItem;
-	import com.chat.model.data.citems.CMessage;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 

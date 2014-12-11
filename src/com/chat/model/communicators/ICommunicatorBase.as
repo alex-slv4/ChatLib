@@ -7,7 +7,7 @@ package com.chat.model.communicators {
 
 	import flash.events.IEventDispatcher;
 
-	public interface ICommunicatorBase extends IEventDispatcher {
+	public interface ICommunicatorBase extends IEventDispatcher, ICItem {
 
 		function get items():ICItemCollection;
 
@@ -17,7 +17,6 @@ package com.chat.model.communicators {
 
 		function destroy():void;
 
-		function toString():String;
 	}
 
 }

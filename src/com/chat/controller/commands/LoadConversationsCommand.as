@@ -6,10 +6,7 @@ package com.chat.controller.commands {
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.citems.CCommunicator;
 	import com.chat.model.data.citems.CConversation;
-	import com.chat.model.data.citems.ICCommunicator;
 	import com.chat.model.data.citems.ICConversation;
 	import com.chat.utils.OFSetLooper;
 
@@ -43,6 +40,8 @@ package com.chat.controller.commands {
 				listStanza.addExtension(previous);
 
 				controller.send(listIQ);
+			}else{
+				//model.conversations.fetchLasts();
 			}
 		}
 
@@ -53,7 +52,8 @@ package com.chat.controller.commands {
 				var chat:ChatStanza = _list.chats[i];
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var communicator:ICommunicator = model.communicators.getFor(chat.withJID);
-				var conversation:ICConversation = new CConversation(communicator as DirectCommunicator, date.getTime());
+				var directCommunicator:DirectCommunicator = communicator as DirectCommunicator;
+				var conversation:ICConversation = new CConversation(directCommunicator, date.getTime());
 				model.conversations.updateWith(conversation);
 			}
 
