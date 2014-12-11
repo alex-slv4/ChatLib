@@ -3,6 +3,8 @@
  */
 package com.chat.model.communicators.factory {
 	import com.chat.model.communicators.*;
+	import com.chat.model.data.collections.ICItemCollection;
+
 	import flash.events.IEventDispatcher;
 
 	public interface ICommunicatorFactory extends IEventDispatcher{
@@ -11,6 +13,6 @@ package com.chat.model.communicators.factory {
 
 		function getFor(data:Object)				:ICommunicator;
 
-		function getAll()									:Vector.<ICommunicator>;
+		function get items():ICItemCollection;
 	}
 }

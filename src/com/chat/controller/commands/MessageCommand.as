@@ -2,13 +2,12 @@
  * Created by kvint on 16.11.14.
  */
 package com.chat.controller.commands {
-	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.activity.IActivitiesHandler;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.IWritableCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.events.MessageEvent;
@@ -23,9 +22,6 @@ package com.chat.controller.commands {
 
 		[Inject]
 		public var activities:IActivitiesHandler;
-
-		[Inject]
-		public var conversations:IConversationsCommunicator;
 
 		override public function execute():void {
 
@@ -51,18 +47,17 @@ package com.chat.controller.commands {
 				return;
 			}
 
-			var itemMessage:CItemMessage = new CItemMessage(message);
+			var itemMessage:CMessage = new CMessage(message);
 			communicator.items.append(itemMessage);
 
 			if (model.isMe(message.from)) {
 				//do nothing
 			} else {
 				if(communicator.unreadCount == 0){
-					conversations.unreadCount++;
+					model.conversations.unreadCount++;
 				}
 				communicator.unreadCount++;
 			}
-			conversations.updateWith(itemMessage);
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {
@@ -76,12 +71,12 @@ package com.chat.controller.commands {
 
 		private function handleReceipt(message:Message, communicator:ICommunicator):void {
 			if (message.receipt == Message.RECEIPT_RECEIVED) { //It's ack ackMessage
-				var receiptMessageItem:CItemMessage = model.receiptRequests[message.receiptId];
+				var receiptMessageItem:CMessage = model.receiptRequests[message.receiptId];
 				if (receiptMessageItem) {
 					delete model.receiptRequests[message.receiptId];
-					var message:Message = receiptMessageItem.data as Message;
+					var msg:Message = receiptMessageItem.data as Message;
 					receiptMessageItem.isRead = true;
-					message.receipt = null;
+					msg.receipt = null;
 					communicator.items.touch(receiptMessageItem);
 				}
 			}

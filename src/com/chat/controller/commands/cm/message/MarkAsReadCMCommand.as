@@ -5,14 +5,11 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
-	import com.chat.model.data.citems.CItemMessage;
+	import com.chat.model.data.citems.CMessage;
 
 	import org.igniterealtime.xiff.data.Message;
 
 	public class MarkAsReadCMCommand extends CMCommand {
-
-		[Inject]
-		public var conversations:IConversationsCommunicator;
 
 		override protected function executeIfNoErrors():void {
 			var message:Message = messageItem.data as Message;
@@ -22,7 +19,7 @@ package com.chat.controller.commands.cm.message {
 				if(!messageItem.isRead){
 					castedCommunicator.unreadCount--;
 					if(castedCommunicator.unreadCount == 0){
-						conversations.unreadCount--;
+						model.conversations.unreadCount--;
 					}
 					messageItem.isRead = true;
 				}
@@ -42,7 +39,7 @@ package com.chat.controller.commands.cm.message {
 		public function get castedCommunicator():ICommunicator {
 			return communicator as ICommunicator;
 		}
-		private function get messageItem():CItemMessage {
+		private function get messageItem():CMessage {
 			return params[0];
 		}
 

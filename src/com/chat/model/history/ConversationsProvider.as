@@ -5,8 +5,9 @@ package com.chat.model.history {
 	import com.chat.controller.IChatController;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.data.citems.CItemMessage;
-	import com.chat.model.data.citems.CItemString;
+	import com.chat.model.data.citems.CMessage;
+	import com.chat.model.data.citems.CString;
+	import com.chat.model.data.citems.CTitle;
 	import com.chat.model.data.citems.ICItem;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -23,7 +24,7 @@ package com.chat.model.history {
 
 	public class ConversationsProvider implements IHistoryProvider {
 
-		public static var BUFFER_SIZE:int = 50;
+		public static var BUFFER_SIZE:int = 10;
 
 		[Inject]
 		public var controller:IChatController;
@@ -48,6 +49,7 @@ package com.chat.model.history {
 		private var _uglyOpenfireTrigger:Boolean;
 		private var _communicator:DirectCommunicator;
 		private var _endReached:Boolean = false;
+		private var _msgCount:int = 0;
 
 		public function ConversationsProvider(communicator:DirectCommunicator) {
 			_communicator = communicator;
@@ -119,25 +121,26 @@ package com.chat.model.history {
 				message.from = tag.localName() == "from" ? _participant.escaped : _me.escaped;
 				var secsOffset:int = tag.@secs;
 				var time:Number = startTime + secsOffset * 1000;
-				var itemMessage:CItemMessage = new CItemMessage(message, time);
+				var itemMessage:CMessage = new CMessage(message, time);
 				itemMessage.isRead = true;
-				//results.push(new CItemString(model.dateFormatter.formatUTC(new Date(time))));
+				//results.push(new CString(model.dateFormatter.formatUTC(new Date(time))));
 				results.push(itemMessage);
+				_msgCount++;
 			}
+			_cachedItems = _cachedItems.concat(results.reverse());
 
-			_cachedItems = _cachedItems.concat(results);
+			_conversationStepper.pin(rsmSet);
 
 			if(resultsIsReady()){
 				deliverResults();
 				return;
 			}
 
-			_conversationStepper.pin(rsmSet);
 			loadNextConversations();
 		}
 
 		private function resultsIsReady():Boolean {
-			return _cachedItems.length >= BUFFER_SIZE || _endReached;
+			return _msgCount >= BUFFER_SIZE || _endReached;
 		}
 
 		private function conversationErrorCallback(iq:IQ):void {
@@ -164,11 +167,42 @@ package com.chat.model.history {
 		}
 
 		private function deliverResults():void {
-			var results:Vector.<ICItem> = _cachedItems.splice(0, BUFFER_SIZE);
-			for(var i:int = 0; i < results.length; i++) {
+			var i:int = 0;
+			var idx:int = 0;
+			var lastCommunicatorMessage:CMessage = getLastCommunicatorMessage();
+
+			if(lastCommunicatorMessage){
+				for(i = 0; i < _cachedItems.length; i++) {
+					var icItem:ICItem = _cachedItems[i];
+					if(icItem is CMessage){
+						var msg:CMessage = icItem as CMessage;
+						if(msg.time < lastCommunicatorMessage.time){
+							idx = i;
+							break;
+						}
+					}
+				}
+			}
+
+			var results:Vector.<ICItem> = _cachedItems; //.splice(idx, BUFFER_SIZE);
+			for(i = 0; i < results.length; i++) {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);
+
+				if(item is CMessage){
+					_msgCount--;
+				}
 			}
+			_cachedItems = new <ICItem>[];
+		}
+
+		private function getLastCommunicatorMessage():CMessage {
+			for(var i:int = 0; i < _communicator.items.length; i++) {
+				var object:ICItem = _communicator.items.getItemAt(i);
+				if(object is CMessage) return object as CMessage;
+
+			}
+			return null;
 		}
 
 		private function loadLastChat():void {
@@ -176,7 +210,7 @@ package com.chat.model.history {
 
 			if(_currentChat != null){
 				var date:Date = DateTimeParser.string2dateTime(_currentChat.start);
-				_cachedItems.push(new CItemString("--------------------(" + model.dateFormatter.formatUTC(date) + ")--------------------"));
+				_cachedItems.push(new CTitle("New conversation", date.getTime()));
 			}
 
 			if(_chats.length>0){

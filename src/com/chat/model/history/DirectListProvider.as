@@ -19,7 +19,7 @@ package com.chat.model.history {
 
 		private var _participant:UnescapedJID;
 		private var _list:List;
-		private var _chatStepper:ISetLooper = new OFSetLooper(20);
+		private var _chatStepper:ISetLooper = new OFSetLooper(2);
 		private var _end:Boolean;
 		private var _callBack:Function;
 

@@ -27,7 +27,6 @@ package com.chat.model {
 		function get serverTimeOffset():int;
 		function set serverTimeOffset(value:int):void;
 
-		function get conversations():IConversationsCommunicator;
 		function get communicators():ICommunicatorFactory;
 		function get presences():IPresences;
 		function get activities():IActivities;
@@ -43,5 +42,7 @@ package com.chat.model {
 
 		function get threadGenerator():IIDGenerator;
 		function get dateFormatter():DateTimeFormatter;
+
+		function get conversations():IConversationsCommunicator;
 	}
 }

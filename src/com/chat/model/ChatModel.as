@@ -3,6 +3,7 @@
  */
 package com.chat.model {
 	import com.chat.model.activity.IActivities;
+	import com.chat.model.communicators.ConversationsCommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.presences.IPresences;
@@ -28,7 +29,6 @@ package com.chat.model {
 		public var injector:IInjector;
 
 		private var _connection:IXMPPConnection;
-		private var _conversations:IConversationsCommunicator;
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
@@ -37,7 +37,8 @@ package com.chat.model {
 		private var _presences:IPresences;
 		private var _activities:IActivities;
 		private var _threadGenerator:IIDGenerator;
-		private var _dateFormatter:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.SHORT);
+		private var _dateFormatter:DateTimeFormatter = new DateTimeFormatter(flash.globalization.LocaleID.DEFAULT, DateTimeStyle.SHORT, DateTimeStyle.LONG);
+		private var _conversations:IConversationsCommunicator;
 
 		public function get currentUser():ChatUser {
 			return _currentUser;
@@ -88,9 +89,6 @@ package com.chat.model {
 		public function get activities():IActivities {
 			return _activities;
 		}
-		public function get conversations():IConversationsCommunicator {
-			return _conversations ||= injector.getInstance(IConversationsCommunicator);;
-		}
 		public function get threadGenerator():IIDGenerator {
 			if(_threadGenerator == null) {
 				_threadGenerator = new RandomGenerator();
@@ -121,6 +119,14 @@ package com.chat.model {
 
 		public function get dateFormatter():DateTimeFormatter {
 			return _dateFormatter;
+		}
+
+		public function get conversations():IConversationsCommunicator {
+			if(_conversations == null) {
+				_conversations = new ConversationsCommunicator();
+				injector.injectInto(_conversations);
+			}
+			return _conversations;
 		}
 	}
 }

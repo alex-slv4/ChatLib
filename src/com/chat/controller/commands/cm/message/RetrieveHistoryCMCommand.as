@@ -13,7 +13,6 @@ package com.chat.controller.commands.cm.message {
 		public var injector:IInjector;
 
 		override protected function executeIfNoErrors():void {
-			var count:int = params[0];
 			directCommunicator.history.fetch();
 		}
 

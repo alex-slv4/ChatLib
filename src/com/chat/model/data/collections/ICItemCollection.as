@@ -11,6 +11,7 @@ package com.chat.model.data.collections {
 	[Event(name="replaceItem",type="starling.events.Event")]
 	[Event(name="updateItem",type="starling.events.Event")]
 
+	//TODO: implement filter
 	public interface ICItemCollection {
 		function append(item:ICItem):void;
 		function insert(index:int, item:ICItem):void;

@@ -8,7 +8,7 @@ package com.chat.controller.commands.cm {
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
-	import com.chat.model.data.citems.CItemString;
+	import com.chat.model.data.citems.CString;
 
 	import flash.events.IEventDispatcher;
 
@@ -38,14 +38,13 @@ package com.chat.controller.commands.cm {
 
 
 		protected function setUp():void {
-			communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 		protected function tearDown():void {
-			communicators.removeEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, onCommunicatorDestroyed);
 		}
 
 		protected function onCommunicatorDestroyed(e:CommunicatorFactoryEvent):void {
 			if(e.data === _communicator){
+				//TODO: handle destroy
 				_communicator = null;
 			}
 		}
@@ -79,7 +78,7 @@ package com.chat.controller.commands.cm {
 
 		public function write(type:int, ...args):void {
 			var prefix:String = type == 1 ? "error" : "";
-			communicator.items.append(new CItemString(prefix + " " + args.join(" ")));
+			communicator.items.append(new CString(prefix + " " + args.join(" ")));
 		}
 
 		public function get communicator():ICommunicatorBase {
