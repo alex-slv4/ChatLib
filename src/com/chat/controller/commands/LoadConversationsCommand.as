@@ -30,9 +30,6 @@ package com.chat.controller.commands {
 		[Inject]
 		public var controller:IChatController;
 
-		[Inject]
-		public var conversations:IConversationsCommunicator;
-
 		private var _chatStepper:ISetLooper = new OFSetLooper(4);
 
 		public function execute():void {
@@ -55,9 +52,9 @@ package com.chat.controller.commands {
 			for (var i:int = 0; i < _list.chats.length; i++) {
 				var chat:ChatStanza = _list.chats[i];
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
-				var communicator:DirectCommunicator = model.communicators.getFor(chat.withJID) as DirectCommunicator;
-				var conversation:ICConversation = new CConversation(communicator, date.getTime());
-				conversations.updateWith(conversation);
+				var communicator:ICommunicator = model.communicators.getFor(chat.withJID);
+				var conversation:ICConversation = new CConversation(communicator as DirectCommunicator, date.getTime());
+				model.communicators.conversations.updateWith(conversation);
 			}
 
 			_chatStepper.pin(rsmSet);

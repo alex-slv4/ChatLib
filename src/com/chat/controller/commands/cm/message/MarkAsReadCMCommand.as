@@ -11,9 +11,6 @@ package com.chat.controller.commands.cm.message {
 
 	public class MarkAsReadCMCommand extends CMCommand {
 
-		[Inject]
-		public var conversations:IConversationsCommunicator;
-
 		override protected function executeIfNoErrors():void {
 			var message:Message = messageItem.data as Message;
 			if(model.isMe(message.from)) {
@@ -22,7 +19,7 @@ package com.chat.controller.commands.cm.message {
 				if(!messageItem.isRead){
 					castedCommunicator.unreadCount--;
 					if(castedCommunicator.unreadCount == 0){
-						conversations.unreadCount--;
+						model.communicators.conversations.unreadCount--;
 					}
 					messageItem.isRead = true;
 				}

@@ -12,6 +12,8 @@ package com.chat.model.communicators.factory {
 	import flash.utils.Dictionary;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
+	import org.igniterealtime.xiff.core.EscapedJID;
+	import org.igniterealtime.xiff.core.UnescapedJID;
 
 	import org.igniterealtime.xiff.data.Message;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
@@ -32,7 +34,10 @@ package com.chat.model.communicators.factory {
 			creatorsMap[ChatRoom] = RoomCreator;
 			creatorsMap[RosterItemVO] = RosterItemCreator;
 			creatorsMap[ChatUser] = ChatUserCreator;
+
 			creatorsMap[AbstractJID] = JIDCreator;
+			creatorsMap[UnescapedJID] = JIDCreator;
+			creatorsMap[EscapedJID] = JIDCreator;
 		}
 
 		public function dispose(communicator:ICommunicator):void {

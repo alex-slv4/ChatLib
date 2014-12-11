@@ -32,7 +32,7 @@ package com.chat.model.data.citems {
 		}
 
 		public function toString():String {
-			return this.toString();
+			return _communicator.toString();
 		}
 
 	}

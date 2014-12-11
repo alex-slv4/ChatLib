@@ -23,9 +23,6 @@ package com.chat.controller.commands {
 		[Inject]
 		public var activities:IActivitiesHandler;
 
-		[Inject]
-		public var conversations:IConversationsCommunicator;
-
 		override public function execute():void {
 
 			var message:Message = event.data;
@@ -57,7 +54,7 @@ package com.chat.controller.commands {
 				//do nothing
 			} else {
 				if(communicator.unreadCount == 0){
-					conversations.unreadCount++;
+					model.communicators.conversations.unreadCount++;
 				}
 				communicator.unreadCount++;
 			}
