@@ -4,12 +4,12 @@
 package com.chat.model.data.collections {
 	import com.chat.model.data.citems.ICItem;
 
-	[Event(name="change",type="starling.events.Event")]
-	[Event(name="reset",type="starling.events.Event")]
-	[Event(name="addItem",type="starling.events.Event")]
-	[Event(name="removeItem",type="starling.events.Event")]
-	[Event(name="replaceItem",type="starling.events.Event")]
-	[Event(name="updateItem",type="starling.events.Event")]
+	[Event(name="change",type="com.chat.events.CItemCollectionEvent")]
+	[Event(name="reset",type="com.chat.events.CItemCollectionEvent")]
+	[Event(name="addItem",type="com.chat.events.CItemCollectionEvent")]
+	[Event(name="removeItem",type="com.chat.events.CItemCollectionEvent")]
+	[Event(name="replaceItem",type="com.chat.events.CItemCollectionEvent")]
+	[Event(name="updateItem",type="com.chat.events.CItemCollectionEvent")]
 
 	//TODO: implement filter
 	public interface ICItemCollection {
