@@ -74,7 +74,7 @@ package com.chat.controller.commands {
 				var receiptMessageItem:CMessage = model.receiptRequests[message.receiptId];
 				if (receiptMessageItem) {
 					delete model.receiptRequests[message.receiptId];
-					var msg:Message = receiptMessageItem.data as Message;
+					var msg:Message = receiptMessageItem.messageData;
 					receiptMessageItem.isRead = true;
 					msg.receipt = null;
 					communicator.items.touch(receiptMessageItem);

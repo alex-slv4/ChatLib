@@ -16,7 +16,8 @@ package com.chat.model.data.citems {
 			_time = value;
 		}
 		public function get time():Number {
-			return getTime(_time);
+			if(isNaN(_originTime)) return new Date().time;
+			return isNaN(_time) ? getTime(_originTime) : _time;
 		}
 
 		public static function get serverTimeOffset():Number {

@@ -56,5 +56,10 @@ package com.chat.model.data.citems {
 		public function get messageData():Message {
 			return _messageData;
 		}
+
+		override public function get data():* {
+			//Please use messageData instead
+			return null;
+		}
 	}
 }

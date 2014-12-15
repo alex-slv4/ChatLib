@@ -35,7 +35,7 @@ package com.chat.model.communicators {
 			commandsMap["/room"] = CommunicatorCommandEvent.ROOM;
 			commandsMap["/clear"] = CommunicatorCommandEvent.CLEAR;
 			commandsMap["/help"] = CommunicatorCommandEvent.HELP;
-			commandsMap["/trace"] = CommunicatorCommandEvent.TRACE;
+			commandsMap["/test"] = CommunicatorCommandEvent.TEST;
 			commandsMap["/info"] = CommunicatorCommandEvent.INFO;
 			commandsMap["/history"] = CommunicatorCommandEvent.HISTORY;
 		}
