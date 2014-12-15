@@ -5,42 +5,40 @@ package com.chat.model.data.citems {
 	import org.igniterealtime.xiff.core.AbstractJID;
 	import org.igniterealtime.xiff.data.Message;
 
-	public class CMessage implements ICMessage {
+	public class CMessage extends CTime implements ICMessage, ICTime {
 
-		private var _time:Number;
-		private var _data:Message;
+		private var _messageData:Message;
 		private var _isRead:Boolean;
 
 		public function CMessage(data:Message, time:Number = NaN) {
-			_time = time;
-			_data = data;
+			super(data);
+			originTime = time;
+			_messageData = data;
 		}
 
 		public function get body():Object {
-			return _data.body;
+			return messageData.body;
 		}
 
-		public function get time():Number {
-			if(!isNaN(_time)) return _time;
-			if(_data.time != null) return _data.time.time;
-			return new Date().time;
+		override public function get time():Number {
+			if(isNaN(_originTime)){
+				if(messageData.time != null) return convertTimeFromDate(messageData.time);
+				return convertTimeFromDate(new Date());
+			}
+			return super.time;
 		}
 
 		public function get from():Object {
-			if (_data.from is AbstractJID){
-				if(_data.type == Message.TYPE_GROUPCHAT){
-					return _data.from.resource;
+			if (messageData.from is AbstractJID){
+				if(messageData.type == Message.TYPE_GROUPCHAT){
+					return messageData.from.resource;
 				}
-				return (_data.from as AbstractJID).node;
+				return (messageData.from as AbstractJID).node;
 			}
-			else if (_data.from is String)
-				return _data.from;
+			else if (messageData.from is String)
+				return messageData.from;
 			else
-				return _data.from;
-		}
-
-		public function get data():* {
-			return _data;
+				return messageData.from;
 		}
 
 		public function get isRead():Boolean {
@@ -51,8 +49,12 @@ package com.chat.model.data.citems {
 			_isRead = value;
 		}
 
-		public function toString():String {
+		override public function toString():String {
 			return String(body);
+		}
+
+		public function get messageData():Message {
+			return _messageData;
 		}
 	}
 }

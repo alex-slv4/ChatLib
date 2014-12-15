@@ -4,26 +4,24 @@
 package com.chat.model.data.citems {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
+	import com.chat.model.data.citems.CTime;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
 
-	public class CConversation implements ICConversation {
+	public class CConversation extends CTime implements ICConversation {
 
 		private var _communicator:DirectCommunicator;
-		private var _startTime:Number;
 
 		public function CConversation(communicator:DirectCommunicator, startTime:Number = NaN) {
+			super(communicator);
 			_communicator = communicator;
-			_startTime = startTime;
+			originTime = startTime;
 		}
 
 		public function get withJID():AbstractJID {
 			return (communicator as DirectCommunicator).participant;
 		}
 
-		public function toString():String {
-			return withJID.bareJID + " " + last.toString();
-		}
 		public function get communicator():ICommunicator {
 			return _communicator;
 		}
@@ -33,12 +31,11 @@ package com.chat.model.data.citems {
 			return new CItem("");
 		}
 
-		public function get time():Number {
-			return _startTime;
-		}
-
-		public function get data():* {
+		override public function get data():* {
 			return _communicator;
+		}
+		override public function toString():String {
+			return withJID.bareJID + " " + last.toString();
 		}
 	}
 }

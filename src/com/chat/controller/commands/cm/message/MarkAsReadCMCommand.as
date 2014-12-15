@@ -12,7 +12,7 @@ package com.chat.controller.commands.cm.message {
 	public class MarkAsReadCMCommand extends CMCommand {
 
 		override protected function executeIfNoErrors():void {
-			var message:Message = messageItem.data as Message;
+			var message:Message = messageItem.messageData;
 			if(model.isMe(message.from)) {
 				//do nothing
 			}else{

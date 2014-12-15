@@ -2,7 +2,7 @@
  * Created by kvint on 16.11.14.
  */
 package com.chat.controller.commands {
-	import com.chat.utils.TimeUtil;
+	import com.chat.model.data.citems.CTime;
 
 	import org.igniterealtime.xiff.data.IQ;
 	import org.igniterealtime.xiff.data.time.Time;
@@ -24,7 +24,7 @@ package com.chat.controller.commands {
 			var time:Time = iq.getExtension(Time.ELEMENT_NAME) as Time;
 			var date:Date = DateTimeParser.string2dateTime(time.utc);
 			var localDate:Date = new Date();
-			TimeUtil.serverTimeOffset = date.time - localDate.time;
+			CTime.serverTimeOffset = date.time - localDate.time;
 		}
 		private function iqErrorCallback(iq:IQ):void {
 			throw new Error(iq.xml);
