@@ -52,8 +52,10 @@ package com.chat.controller.commands {
 				var chat:ChatStanza = _list.chats[i];
 				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var communicator:ICommunicator = model.communicators.getFor(chat.withJID);
-				var directCommunicator:DirectCommunicator = communicator as DirectCommunicator;
-				var conversation:ICConversation = new CConversation(directCommunicator, date.getTime());
+
+				if(!(communicator is DirectCommunicator)) continue;
+
+				var conversation:ICConversation = new CConversation(communicator as DirectCommunicator, date.getTime());
 				model.conversations.updateWith(conversation);
 			}
 

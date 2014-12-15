@@ -6,7 +6,6 @@ package com.chat.model.history {
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.citems.CMessage;
-	import com.chat.model.data.citems.CItem;
 	import com.chat.model.data.citems.CTitle;
 	import com.chat.model.data.citems.ICItem;
 
@@ -123,7 +122,6 @@ package com.chat.model.history {
 				var time:Number = startTime + secsOffset * 1000;
 				var itemMessage:CMessage = new CMessage(message, time);
 				itemMessage.isRead = true;
-				//results.push(new CString(model.dateFormatter.formatUTC(new Date(time))));
 				results.push(itemMessage);
 				_msgCount++;
 			}
@@ -210,7 +208,7 @@ package com.chat.model.history {
 
 			if(_currentChat != null){
 				var date:Date = DateTimeParser.string2dateTime(_currentChat.start);
-				_cachedItems.push(new CTitle("New conversation", date.getTime()));
+				_cachedItems.push(new CTitle("New conversation", date.time));
 			}
 
 			if(_chats.length>0){

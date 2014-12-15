@@ -24,9 +24,6 @@ package com.chat.model {
 		function get roster():IRoster;
 		function set roster(value:IRoster):void;
 
-		function get serverTimeOffset():int;
-		function set serverTimeOffset(value:int):void;
-
 		function get communicators():ICommunicatorFactory;
 		function get presences():IPresences;
 		function get activities():IActivities;

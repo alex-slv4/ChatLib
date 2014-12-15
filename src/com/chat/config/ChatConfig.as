@@ -16,7 +16,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.HelpCMCommand;
 	import com.chat.controller.commands.cm.InfoCMCommand;
 	import com.chat.controller.commands.cm.CloseCMCommand;
-	import com.chat.controller.commands.cm.TraceCMCommand;
+	import com.chat.controller.commands.cm.TestCMCommand;
 	import com.chat.controller.commands.cm.message.MarkAsReadCMCommand;
 	import com.chat.controller.commands.MessageCommand;
 	import com.chat.controller.commands.cm.message.RetrieveHistoryCMCommand;
@@ -101,7 +101,7 @@ package com.chat.config {
 
 			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
-			commandMap.map(CommunicatorCommandEvent.TRACE).toCommand(TraceCMCommand);
+			commandMap.map(CommunicatorCommandEvent.TEST).toCommand(TestCMCommand);
 			commandMap.map(CommunicatorCommandEvent.CLEAR).toCommand(ClearCMCommand);
 			commandMap.map(CommunicatorCommandEvent.HELP).toCommand(HelpCMCommand);
 

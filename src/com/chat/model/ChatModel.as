@@ -32,7 +32,6 @@ package com.chat.model {
 		private var _currentUser:ChatUser;
 		private var _roster:IRoster;
 		private var _receiptRequests:Dictionary = new Dictionary();
-		private var _serverTimeOffset:Number;
 		private var _communicators:ICommunicatorFactory;
 		private var _presences:IPresences;
 		private var _activities:IActivities;
@@ -54,18 +53,6 @@ package com.chat.model {
 
 		public function set roster(value:IRoster):void {
 			_roster = value;
-		}
-
-		public function get serverTimeOffset():int {
-			return _serverTimeOffset;
-		}
-
-		public function set serverTimeOffset(value:int):void {
-			_serverTimeOffset = value;
-		}
-
-		public function get currentTime():Number {
-			return new Date().time + serverTimeOffset;
 		}
 
 		[Inject]

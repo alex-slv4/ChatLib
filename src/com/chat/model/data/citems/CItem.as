@@ -6,7 +6,7 @@ package com.chat.model.data.citems {
 
 		private var _data:String;
 
-		public function CItem(data:String) {
+		public function CItem(data:*) {
 			_data = data;
 		}
 
