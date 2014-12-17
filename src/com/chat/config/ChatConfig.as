@@ -93,11 +93,11 @@ package com.chat.config {
 			//App commands
 			commandMap.map(ChatEvent.SYNC_TIME).toCommand(TimeSyncCommand);
 			commandMap.map(ChatEvent.LOAD_CONVERSATIONS).toCommand(LoadConversationsCommand);
-			commandMap.map(MessageEvent.MESSAGE).toCommand(MessageCommand);
-			commandMap.map(PresenceEvent.PRESENCE).toCommand(PresenceCommand);
-			commandMap.map(LoginEvent.LOGIN).toCommand(LoginCommand);
-			commandMap.map(IncomingDataEvent.INCOMING_DATA).toCommand(IncomingDataCommand);
-			commandMap.map(OutgoingDataEvent.OUTGOING_DATA).toCommand(OutgoingDataCommand);
+			commandMap.map(MessageEvent.MESSAGE, MessageEvent).toCommand(MessageCommand);
+			commandMap.map(PresenceEvent.PRESENCE, PresenceEvent).toCommand(PresenceCommand);
+			commandMap.map(LoginEvent.LOGIN, LoginEvent).toCommand(LoginCommand);
+			commandMap.map(IncomingDataEvent.INCOMING_DATA, IncomingDataEvent).toCommand(IncomingDataCommand);
+			commandMap.map(OutgoingDataEvent.OUTGOING_DATA, OutgoingDataEvent).toCommand(OutgoingDataCommand);
 
 			//Communicator commands
 			commandMap.map(CommunicatorCommandEvent.HISTORY).toCommand(RetrieveHistoryCMCommand);
