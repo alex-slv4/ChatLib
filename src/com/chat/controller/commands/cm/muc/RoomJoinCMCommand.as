@@ -12,6 +12,7 @@ package com.chat.controller.commands.cm.muc {
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.events.RoomEvent;
+	import org.igniterealtime.xiff.util.JIDUtil;
 
 	import robotlegs.bender.framework.api.IInjector;
 
@@ -25,7 +26,7 @@ package com.chat.controller.commands.cm.muc {
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0];
 			var password:String = params[1];
-			var roomJID:UnescapedJID = new UnescapedJID(roomName + "@" + model.conferenceServer);
+			var roomJID:UnescapedJID = JIDUtil.createJID(roomName, model.conferenceServer);
 			_chatRoom = new ChatRoom();
 			injector.injectInto(_chatRoom);
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
