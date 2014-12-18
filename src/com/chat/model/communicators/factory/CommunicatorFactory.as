@@ -75,7 +75,7 @@ package com.chat.model.communicators.factory {
 		private function getIndexBy(uid:String):int {
 			for (var i:int = 0; i < items.length; i++) {
 				var item:ICommunicator = items.getItemAt(i) as ICommunicator;
-				if(item.uid == uid){
+				if(item.uid.toLowerCase() == uid.toLowerCase()){
 					return i;
 				}
 			}
