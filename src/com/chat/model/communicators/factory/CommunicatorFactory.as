@@ -42,8 +42,8 @@ package com.chat.model.communicators.factory {
 		public function dispose(communicator:ICommunicator):void {
 			if(communicator.uid != null){
 				communicator.active = false;
-				communicator.destroy();
 				var i:int = getIndexBy(communicator.uid);
+				communicator.destroy();
 				items.remove(i);
 			}
 		}

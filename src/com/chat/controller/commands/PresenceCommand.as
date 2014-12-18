@@ -46,7 +46,7 @@ package com.chat.controller.commands {
 			xiffErrorEvent.errorMessage = presence.errorMessage;
 			xiffErrorEvent.errorType = presence.errorType;
 
-			throw new Error("Implement XIFFErrorEvent");
+			//throw new Error("Implement XIFFErrorEvent");
 		}
 	}
 }
