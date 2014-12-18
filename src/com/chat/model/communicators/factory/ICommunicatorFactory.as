@@ -6,6 +6,7 @@ package com.chat.model.communicators.factory {
 	import com.chat.model.data.collections.ICItemCollection;
 
 	import flash.events.IEventDispatcher;
+	import flash.utils.Dictionary;
 
 	public interface ICommunicatorFactory extends IEventDispatcher{
 
@@ -14,5 +15,7 @@ package com.chat.model.communicators.factory {
 		function getFor(data:Object)				:ICommunicator;
 
 		function get items():ICItemCollection;
+
+		function get creatorsMap():Dictionary;
 	}
 }

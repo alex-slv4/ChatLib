@@ -24,19 +24,19 @@ package com.chat.model.communicators.factory {
 		[Inject]
 		public var injector:IInjector;
 
-		public var creatorsMap:Dictionary = new Dictionary();
+		private var _creatorsMap:Dictionary = new Dictionary();
 		private var _items:ICItemCollection = new CItemCollection();
 
 		[PostConstruct]
 		public function init():void{
-			creatorsMap[Message] = MessageCreator;
-			creatorsMap[ChatRoom] = RoomCreator;
-			creatorsMap[RosterItemVO] = RosterItemCreator;
-			creatorsMap[ChatUser] = ChatUserCreator;
+			_creatorsMap[Message] = MessageCreator;
+			_creatorsMap[ChatRoom] = RoomCreator;
+			_creatorsMap[RosterItemVO] = RosterItemCreator;
+			_creatorsMap[ChatUser] = ChatUserCreator;
 
-			creatorsMap[AbstractJID] = JIDCreator;
-			creatorsMap[UnescapedJID] = JIDCreator;
-			creatorsMap[EscapedJID] = JIDCreator;
+			_creatorsMap[AbstractJID] = JIDCreator;
+			_creatorsMap[UnescapedJID] = JIDCreator;
+			_creatorsMap[EscapedJID] = JIDCreator;
 		}
 
 		public function dispose(communicator:ICommunicator):void {
@@ -50,7 +50,7 @@ package com.chat.model.communicators.factory {
 		public function getFor(data:Object):ICommunicator {
 			if(data == null) return null;
 
-			var creatorClass:Class = creatorsMap[data.constructor];
+			var creatorClass:Class = _creatorsMap[data.constructor];
 			if(creatorClass == null) return null;
 
 			var creator:ICreator = new creatorClass(data);
@@ -84,6 +84,10 @@ package com.chat.model.communicators.factory {
 
 		public function get items():ICItemCollection {
 			return _items;
+		}
+
+		public function get creatorsMap():Dictionary {
+			return _creatorsMap;
 		}
 	}
 }
