@@ -36,6 +36,7 @@ package com.chat.model.communicators {
 		}
 
 		override public function destroy():void {
+			_chatRoom.destroy();
 			_chatRoom = null;
 			super.destroy();
 		}

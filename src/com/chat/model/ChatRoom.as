@@ -77,15 +77,19 @@ package com.chat.model
 			_room = new Room();
 		}
 		
-		public function destroy( reason:String, alternateJID:UnescapedJID=null, callback:Function=null ):void
+		public function destroy( reason:String = null, alternateJID:UnescapedJID=null, callback:Function=null ):void
 		{
 			_users.removeAll();
 			_owners.removeAll();
 			_admins.removeAll();
 			_moderators.removeAll();
 			_outcasts.removeAll();
-			_room.destroy( reason, alternateJID, callback );
-			_room = new Room();
+			if(reason){
+				_room.destroy( reason, alternateJID, callback );
+			}else{
+				_room.removeAll();
+				removeRoomListeners();
+			}
 		}
 		
 		public function sendMessage( body:String ):void
@@ -128,23 +132,23 @@ package com.chat.model
 		
 		private function addRoomListeners():void
 		{
-			_room.addEventListener( RoomEvent.GROUP_MESSAGE, onGroupMessage, false, 0, true );
-			_room.addEventListener( RoomEvent.ADMIN_ERROR, onAdminError, false, 0, true );
-			_room.addEventListener( RoomEvent.AFFILIATION_CHANGE_COMPLETE, onAffiliationChangeComplete, false, 0, true );
-			_room.addEventListener( RoomEvent.AFFILIATIONS, onAffiliations, false, 0, true );
-			_room.addEventListener( RoomEvent.CONFIGURE_ROOM, onConfigureRoom, false, 0, true );
-			_room.addEventListener( RoomEvent.CONFIGURE_ROOM_COMPLETE, onConfigureRoomComplete, false, 0, true );
-			_room.addEventListener( RoomEvent.DECLINED, onDeclined, false, 0, true );
-			_room.addEventListener( RoomEvent.NICK_CONFLICT, onNickConflict, false, 0, true );
-			_room.addEventListener( RoomEvent.PRIVATE_MESSAGE, onPrivateMessage, false, 0, true );
-			_room.addEventListener( RoomEvent.ROOM_DESTROYED, onRoomDestroyed, false, 0, true );
-			_room.addEventListener( RoomEvent.ROOM_JOIN, onRoomJoin, false, 0, true );
-			_room.addEventListener( RoomEvent.ROOM_LEAVE, onRoomLeave, false, 0, true );
-			_room.addEventListener( RoomEvent.SUBJECT_CHANGE, onSubjectChange, false, 0, true );
-			_room.addEventListener( RoomEvent.USER_DEPARTURE, onUserDeparture, false, 0, true );
-			_room.addEventListener( RoomEvent.USER_JOIN, onUserJoin, false, 0, true );
-			_room.addEventListener( RoomEvent.USER_KICKED, onUserKicked, false, 0, true );
-			_room.addEventListener( RoomEvent.USER_BANNED, onUserBanned, false, 0, true );
+			_room.addEventListener( RoomEvent.GROUP_MESSAGE, onGroupMessage);
+			_room.addEventListener( RoomEvent.ADMIN_ERROR, onAdminError);
+			_room.addEventListener( RoomEvent.AFFILIATION_CHANGE_COMPLETE, onAffiliationChangeComplete);
+			_room.addEventListener( RoomEvent.AFFILIATIONS, onAffiliations);
+			_room.addEventListener( RoomEvent.CONFIGURE_ROOM, onConfigureRoom);
+			_room.addEventListener( RoomEvent.CONFIGURE_ROOM_COMPLETE, onConfigureRoomComplete);
+			_room.addEventListener( RoomEvent.DECLINED, onDeclined);
+			_room.addEventListener( RoomEvent.NICK_CONFLICT, onNickConflict);
+			_room.addEventListener( RoomEvent.PRIVATE_MESSAGE, onPrivateMessage);
+			_room.addEventListener( RoomEvent.ROOM_DESTROYED, onRoomDestroyed);
+			_room.addEventListener( RoomEvent.ROOM_JOIN, onRoomJoin);
+			_room.addEventListener( RoomEvent.ROOM_LEAVE, onRoomLeave);
+			_room.addEventListener( RoomEvent.SUBJECT_CHANGE, onSubjectChange);
+			_room.addEventListener( RoomEvent.USER_DEPARTURE, onUserDeparture);
+			_room.addEventListener( RoomEvent.USER_JOIN, onUserJoin);
+			_room.addEventListener( RoomEvent.USER_KICKED, onUserKicked);
+			_room.addEventListener( RoomEvent.USER_BANNED, onUserBanned);
 		}
 		
 		private function removeRoomListeners():void
