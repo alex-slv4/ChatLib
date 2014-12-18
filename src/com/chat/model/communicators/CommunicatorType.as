@@ -4,11 +4,9 @@
 package com.chat.model.communicators {
 	public class CommunicatorType {
 
-		public static const LOG:int = 1;
-		public static const GLOBAL:int = 2;
-		public static const TEAM:int = 3;
-		public static const DIRECT:int = 4;
-		public static const MUC:int = 5;
+		public static const DIRECT:int = 0;
+		public static const MUC:int = 1;
+		public static const AMOUNT:int = 2;
 
 	}
 }
