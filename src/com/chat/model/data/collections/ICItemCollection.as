@@ -4,6 +4,8 @@
 package com.chat.model.data.collections {
 	import com.chat.model.data.citems.ICItem;
 
+	import flash.events.IEventDispatcher;
+
 	[Event(name="change",type="com.chat.events.CItemCollectionEvent")]
 	[Event(name="reset",type="com.chat.events.CItemCollectionEvent")]
 	[Event(name="addItem",type="com.chat.events.CItemCollectionEvent")]
@@ -12,7 +14,7 @@ package com.chat.model.data.collections {
 	[Event(name="updateItem",type="com.chat.events.CItemCollectionEvent")]
 
 	//TODO: implement filter
-	public interface ICItemCollection {
+	public interface ICItemCollection extends IEventDispatcher {
 		function append(item:ICItem):void;
 		function insert(index:int, item:ICItem):void;
 		function prepend(item:ICItem):void;
