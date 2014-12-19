@@ -3,6 +3,7 @@
  */
 package com.chat.controller.commands.cm.message {
 	import com.chat.controller.commands.cm.CMCommand;
+	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.data.citems.CMessage;
@@ -18,7 +19,7 @@ package com.chat.controller.commands.cm.message {
 			}else{
 				if(!messageItem.isRead){
 					castedCommunicator.unreadCount--;
-					if(castedCommunicator.unreadCount == 0){
+					if(castedCommunicator.unreadCount == 0 && (communicator is DirectCommunicator)){
 						model.conversations.unreadCount--;
 					}
 					messageItem.isRead = true;
