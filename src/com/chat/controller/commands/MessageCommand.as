@@ -47,26 +47,31 @@ package com.chat.controller.commands {
 				return;
 			}
 
+			var itemMessage:CMessage = new CMessage(message);
+
+			calculateUnreadCount(communicator, itemMessage);
+
+			communicator.items.append(itemMessage);
+		}
+
+		private function calculateUnreadCount(communicator:ICommunicator, itemMessage:CMessage):void {
+			var message:Message = itemMessage.messageData;
 			var inRoom:Boolean = (communicator is RoomCommunicator);
 			var isOfflineRoomMessage:Boolean = inRoom && message.delayedDelivery != null;
-			var itemMessage:CMessage = new CMessage(message);
-			if(isOfflineRoomMessage){
+			if(isOfflineRoomMessage) {
 				itemMessage.isRead = true;
 			}
 
-			if (model.isMe(message.from)) {
-				//do nothing
+			if(model.isMe(message.from)) {
 				itemMessage.isRead = inRoom;
 			} else {
-				if(communicator.unreadCount == 0 && !inRoom){
+				if(communicator.unreadCount == 0 && !inRoom) {
 					model.conversations.unreadCount++;
 				}
-				if(!itemMessage.isRead){
-					communicator.unreadCount++;
-				}
 			}
-
-			communicator.items.append(itemMessage);
+			if(!itemMessage.isRead) {
+				communicator.unreadCount++;
+			}
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {
