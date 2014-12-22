@@ -4,7 +4,6 @@
 package com.chat.model.communicators.factory.communicators {
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
-	import com.chat.model.communicators.ICommunicator;
 
 	import org.igniterealtime.xiff.core.UnescapedJID;
 
@@ -21,7 +20,7 @@ package com.chat.model.communicators.factory.communicators {
 			this.uid = uid;
 		}
 
-		public function create():ICommunicator {
+		public function create():* {
 			return new DirectCommunicator(new UnescapedJID(uid), model.currentUser);
 		}
 	}

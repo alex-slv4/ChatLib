@@ -3,7 +3,6 @@
  */
 package com.chat.model.communicators.factory.communicators {
 	import com.chat.model.ChatRoom;
-	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.RoomCommunicator;
 
 	public class RoomCreator extends DefaultCommunicatorCreator {
@@ -12,7 +11,7 @@ package com.chat.model.communicators.factory.communicators {
 			super(chatRoom, uid);
 		}
 
-		override public function create():ICommunicator {
+		override public function create():* {
 			if(data is ChatRoom){
 				return new RoomCommunicator(data as ChatRoom);
 			}

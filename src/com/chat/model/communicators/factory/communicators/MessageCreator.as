@@ -23,7 +23,7 @@ package com.chat.model.communicators.factory.communicators {
 			_msg = msg;
 		}
 
-		override public function create():ICommunicator {
+		override public function create():* {
 			switch (_msg.type){
 				case Message.TYPE_GROUPCHAT:
 					return createRoom();
@@ -31,12 +31,12 @@ package com.chat.model.communicators.factory.communicators {
 			return super.create();
 		}
 
-		private function createRoom():ICommunicator {
+		private function createRoom():ChatRoom {
 			var chatRoom:ChatRoom = new ChatRoom();
 			injector.injectInto(chatRoom);
 			var roomJID:UnescapedJID = new UnescapedJID(from.bareJID);
 			chatRoom.join(roomJID);
-			return new RoomCommunicator(chatRoom)
+			return chatRoom
 		}
 
 		public function get from():UnescapedJID {

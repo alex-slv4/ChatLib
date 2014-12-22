@@ -78,10 +78,14 @@ package com.chat.model.communicators.factory {
 			if (CreatorClass == null) CreatorClass = DefaultCommunicatorCreator;
 			var creator:ICommunicatorCreator = new CreatorClass(data, uid);
 			injector.injectInto(creator);
-			var communicator:ICommunicator = creator.create();
-			communicator.uid = uid;
-			injector.injectInto(communicator);
-			return communicator;
+			var createdData = creator.create();
+			if(createdData is ICommunicator) {
+				createdData.uid = uid;
+				injector.injectInto(createdData);
+			} else if(createdData != null) {
+				return createCommunicator(createdData, uid);
+			}
+			return createdData;
 		}
 
 		private function getUID(data:Object):String {
