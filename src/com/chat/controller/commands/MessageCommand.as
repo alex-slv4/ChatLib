@@ -6,6 +6,7 @@ package com.chat.controller.commands {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.IWritableCommunicator;
+	import com.chat.model.communicators.RoomCommunicator;
 	import com.chat.model.communicators.factory.ICommunicatorFactory;
 	import com.chat.model.data.citems.CMessage;
 
@@ -40,24 +41,32 @@ package com.chat.controller.commands {
 			handleReceipt(message, communicator);
 			handleThread(message, communicator);
 
-
 			if(message.body == null){
 				trace("Message without body");
 				trace(message.xml);
 				return;
 			}
 
+			var inRoom:Boolean = (communicator is RoomCommunicator);
+			var isOfflineRoomMessage:Boolean = inRoom && message.delayedDelivery != null;
 			var itemMessage:CMessage = new CMessage(message);
-			communicator.items.append(itemMessage);
+			if(isOfflineRoomMessage){
+				itemMessage.isRead = true;
+			}
 
 			if (model.isMe(message.from)) {
 				//do nothing
+				itemMessage.isRead = inRoom;
 			} else {
-				if(communicator.unreadCount == 0 && (communicator is DirectCommunicator)){
+				if(communicator.unreadCount == 0 && !inRoom){
 					model.conversations.unreadCount++;
 				}
-				communicator.unreadCount++;
+				if(!itemMessage.isRead){
+					communicator.unreadCount++;
+				}
 			}
+
+			communicator.items.append(itemMessage);
 		}
 
 		private function handleThread(message:Message, communicator:ICommunicator):void {

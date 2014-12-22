@@ -2,8 +2,6 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
-	import com.chat.events.CItemCollectionEvent;
-	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.citems.ICConversation;
 	import com.chat.model.history.IHistoryProvider;
 
