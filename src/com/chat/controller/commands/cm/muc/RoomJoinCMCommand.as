@@ -7,6 +7,7 @@ package com.chat.controller.commands.cm.muc {
 	import com.chat.model.ChatModel;
 	import com.chat.model.ChatRoom;
 	import com.chat.model.IChatModel;
+	import com.chat.model.communicators.ICommunicator;
 	import com.chat.model.communicators.ICommunicatorBase;
 	import com.chat.model.communicators.RoomCommunicator;
 
@@ -22,6 +23,7 @@ package com.chat.controller.commands.cm.muc {
 		public var injector:IInjector;
 
 		private var _chatRoom:ChatRoom;
+		private var _roomCommunicator:ICommunicator;
 
 		override protected function executeIfNoErrors():void {
 			var roomName:String = params[0];
@@ -31,11 +33,13 @@ package com.chat.controller.commands.cm.muc {
 			injector.injectInto(_chatRoom);
 			_chatRoom.addEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
 			_chatRoom.join(roomJID, password);
+			_roomCommunicator = communicators.getFor(_chatRoom);
 		}
 
 		private function onRoomJoin(event:RoomEvent):void {
+			_chatRoom.removeEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
 			//Room joined
-			communicators.getFor(_chatRoom).active = true;
+			_roomCommunicator.active = true;
 		}
 
 		override public function get requiredParamsCount():int {
