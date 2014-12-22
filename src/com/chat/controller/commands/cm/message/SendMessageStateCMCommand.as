@@ -21,7 +21,7 @@ package com.chat.controller.commands.cm.message {
 
 		override protected function executeIfNoErrors():void {
 			var state:String = params[0];
-			if(communicator) {
+			if(directCommunicator) {
 				sendState(state);
 			}
 		}
