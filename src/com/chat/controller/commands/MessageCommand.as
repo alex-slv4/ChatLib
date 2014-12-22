@@ -29,8 +29,7 @@ package com.chat.controller.commands {
 			var message:Message = event.data;
 
 			if(message.type == null){
-				trace("Message not handled");
-				trace(message.xml);
+				trace("ChatLib: Message without type not handled");
 				return;
 			}
 
@@ -42,8 +41,7 @@ package com.chat.controller.commands {
 			handleThread(message, communicator);
 
 			if(message.body == null){
-				trace("Message without body");
-				trace(message.xml);
+				trace("ChatLib: Message without body not handled");
 				return;
 			}
 
