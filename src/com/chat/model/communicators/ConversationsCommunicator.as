@@ -2,37 +2,42 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
+	import com.chat.events.CItemCollectionEvent;
+	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.data.citems.ICConversation;
 	import com.chat.model.history.IHistoryProvider;
-
-	import org.igniterealtime.xiff.core.UnescapedJID;
-	import org.igniterealtime.xiff.util.JIDUtil;
 
 	public class ConversationsCommunicator extends DefaultCommunicator implements IConversationsCommunicator {
 
 		public function updateWith(conversation:ICConversation):void {
-
-			var fromJID:UnescapedJID = JIDUtil.unescape(conversation.withJID);
+			var idx:int = -1;
 			for(var i:int = 0; i < _items.length; i++) {
 				var item:ICConversation = _items.getItemAt(i) as ICConversation;
-				var withJID:UnescapedJID = JIDUtil.unescape(item.withJID);
-				if(withJID.equals(fromJID, true)) {
-					if(conversation.time >= item.time){
-						_items.setItemAt(conversation, i);
+				if(item.communicator == conversation.communicator) {
+					if(conversation.originTime >= item.originTime){
+						item.originTime = conversation.originTime;
+						_items.touch(i);
 					}
 					return;
 				}
-				if(conversation.time >= item.time){
-					_items.insert(i, conversation);
-					return;
+				if(conversation.originTime >= item.originTime){
+					idx = i;
 				}
 			}
-			_items.append(conversation);
+			if(idx != -1){
+				_items.insert(idx, conversation);
+			}else{
+				_items.append(conversation);
+			}
 		}
 
 		public function updateUnreadCount():void {
-			var count:int = Math.round(Math.random() * 100);
-
+			var count:int = 0;
+			for(var i:int = 0; i < _items.length; i++) {
+				var item:ICConversation = _items.getItemAt(i) as ICConversation;
+				var hasUnread:Boolean = item.communicator.unreadCount > 0;
+				count += hasUnread ? 1 : 0;
+			}
 			this.unreadCount = count;
 		}
 

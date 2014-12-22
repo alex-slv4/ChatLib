@@ -24,5 +24,9 @@ package com.chat.events {
 		public function get data():Object {
 			return _data;
 		}
+
+		override public function clone():Event {
+			return new CItemCollectionEvent(type, bubbles, data);
+		}
 	}
 }

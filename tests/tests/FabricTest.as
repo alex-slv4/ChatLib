@@ -74,17 +74,17 @@ package tests {
 			msg2.to  = chat.model.currentUser.jid.escaped;
 		}
 
-		[Test(order=1)]
+		[Test]
 		public function testInjections():void {
 			assertNotNull(chat.model);
 			assertNotNull(chat.model.currentUser);
 		}
 
-		[Test(order=2)]
+		[Test]
 		public function testFactory():void {
 			assertNull(chat.model.communicators.getFor(null));
-			assertNotNull(chat.model.communicators.getAll());
-			assertEquals(chat.model.communicators.getAll().length, 0);
+			assertNotNull(chat.model.communicators.items);
+			assertEquals(chat.model.communicators.items.length, 0);
 			
 			var msg:Message = new Message();
 			assertNull(chat.model.communicators.getFor(123));
@@ -100,44 +100,6 @@ package tests {
 			msg.to = chat.model.currentUser.jid.escaped;
 			msg.from = new UnescapedJID("joe@localhost").escaped;
 			assertTrue(chat.model.communicators.getFor(msg) is RoomCommunicator);
-		}
-
-		[Test(order=3,async)]
-		public function testCreation():void {
-			chat.model.communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, Async.asyncHandler(this, function(e:CommunicatorFactoryEvent, data:Object):void{
-
-			}, 10));
-			var com1:ICommunicator = chat.model.communicators.getFor(msg1);
-			chat.model.communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_ADDED, Async.asyncHandler(this, function(e:CommunicatorFactoryEvent, data:Object):void{
-				//Second event mustn't has thrown
-				assertFalse(true);
-			}, 10, null, function():void{
-				//All fine
-			}));
-			var com2:ICommunicator = chat.model.communicators.getFor(msg2);
-			assertNotNull(com1);
-			assertNotNull(com2);
-
-			assertEquals(com1, com2);
-		}
-
-		[Test(order=4,async)]
-		public function testDestruction():void {
-			var com1:ICommunicator = chat.model.communicators.getFor(msg1);
-			chat.model.communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, Async.asyncHandler(this, function(e:CommunicatorFactoryEvent, data:Object):void{
-
-			}, 10));
-			chat.model.communicators.dispose(com1);
-			chat.model.communicators.addEventListener(CommunicatorFactoryEvent.COMMUNICATOR_DESTROYED, Async.asyncHandler(this, function(e:CommunicatorFactoryEvent, data:Object):void{
-				//Second event mustn't has thrown
-				assertFalse(true);
-			}, 10, null, function():void{
-				//All fine
-			}));
-			chat.model.communicators.dispose(com1);
-			assertFalse(com1.active);
-			assertNull(com1.uid);
-
 		}
 
 		[After]

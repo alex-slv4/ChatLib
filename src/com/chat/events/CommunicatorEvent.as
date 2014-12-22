@@ -4,6 +4,7 @@
 package com.chat.events {
 	public class CommunicatorEvent extends DataEvent {
 
+		public static const HISTORY_FETCHED:String = "onHistoryFetched";
 		public static const UNREAD_UPDATED:String = "onUnreadUpdated";
 
 		public function CommunicatorEvent(type:String, data:Object) {

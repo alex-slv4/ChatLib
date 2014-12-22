@@ -4,7 +4,6 @@
 package com.chat.model.data.citems {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.ICommunicator;
-	import com.chat.model.data.citems.CTime;
 
 	import org.igniterealtime.xiff.core.AbstractJID;
 
@@ -15,7 +14,7 @@ package com.chat.model.data.citems {
 		public function CConversation(communicator:DirectCommunicator, startTime:Number = NaN) {
 			super(communicator);
 			_communicator = communicator;
-			originTime = startTime;
+			this.originTime = startTime;
 		}
 
 		public function get withJID():AbstractJID {

@@ -13,5 +13,9 @@ package com.chat.model.data.citems {
 		function get withJID():AbstractJID;
 
 		function get last():ICItem;
+
+		function set originTime(value:Number):void;
+
+		function get originTime():Number;
 	}
 }

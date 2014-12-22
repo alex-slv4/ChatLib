@@ -27,9 +27,11 @@ package com.chat.controller.commands {
 		[Inject]
 		public var controller:IChatController;
 
-		private var _chatStepper:ISetLooper = new OFSetLooper(4);
+		private var _chatStepper:ISetLooper = new OFSetLooper(50);
+		private static var CONVERSATIONS_LOADED:Boolean = false;
 
 		public function execute():void {
+			if(CONVERSATIONS_LOADED) return;
 			var previous:RSMSet = _chatStepper.getPrevious();
 			if(previous){
 				var listStanza:List = new List();
@@ -41,7 +43,8 @@ package com.chat.controller.commands {
 
 				controller.send(listIQ);
 			}else{
-				//model.conversations.fetchLasts();
+				CONVERSATIONS_LOADED = true;
+				model.conversations.fetchLasts();
 			}
 		}
 
@@ -50,11 +53,10 @@ package com.chat.controller.commands {
 			var rsmSet:RSMSet = _list.getExtension(RSMSet.ELEMENT_NAME) as RSMSet;
 			for (var i:int = 0; i < _list.chats.length; i++) {
 				var chat:ChatStanza = _list.chats[i];
-				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var communicator:ICommunicator = model.communicators.getFor(chat.withJID);
-
 				if(!(communicator is DirectCommunicator)) continue;
 
+				var date:Date = DateTimeParser.string2dateTime(chat.start);
 				var conversation:ICConversation = new CConversation(communicator as DirectCommunicator, date.getTime());
 				model.conversations.updateWith(conversation);
 			}

@@ -3,6 +3,7 @@
  */
 package com.chat.model.history {
 	import com.chat.controller.IChatController;
+	import com.chat.events.CommunicatorEvent;
 	import com.chat.model.IChatModel;
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.data.citems.CMessage;
@@ -191,6 +192,8 @@ package com.chat.model.history {
 					_msgCount--;
 				}
 			}
+			var fetchIndex:uint = results.length;
+			_communicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.HISTORY_FETCHED, fetchIndex));
 			_cachedItems = new <ICItem>[];
 		}
 
