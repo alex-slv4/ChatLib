@@ -78,7 +78,7 @@ package com.chat.model.communicators.factory {
 			if (CreatorClass == null) CreatorClass = DefaultCommunicatorCreator;
 			var creator:ICommunicatorCreator = new CreatorClass(data, uid);
 			injector.injectInto(creator);
-			var createdData = creator.create();
+			var createdData:* = creator.create();
 			if(createdData is ICommunicator) {
 				createdData.uid = uid;
 				injector.injectInto(createdData);
