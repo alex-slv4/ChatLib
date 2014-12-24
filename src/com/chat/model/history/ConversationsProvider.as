@@ -50,6 +50,7 @@ package com.chat.model.history {
 		private var _communicator:DirectCommunicator;
 		private var _endReached:Boolean = false;
 		private var _msgCount:int = 0;
+		private var _busy:Boolean = false;
 
 		public function ConversationsProvider(communicator:DirectCommunicator) {
 			_communicator = communicator;
@@ -60,10 +61,14 @@ package com.chat.model.history {
 
 		public function fetch():void {
 
+			if(_busy) return;
+
 			if(resultsIsReady()){
 				deliverResults();
 				return;
 			}
+
+			_busy = true;
 
 			if(_listProvider == null){
 				_listProvider = new DirectListProvider(_participant);
@@ -195,6 +200,7 @@ package com.chat.model.history {
 			var fetchIndex:uint = results.length;
 			_communicator.dispatchEvent(new CommunicatorEvent(CommunicatorEvent.HISTORY_FETCHED, fetchIndex));
 			_cachedItems = new <ICItem>[];
+			_busy = false;
 		}
 
 		private function getLastCommunicatorMessage():CMessage {
