@@ -6,6 +6,8 @@ package com.chat.events {
 
 	public class DataEvent extends Event {
 
+		public static const LAST_CHANGED:String = "onLastChanged";
+
 		protected var _data:Object;
 
 		public function DataEvent(type:String, data:Object, bubbles:Boolean = false, cancelable:Boolean = false) {
@@ -14,6 +16,10 @@ package com.chat.events {
 		}
 		public function get data():Object {
 			return _data;
+		}
+
+		override public function clone():Event {
+			return new DataEvent(type, data, bubbles, cancelable);
 		}
 	}
 }

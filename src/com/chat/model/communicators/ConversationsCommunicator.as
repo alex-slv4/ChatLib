@@ -2,8 +2,13 @@
  * Created by kvint on 02.12.14.
  */
 package com.chat.model.communicators {
+	import com.chat.events.CItemCollectionEvent;
+	import com.chat.events.DataEvent;
+	import com.chat.model.data.citems.CConversation;
 	import com.chat.model.data.citems.ICConversation;
 	import com.chat.model.history.IHistoryProvider;
+
+	import flash.events.Event;
 
 	public class ConversationsCommunicator extends DefaultCommunicator implements IConversationsCommunicator {
 
@@ -22,11 +27,16 @@ package com.chat.model.communicators {
 					idx = i;
 				}
 			}
-			if(idx != -1){
+			insertConversationAt(conversation, idx);
+		}
+
+		private function insertConversationAt(conversation:ICConversation, idx:int = -1):void {
+			if(idx != -1) {
 				_items.insert(idx, conversation);
-			}else{
+			} else {
 				_items.append(conversation);
 			}
+			conversation.addEventListener(DataEvent.LAST_CHANGED, onLastChanged);
 		}
 
 		public function updateUnreadCount():void {
@@ -57,6 +67,18 @@ package com.chat.model.communicators {
 				var item:ICConversation = _items.getItemAt(i) as ICConversation;
 				item.communicator.history.fetch();
 			}
+		}
+
+		override public function destroy():void {
+			for(var i:int = 0; i < _items.length; i++) {
+				var item:ICConversation = _items.getItemAt(i) as ICConversation;
+				item.removeEventListener(DataEvent.LAST_CHANGED, onLastChanged);
+			}
+			super.destroy();
+		}
+
+		private function onLastChanged(event:Event):void {
+			_items.touch(event.currentTarget);
 		}
 	}
 }

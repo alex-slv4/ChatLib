@@ -82,6 +82,7 @@ package com.chat.model
 		
 		private function onVCardLoaded( event:VCardEvent ):void
 		{
+			event;
 		}
 		
 	}

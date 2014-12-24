@@ -4,9 +4,11 @@
 package com.chat.model.data.citems {
 	import com.chat.model.communicators.ICommunicator;
 
+	import flash.events.IEventDispatcher;
+
 	import org.igniterealtime.xiff.core.AbstractJID;
 
-	public interface ICConversation extends ICTime {
+	public interface ICConversation extends ICTime, IEventDispatcher {
 
 		function get communicator():ICommunicator;
 
@@ -17,5 +19,7 @@ package com.chat.model.data.citems {
 		function set originTime(value:Number):void;
 
 		function get originTime():Number;
+
+		function destroy():void;
 	}
 }

@@ -8,7 +8,7 @@ package com.chat.model.data.citems {
 		private var _time:Number;
 		protected var _originTime:Number;
 
-		public function CTime(data:*) {
+		public function CTime(data:* = null) {
 			super(data);
 		}
 
