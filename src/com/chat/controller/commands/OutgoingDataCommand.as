@@ -2,6 +2,8 @@
  * Created by kvint on 04.12.14.
  */
 package com.chat.controller.commands {
+	import com.chat.logging.ChatLoggerTarget;
+
 	import org.as3commons.logging.api.getLogger;
 	import org.igniterealtime.xiff.events.OutgoingDataEvent;
 
@@ -13,9 +15,7 @@ package com.chat.controller.commands {
 		public var event:OutgoingDataEvent;
 
 		public function execute():void {
-			getLogger().debug(event.data);
-			//trace("Outgoing");
-			//trace(event.data);
+			getLogger().debug(event.data, [ChatLoggerTarget.OUTGOING]);
 		}
 	}
 }
