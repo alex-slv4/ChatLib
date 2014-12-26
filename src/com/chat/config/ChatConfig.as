@@ -34,6 +34,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.roster.RosterInfoCommand;
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
+	import com.chat.logging.ChatLoggerTarget;
 	import com.chat.model.ChatModel;
 	import com.chat.model.IChatModel;
 	import com.chat.model.activity.Activities;
@@ -46,6 +47,10 @@ package com.chat.config {
 	import com.chat.model.presences.IPresences;
 	import com.chat.model.presences.IPresencesHandler;
 	import com.chat.model.presences.Presences;
+
+	import org.as3commons.logging.api.LOGGER_FACTORY;
+	import org.as3commons.logging.setup.SimpleTargetSetup;
+	import org.as3commons.logging.setup.target.TraceTarget;
 
 	import org.igniterealtime.xiff.events.IncomingDataEvent;
 	import org.igniterealtime.xiff.events.LoginEvent;
@@ -70,6 +75,9 @@ package com.chat.config {
 		public var commandMap:IEventCommandMap;
 
 		public function configure():void {
+
+			LOGGER_FACTORY.setup = new SimpleTargetSetup(new ChatLoggerTarget());
+
 			mapMembership();
 			mapCommands();
 		}

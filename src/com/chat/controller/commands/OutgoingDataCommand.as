@@ -2,6 +2,7 @@
  * Created by kvint on 04.12.14.
  */
 package com.chat.controller.commands {
+	import org.as3commons.logging.api.getLogger;
 	import org.igniterealtime.xiff.events.OutgoingDataEvent;
 
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
@@ -12,8 +13,9 @@ package com.chat.controller.commands {
 		public var event:OutgoingDataEvent;
 
 		public function execute():void {
-			trace("Outgoing");
-			trace(event.data);
+			getLogger().debug(event.data);
+			//trace("Outgoing");
+			//trace(event.data);
 		}
 	}
 }
