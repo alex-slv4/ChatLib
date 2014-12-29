@@ -7,7 +7,7 @@ package com.chat.logging {
 
 	import org.as3commons.logging.setup.ILogTarget;
 
-	public class ChatLoggerTarget implements ILogTarget {
+	public class ChatLCLogTarget implements ILogTarget {
 
 		private static const CONNECTION_NAME:String = "lclogger";
 		private static const METHOD_SENT:String = "onMessageSent";
@@ -19,7 +19,7 @@ package com.chat.logging {
 		public static const INCOMING:int = 1;
 		public static const OUTGOING:int = 2;
 
-		public function ChatLoggerTarget():void {
+		public function ChatLCLogTarget():void {
 			_connection = new LocalConnection();
 			_connection.addEventListener(StatusEvent.STATUS, onLCStatus);
 		}

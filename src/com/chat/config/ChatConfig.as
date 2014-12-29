@@ -34,7 +34,7 @@ package com.chat.config {
 	import com.chat.controller.commands.cm.roster.RosterInfoCommand;
 	import com.chat.events.ChatEvent;
 	import com.chat.events.CommunicatorCommandEvent;
-	import com.chat.logging.ChatLoggerTarget;
+	import com.chat.logging.ChatLCLogTarget;
 	import com.chat.model.ChatModel;
 	import com.chat.model.IChatModel;
 	import com.chat.model.activity.Activities;
@@ -76,7 +76,7 @@ package com.chat.config {
 
 		public function configure():void {
 
-			LOGGER_FACTORY.setup = new SimpleTargetSetup(new ChatLoggerTarget());
+			LOGGER_FACTORY.setup = new SimpleTargetSetup(new ChatLCLogTarget());
 
 			mapMembership();
 			mapCommands();
