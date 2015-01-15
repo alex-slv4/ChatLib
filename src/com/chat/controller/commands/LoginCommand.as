@@ -7,6 +7,7 @@ package com.chat.controller.commands {
 	import flash.events.Event;
 
 	import flash.events.IEventDispatcher;
+	import flash.utils.setInterval;
 
 	import org.igniterealtime.xiff.core.Browser;
 	import org.igniterealtime.xiff.data.IQ;

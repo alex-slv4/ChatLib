@@ -5,6 +5,7 @@ package com.chat.controller.commands.cm.message {
 	import com.chat.model.communicators.DirectCommunicator;
 	import com.chat.model.communicators.IConversationsCommunicator;
 	import com.chat.model.data.citems.CMessage;
+	import com.chat.model.data.citems.CTime;
 
 	import org.igniterealtime.xiff.data.Message;
 
@@ -20,7 +21,7 @@ package com.chat.controller.commands.cm.message {
 			message.body = params[0];
 			message.state = Message.STATE_ACTIVE;
 
-			var messageItem:CMessage = new CMessage(message);
+			var messageItem:CMessage = new CMessage(message, CTime.currentTime);
 			directCommunicatorData.items.append(messageItem);
 
 			//save receipt

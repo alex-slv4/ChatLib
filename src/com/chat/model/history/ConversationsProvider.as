@@ -180,6 +180,7 @@ package com.chat.model.history {
 					var icItem:ICItem = _cachedItems[i];
 					if(icItem is CMessage){
 						var msg:CMessage = icItem as CMessage;
+						var timeDelta:Number = msg.time - lastCommunicatorMessage.time;
 						if(msg.time < lastCommunicatorMessage.time){
 							idx = i;
 							break;
@@ -189,7 +190,7 @@ package com.chat.model.history {
 			}
 
 			var results:Vector.<ICItem> = _cachedItems; //.splice(idx, BUFFER_SIZE);
-			for(i = 0; i < results.length; i++) {
+			for(i = idx; i < results.length; i++) {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);
 
