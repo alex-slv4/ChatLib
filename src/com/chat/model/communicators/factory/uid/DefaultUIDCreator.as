@@ -15,7 +15,7 @@ package com.chat.model.communicators.factory.uid {
 
 		public function toString():String {
 			if(data is AbstractJID){
-				return JIDUtil.unescape(data as AbstractJID).toString();
+				return JIDUtil.unescape(data as AbstractJID).bareJID
 			}
 			return null;
 		}

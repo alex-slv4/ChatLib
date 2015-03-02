@@ -23,9 +23,11 @@ package com.chat.model
 		private var _moderators:ArrayCollection;
 		private var _outcasts:ArrayCollection;
 		
-		public function ChatRoom()
+		public function ChatRoom(roomJID:UnescapedJID = null)
 		{
 			_room = new Room();
+			_room.roomJID = roomJID; //TODO: Dirty
+
 			addRoomListeners();
 			
 			_users = new ArrayCollection();
