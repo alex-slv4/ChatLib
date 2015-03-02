@@ -12,7 +12,8 @@ package com.chat.model.data.citems {
 
 		public function CMessage(data:Message, time:Number = NaN) {
 			super(data);
-			originTime = time;
+			this.originTime = isNaN(time) ? new Date().time : time;
+			this.time = time;
 			_messageData = data;
 		}
 
@@ -23,7 +24,7 @@ package com.chat.model.data.citems {
 		override public function get time():Number {
 			if(isNaN(_originTime)){
 				if(messageData.time != null) return convertTimeFromDate(messageData.time);
-				return convertTimeFromDate(new Date());
+				return currentTime;
 			}
 			return super.time;
 		}

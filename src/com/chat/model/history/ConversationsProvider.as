@@ -24,6 +24,8 @@ package com.chat.model.history {
 
 	public class ConversationsProvider implements IHistoryProvider {
 
+		//FIXME: please remove it when messages from history will have IDs
+		private static const MIN_MILLISECONDS_DIFF:int = 1000;
 		public static var BUFFER_SIZE:int = 10;
 
 		[Inject]
@@ -43,9 +45,7 @@ package com.chat.model.history {
 
 		private var _cachedItems:Vector.<ICItem> = new <ICItem>[];
 
-		/**
-		 * please remove it when openfire will handle RSM like it should!
-		 */
+		//FIXME: please remove it when openfire will handle RSM like it should!
 		private var _uglyOpenfireTrigger:Boolean;
 		private var _communicator:DirectCommunicator;
 		private var _endReached:Boolean = false;
@@ -180,15 +180,17 @@ package com.chat.model.history {
 					var icItem:ICItem = _cachedItems[i];
 					if(icItem is CMessage){
 						var msg:CMessage = icItem as CMessage;
-						if(msg.time < lastCommunicatorMessage.time){
-							idx = i;
+						var diff:Number = Math.abs(msg.time - lastCommunicatorMessage.time);
+						//FIXME: I hope will bee another way to compare messages
+						if(diff < MIN_MILLISECONDS_DIFF && msg.body == lastCommunicatorMessage.body){
+							idx = ++i;
 							break;
 						}
 					}
 				}
 			}
 
-			var results:Vector.<ICItem> = _cachedItems; //.splice(idx, BUFFER_SIZE);
+			var results:Vector.<ICItem> = _cachedItems.splice(idx, BUFFER_SIZE);
 			for(i = 0; i < results.length; i++) {
 				var item:ICItem = results[i];
 				_communicator.items.prepend(item);
