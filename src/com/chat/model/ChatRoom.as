@@ -283,8 +283,10 @@ package com.chat.model
 			if( !occupant ) return;
 			
 			var chatUser:ChatUser = new ChatUser( occupant.jid );
-			chatUser.displayName = event.nickname;
-			
+
+			if (!chatUser.displayName)
+				chatUser.displayName = event.nickname;
+
 			for each( var user:ChatUser in _users.source )
 			{
 				if( user.displayName == event.nickname )

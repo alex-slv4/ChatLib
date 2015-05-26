@@ -35,10 +35,14 @@ package com.chat.model
 		{
 			_rosterItem =  value;
 			
-			if( !_rosterItem ) return;
+			if(!_rosterItem )
+				return;
 			
-			if( jid ) _rosterItem.jid = jid;
+			if(jid)
+				_rosterItem.jid = jid;
+
 			jid = jid ? jid : rosterItem.jid;
+
 			displayName = displayName ? displayName : rosterItem.nickname;
 		}
 		
@@ -46,7 +50,30 @@ package com.chat.model
 		
 		public function get vCardRequested():Boolean { return _vCardRequested; }
 		
-		public function get displayName():String { return _vCard && _vCard.nickname ? _vCard.nickname : _vCard && _vCard.formattedName ? _vCard.formattedName : _displayName ? _displayName : _jid ? _jid.node : null; }
+		public function get displayName():String
+		{
+			if (_vCard && _vCard.nickname)
+				return _vCard.nickname;
+			else if (_vCard && _vCard.formattedName)
+				return _vCard.formattedName;
+			else if (_displayName)
+				return _displayName;
+			else if (_jid)
+				return _jid.node;
+			else
+				return null;
+
+			/*return _vCard && _vCard.nickname
+					? _vCard.nickname
+					: _vCard && _vCard.formattedName
+						? _vCard.formattedName
+						: _displayName
+							? _displayName
+							: _jid
+								? _jid.node
+								: null;*/
+		}
+
 		public function set displayName( value:String ):void
 		{
 			_displayName = value;
