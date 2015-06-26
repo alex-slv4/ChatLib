@@ -1,6 +1,9 @@
 package com.chat.model
 {
-	import org.igniterealtime.xiff.core.UnescapedJID;
+import org.as3commons.lang.Assert;
+import org.as3commons.logging.api.ILogger;
+import org.as3commons.logging.api.getLogger;
+import org.igniterealtime.xiff.core.UnescapedJID;
 	import org.igniterealtime.xiff.core.IXMPPConnection;
 	import org.igniterealtime.xiff.data.im.RosterItemVO;
 	import org.igniterealtime.xiff.events.VCardEvent;
@@ -10,6 +13,8 @@ package com.chat.model
 	
 	public class ChatUser
 	{
+		private static const log			:ILogger 		= getLogger(ChatUser);
+
 		private var _jid:UnescapedJID;
 		private var _rosterItem:RosterItemVO;
 		private var _vCard:VCard;
@@ -26,7 +31,7 @@ package com.chat.model
 		public function set jid( value:UnescapedJID ):void
 		{
 			_jid = value;
-			
+
 			if( _rosterItem ) _rosterItem.jid = value;
 		}
 		
@@ -77,6 +82,9 @@ package com.chat.model
 		public function set displayName( value:String ):void
 		{
 			_displayName = value;
+
+			if (_displayName == null || _displayName == "null")
+				log.debug("CHAT USER DISPLAY NAME SETTER NULL");
 		}
 		
 		public function get online():Boolean { return _rosterItem ? _rosterItem.online : false; }

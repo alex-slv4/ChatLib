@@ -8,7 +8,10 @@ package com.chat.controller {
 	import flash.system.Security;
 	import flash.utils.Timer;
 
-	import org.igniterealtime.xiff.auth.External;
+import org.as3commons.logging.api.ILogger;
+import org.as3commons.logging.api.getLogger;
+
+import org.igniterealtime.xiff.auth.External;
 	import org.igniterealtime.xiff.auth.Plain;
 	import org.igniterealtime.xiff.collections.ArrayCollection;
 	import org.igniterealtime.xiff.collections.events.CollectionEvent;
@@ -35,6 +38,9 @@ package com.chat.controller {
 	import org.igniterealtime.xiff.util.Zlib;
 
 	public class BaseChatController {
+
+		private static const log			:ILogger 		= getLogger(BaseChatController);
+
 		private const KEEP_ALIVE_TIME:int = 30000;
 		[Bindable]
 		public static var serverName:String = "localhost";
@@ -259,13 +265,20 @@ package com.chat.controller {
 			dispatch(event);
 		}
 
-		protected function onLogin(event:LoginEvent):void {
+		protected function onLogin(event:LoginEvent):void
+		{
 			setupCurrentUser();
+
+			log.debug("CHAT LOGIN, jid node: {0}", [connection.jid.node]);
+
 			keepAliveTimer.start();
+
 			dispatch(event);
 		}
 
 		protected function onXIFFError(event:XIFFErrorEvent):void {
+			log.debug("ERROR - errorCode: {1}, errorCondition: {2}, errorType: {3}, errorMessage: {4}", [event.errorCode, event.errorCondition, event.errorType, event.errorMessage]);
+
 			dispatch(event);
 		}
 

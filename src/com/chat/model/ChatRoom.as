@@ -3,7 +3,11 @@ package com.chat.model
 
 	import flash.events.EventDispatcher;
 
-	import org.igniterealtime.xiff.collections.ArrayCollection;
+import org.as3commons.logging.api.ILogger;
+
+import org.as3commons.logging.api.getLogger;
+
+import org.igniterealtime.xiff.collections.ArrayCollection;
 	import org.igniterealtime.xiff.conference.IRoomOccupant;
 	import org.igniterealtime.xiff.conference.Room;
 	import org.igniterealtime.xiff.core.UnescapedJID;
@@ -13,6 +17,8 @@ package com.chat.model
 
 	public class ChatRoom extends EventDispatcher
 	{
+		private static const log			:ILogger 		= getLogger(ChatRoom);
+
 		[Inject]
 		public var model:IChatModel;
 
@@ -61,6 +67,9 @@ package com.chat.model
 		
 		public function join( roomJID:UnescapedJID, password:String = null ):void
 		{
+			if (model.currentUser.displayName == null || model.currentUser.displayName == "null")
+				log.debug("CHAT ROOM JOIN, user nickname is NULL");
+
 			_room.nickname = model.currentUser.displayName;
 			_room.roomJID = roomJID;
 			_room.connection = model.connection;
@@ -283,9 +292,7 @@ package com.chat.model
 			if( !occupant ) return;
 			
 			var chatUser:ChatUser = new ChatUser( occupant.jid );
-
-			if (!chatUser.displayName)
-				chatUser.displayName = event.nickname;
+			chatUser.displayName = event.nickname;
 
 			for each( var user:ChatUser in _users.source )
 			{

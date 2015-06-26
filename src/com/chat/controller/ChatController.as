@@ -2,43 +2,39 @@
  * Created by kvint on 01.11.14.
  */
 package com.chat.controller {
-	import com.chat.events.ChatEvent;
-	import com.chat.events.CommunicatorCommandEvent;
-	import com.chat.model.ChatUser;
-	import com.chat.model.IChatModel;
+import com.chat.events.CommunicatorCommandEvent;
+import com.chat.model.ChatUser;
+import com.chat.model.IChatModel;
 
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
+import flash.events.Event;
+import flash.events.IEventDispatcher;
 
-	import org.igniterealtime.xiff.core.AbstractJID;
+import org.igniterealtime.xiff.core.AbstractJID;
+import org.igniterealtime.xiff.core.XMPPConnection;
+import org.igniterealtime.xiff.data.IXMPPStanza;
+import org.igniterealtime.xiff.data.archive.ChatStanza;
+import org.igniterealtime.xiff.data.archive.List;
+import org.igniterealtime.xiff.data.archive.Retrieve;
+import org.igniterealtime.xiff.data.archive.archive_internal;
+import org.igniterealtime.xiff.data.rsm.RSMSet;
+import org.igniterealtime.xiff.data.time.Time;
+import org.igniterealtime.xiff.events.DisconnectionEvent;
+import org.igniterealtime.xiff.events.LoginEvent;
+import org.igniterealtime.xiff.im.IRoster;
+import org.igniterealtime.xiff.im.Roster;
+import org.igniterealtime.xiff.util.JIDUtil;
 
-	import org.igniterealtime.xiff.core.Browser;
-	import org.igniterealtime.xiff.data.IQ;
-	import org.igniterealtime.xiff.data.IXMPPStanza;
-	import org.igniterealtime.xiff.data.archive.ChatStanza;
-	import org.igniterealtime.xiff.data.archive.List;
-	import org.igniterealtime.xiff.data.archive.Retrieve;
-	import org.igniterealtime.xiff.data.archive.archive_internal;
-	import org.igniterealtime.xiff.data.disco.DiscoExtension;
-	import org.igniterealtime.xiff.data.disco.DiscoFeature;
-	import org.igniterealtime.xiff.data.disco.InfoDiscoExtension;
-	import org.igniterealtime.xiff.data.rsm.RSMSet;
-	import org.igniterealtime.xiff.data.time.Time;
-	import org.igniterealtime.xiff.events.LoginEvent;
-	import org.igniterealtime.xiff.im.IRoster;
-	import org.igniterealtime.xiff.im.Roster;
-	import org.igniterealtime.xiff.util.JIDUtil;
-
-	use namespace archive_internal;
+use namespace archive_internal;
 
 	public class ChatController extends BaseChatController implements IChatController {
 
 		[Inject]
-		public var model:IChatModel;
+		public var model			:IChatModel;
 
 		[Inject]
-		public var bus:IEventDispatcher;
+		public var bus				:IEventDispatcher;
 
+		private var _loggedIn		:Boolean 			= false;
 
 		[PostConstruct]
 		override public function init():void {
@@ -76,6 +72,17 @@ package com.chat.controller {
 			bus.dispatchEvent(e);
 		}
 
+		override protected function onLogin(event:LoginEvent):void
+		{
+			_loggedIn = true;
+			super.onLogin(event);
+		}
+
+		override protected function onDisconnect(event:DisconnectionEvent):void {
+			_loggedIn = false;
+			super.onDisconnect(event);
+		}
+
 		public function addFriend(jid:AbstractJID):void {
 			var jidStr:String = JIDUtil.unescape(jid).bareJID;
 			bus.dispatchEvent(new CommunicatorCommandEvent(CommunicatorCommandEvent.ROSTER_ADD, null, [jidStr]));
@@ -88,6 +95,11 @@ package com.chat.controller {
 
 		public function destroy():void {
 			//TODO: destroy
+		}
+
+		public function get loggedIn():Boolean
+		{
+			return _loggedIn;
 		}
 	}
 }
