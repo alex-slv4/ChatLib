@@ -43,9 +43,11 @@ public class RoomJoinCMCommand extends CMCommand {
 	}
 
 	private function onRoomJoin(event:RoomEvent):void {
-		_chatRoom.removeEventListener(RoomEvent.ROOM_JOIN, onRoomJoin);
-		//Room joined
 		_roomCommunicator.active = true;
+	}
+
+	private function onRoomLeave(event:RoomEvent):void {
+		_roomCommunicator.active = false;
 	}
 
 	override public function get requiredParamsCount():int {
@@ -60,7 +62,7 @@ public class RoomJoinCMCommand extends CMCommand {
 		_chatRoom.addEventListener( RoomEvent.NICK_CONFLICT, onRoomEvent);
 		_chatRoom.addEventListener( RoomEvent.ROOM_DESTROYED, onRoomEvent);
 		_chatRoom.addEventListener( RoomEvent.ROOM_JOIN, onRoomJoin);
-		_chatRoom.addEventListener( RoomEvent.ROOM_LEAVE, onRoomEvent);
+		_chatRoom.addEventListener( RoomEvent.ROOM_LEAVE, onRoomLeave);
 		_chatRoom.addEventListener( RoomEvent.USER_DEPARTURE, onRoomEvent);
 		_chatRoom.addEventListener( RoomEvent.USER_JOIN, onRoomEvent);
 		_chatRoom.addEventListener( RoomEvent.USER_KICKED, onRoomEvent);
@@ -77,7 +79,7 @@ public class RoomJoinCMCommand extends CMCommand {
 		_chatRoom.removeEventListener( RoomEvent.NICK_CONFLICT, onRoomEvent);
 		_chatRoom.removeEventListener( RoomEvent.ROOM_DESTROYED, onRoomEvent);
 		_chatRoom.removeEventListener( RoomEvent.ROOM_JOIN, onRoomEvent);
-		_chatRoom.removeEventListener( RoomEvent.ROOM_LEAVE, onRoomEvent);
+		_chatRoom.removeEventListener( RoomEvent.ROOM_LEAVE, onRoomLeave);
 		_chatRoom.removeEventListener( RoomEvent.USER_DEPARTURE, onRoomEvent);
 		_chatRoom.removeEventListener( RoomEvent.USER_JOIN, onRoomEvent);
 		_chatRoom.removeEventListener( RoomEvent.USER_KICKED, onRoomEvent);
